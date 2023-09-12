@@ -30,7 +30,7 @@ import {
   rgbToHwb,
   rgbToLab,
   rgbToLch,
-} from "./translation";
+} from "./colorTranslation";
 import { merge } from "./helper";
 import {
   hslToString,

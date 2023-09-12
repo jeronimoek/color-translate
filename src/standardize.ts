@@ -5,7 +5,7 @@ import {
   labABParse,
   percentageParse,
   rgbParse,
-} from "./translateValues";
+} from "./unitTranslation";
 import {
   RGB,
   RawRGB,
@@ -18,6 +18,8 @@ import {
   LAB,
   LCH,
 } from "./types";
+
+// These functions clamp color values to use them directly with the library "@csstools/convert-colors"
 
 export function standardizePartialRGB(
   color: Partial<RawRGB>

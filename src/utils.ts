@@ -17,7 +17,7 @@ import {
 } from "./classify";
 import { oklabToRGB as oklabToRgb, oklchToRGB as oklchToRgb } from "./okColors";
 import { color as colorRegex } from "./regex";
-import { hslToRgb, hwbToRgb, labToRgb, lchToRgb } from "./translation";
+import { hslToRgb, hwbToRgb, labToRgb, lchToRgb } from "./colorTranslation";
 
 function parseColorString(color: string): Color {
   const matches = colorRegex.exec(color);
