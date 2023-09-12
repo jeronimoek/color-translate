@@ -7,24 +7,29 @@ This package allows translating colors between all valid css formats
 Using npm:
 
 ```shell
-npm i --save-dev color-translator
+npm i color-translator
 ```
 
 ## Usage
 
 ```js
-// this is js code
+import ColorTranslator from "color-translator";
+
+const color = new ColorTranslator("hsl(0 100% 50%)");
+color.updateRgb({ r: 127.5, b: 255 });
+color.updateRgb({ alpha: 0.4 });
+color.updateOptions({ spaced: false });
+color.lch.toString();
+color.lch.toString({ legacy: true });
 ```
 
-### Parameters:
+### Options:
 
-| Parameter | Description | Default value      |
-| --------- | ----------- | ------------------ |
-| this      | row info    | `'package.json'`   |
-| is a      | row info    | `'README.md'`      |
-| table     | row info    | inputPath value \* |
-
-<sub>\* this is a small note</sub>
+| Option | Description | Default value      |
+| ------ | ----------- | ------------------ |
+| this   | row info    | `'package.json'`   |
+| is an  | row info    | `'README.md'`      |
+| option | row info    | inputPath value \* |
 
 ## 🌐 Links
 
