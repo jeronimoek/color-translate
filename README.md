@@ -19,8 +19,10 @@ const color = new ColorTranslator("hsl(0 100% 50%)");
 color.updateRgb({ r: 127.5, b: 255 });
 color.updateRgb({ alpha: 0.4 });
 color.updateOptions({ spaced: false });
-color.lch.toString();
-color.lch.toString({ legacy: true });
+color.lch;
+// TODO:
+// color.lch.toString();
+// color.lch.toString({ legacy: true });
 ```
 
 ### Options:
