@@ -1,0 +1,75 @@
+{
+  "name": "color-translator",
+  "displayName": "Translate Colors Formats",
+  "description": "Translate colors between all valid css formats",
+  "version": "0.0.1",
+  "keywords": [
+    "color",
+    "translation",
+    "format"
+  ],
+  "author": {
+    "email": "jeronimoek@gmail.com",
+    "name": "Jerónimo Ekerdt"
+  },
+  "repository": "jeronimoek/color-translator",
+  "license": "MIT",
+  "main": "./dist/cjs/index.js",
+  "types": "./dist/cjs/types/src/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "exports": {
+    "import": {
+      "types": "./dist/esm/types/src/index.d.ts",
+      "default": "./dist/esm/index.mjs"
+    },
+    "require": {
+      "types": "./dist/cjs/types/src/index.d.ts",
+      "default": "./dist/cjs/index.js"
+    }
+  },
+  "scripts": {
+    "pretest": "npm run prepack",
+    "test": "jest",
+    "lint": "eslint src --ext ts",
+    "compile": "npm run clean && npm run compile:cjs && npm run compile:esm",
+    "clean": "rd /s /q dist || exit 0",
+    "compile:cjs": "babel --config-file ./babel.cjs.js --extensions \".ts\" src --out-dir dist/cjs && tsc --p tsconfig.cjs.json",
+    "compile:esm": "babel --config-file ./babel.esm.js --extensions \".ts\" src --out-dir dist/esm --out-file-extension .mjs && tsc --p tsconfig.esm.json",
+    "check-types": "tsc --noEmit",
+    "prepack": "npm run compile",
+    "checks": "npm run lint && npm run test",
+    "pre-push": "bash scripts/no-push-master.sh && npm run checks"
+  },
+  "pre-push": [
+    "pre-push"
+  ],
+  "dependencies": {
+    "@csstools/convert-colors": "^2.0.0",
+    "core-js": "3.28.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.21.0",
+    "@babel/core": "7.21.0",
+    "@babel/preset-env": "7.20.2",
+    "@babel/preset-typescript": "7.21.0",
+    "@ianvs/prettier-plugin-sort-imports": "4.0.2",
+    "@types/fs-extra": "11.0.1",
+    "@types/jest": "29.4.0",
+    "@types/node": "18.14.1",
+    "@typescript-eslint/eslint-plugin": "5.53.0",
+    "babel-plugin-module-extension-resolver": "1.0.0",
+    "eslint": "8.34.0",
+    "eslint-config-standard-with-typescript": "34.0.0",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-n": "15.6.1",
+    "eslint-plugin-promise": "6.1.1",
+    "jest": "29.4.3",
+    "jest-extended": "3.2.4",
+    "pre-push": "0.1.4",
+    "ts-jest": "29.0.5",
+    "ts-node": "10.9.1",
+    "typescript": "4.9.5"
+  }
+}

@@ -1,0 +1,226 @@
+{
+  "name": "color-picker-universal",
+  "displayName": "Color Picker Universal",
+  "description": "Color picker and translator for any color format, in any file",
+  "contributes": {
+    "commands": [
+      {
+        "command": "color-picker-universal.translateColors",
+        "title": "Translate colors to another format",
+        "category": "Color Picker Universal"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "color-picker-universal.translateColors",
+          "title": "Translate colors to another format"
+        }
+      ]
+    },
+    "walkthroughs": [
+      {
+        "id": "home",
+        "title": "Home",
+        "description": "Tutorial through the home",
+        "steps": [
+          {
+            "id": "hello",
+            "title": "Hello World",
+            "description": "Say hi",
+            "completionEvents": ["onStepSelected"],
+            "media": {
+              "image": "",
+              "altText": "Hello world"
+            }
+          }
+        ]
+      }
+    ],
+    "configuration": {
+      "title": "color-picker-universal",
+      "properties": {
+        "color-picker-universal.disable": {
+          "default": false,
+          "description": "Controls if plugin is disabled",
+          "type": "boolean"
+        },
+        "color-picker-universal.strictAlpha": {
+          "default": true,
+          "description": "If enabled, when bulk translating color formats, if the target format includes Alpha (e.g. RGBA), alpha will be by default 1, otherwise it'll be trimmed",
+          "type": "boolean"
+        },
+        "color-picker-universal.formatsFrom": {
+          "description": "Formats to be detected by the extension. \"*\" to translate from any format. Prepend format with \"!\" to exclude formats (e.g. \"!named\")",
+          "type": "array",
+          "default": ["*"],
+          "examples": [
+            ["*", "!named"],
+            ["cmyk", "hex", "hsl", "hwb", "named", "rgb"]
+          ],
+          "items": {
+            "title": "Format to be detected",
+            "type": "string",
+            "examples": ["*", "cmyk", "hex", "hsl", "hwb", "named", "rgb"]
+          }
+        },
+        "color-picker-universal.formatsTo": {
+          "description": "Formats to translate into. \"*\" to translate into any format. Prepend format with \"!\" to exclude formats (e.g. \"!cmyk\")",
+          "type": "array",
+          "default": ["*", "!cmyk"],
+          "examples": [
+            ["*", "!cmyk", "!hwb"],
+            ["cmyk", "hex", "hsl", "hwb", "named", "rgb"]
+          ],
+          "items": {
+            "title": "Format to be translated into",
+            "type": "string",
+            "examples": ["*", "cmyk", "hex", "hsl", "hwb", "named", "rgb"]
+          }
+        },
+        "color-picker-universal.languages": {
+          "description": "Languages to be detected by the extension. \"*\" to detect any language. Prepend language id with \"!\" to exclude languages (e.g. \"!markdown\")",
+          "type": "array",
+          "default": ["*"],
+          "examples": [
+            ["*", "!css", "!less", "!scss", "!sass"],
+            ["*", "!plaintext", "!markdown"],
+            [
+              "abap",
+              "bat",
+              "bibtex",
+              "clojure",
+              "coffeescript",
+              "c",
+              "cpp",
+              "csharp",
+              "cuda-cpp",
+              "css",
+              "diff",
+              "dockerfile",
+              "fsharp",
+              "git-commit",
+              "git-rebase",
+              "go",
+              "groovy",
+              "handlebars",
+              "haml",
+              "html",
+              "ini",
+              "java",
+              "javascript",
+              "javascriptreact",
+              "json",
+              "jsonc",
+              "latex",
+              "less",
+              "lua",
+              "makefile",
+              "markdown",
+              "objective-c",
+              "objective-cpp",
+              "perl",
+              "perl6",
+              "php",
+              "plaintext",
+              "powershell",
+              "jade",
+              "pug",
+              "python",
+              "r",
+              "razor",
+              "ruby",
+              "rust",
+              "scss",
+              "sass",
+              "shaderlab",
+              "shellscript",
+              "slim",
+              "sql",
+              "stylus",
+              "swift",
+              "typescript",
+              "typescriptreact",
+              "tex",
+              "vb",
+              "vue",
+              "vue-html",
+              "xml",
+              "xsl",
+              "yaml"
+            ]
+          ],
+          "items": {
+            "title": "Language identifier",
+            "type": "string",
+            "examples": [
+              "*",
+              "abap",
+              "bat",
+              "bibtex",
+              "clojure",
+              "coffeescript",
+              "c",
+              "cpp",
+              "csharp",
+              "cuda-cpp",
+              "css",
+              "diff",
+              "dockerfile",
+              "fsharp",
+              "git-commit",
+              "git-rebase",
+              "go",
+              "groovy",
+              "handlebars",
+              "haml",
+              "html",
+              "ini",
+              "java",
+              "javascript",
+              "javascriptreact",
+              "json",
+              "jsonc",
+              "latex",
+              "less",
+              "lua",
+              "makefile",
+              "markdown",
+              "objective-c",
+              "objective-cpp",
+              "perl",
+              "perl6",
+              "php",
+              "plaintext",
+              "powershell",
+              "jade",
+              "pug",
+              "python",
+              "r",
+              "razor",
+              "ruby",
+              "rust",
+              "scss",
+              "sass",
+              "shaderlab",
+              "shellscript",
+              "slim",
+              "sql",
+              "stylus",
+              "swift",
+              "typescript",
+              "typescriptreact",
+              "tex",
+              "vb",
+              "vue",
+              "vue-html",
+              "xml",
+              "xsl",
+              "yaml"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
