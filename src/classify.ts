@@ -4,42 +4,53 @@ function isColorType<T extends Color>(color: T, keys: (keyof T)[]) {
   return keys.every((key) => color[key] != null);
 }
 
-export function isRGB(color: Color): color is RGB<number> {
-  return isColorType<RGB<number>>(color as RGB<number>, ["r", "g", "b"]);
+export function isRGB(color: Color): color is RGB<number> | RGB<string> {
+  return isColorType<RGB<number> | RGB<string>>(
+    color as RGB<number> | RGB<string>,
+    ["r", "g", "b"]
+  );
 }
 
-export function isHSL(color: Color): color is HSL<number> {
-  return isColorType<HSL<number>>(color as HSL<number>, ["h", "s", "l"]);
+export function isHSL(color: Color): color is HSL<number> | HSL<string> {
+  return isColorType<HSL<number> | HSL<string>>(
+    color as HSL<number> | HSL<string>,
+    ["h", "s", "l"]
+  );
 }
 
-export function isHWB(color: Color): color is HWB<number> {
-  return isColorType<HWB<number>>(color as HWB<number>, ["h", "w", "b"]);
+export function isHWB(color: Color): color is HWB<number> | HWB<string> {
+  return isColorType<HWB<number> | HWB<string>>(
+    color as HWB<number> | HWB<string>,
+    ["h", "w", "b"]
+  );
 }
 
-export function isLAB(color: Color): color is LAB<number> {
-  return isColorType<LAB<number>>(color as LAB<number>, ["l", "a", "b"]);
+export function isLAB(color: Color): color is LAB<number> | LAB<string> {
+  return isColorType<LAB<number> | LAB<string>>(
+    color as LAB<number> | LAB<string>,
+    ["l", "a", "b"]
+  );
 }
 
-export function isLCH(color: Color): color is LCH<number> {
-  return isColorType<LCH<number>>(color as LCH<number>, ["l", "c", "h"]);
+export function isLCH(color: Color): color is LCH<number> | LCH<string> {
+  return isColorType<LCH<number> | LCH<string>>(
+    color as LCH<number> | LCH<string>,
+    ["l", "c", "h"]
+  );
 }
 
-export function isOKLAB(color: Color): color is OKLAB<number> {
-  return isColorType<OKLAB<number>>(color as OKLAB<number>, [
-    "l",
-    "a",
-    "b",
-    "ok",
-  ]);
+export function isOKLAB(color: Color): color is OKLAB<number> | OKLAB<string> {
+  return isColorType<OKLAB<number> | OKLAB<string>>(
+    color as OKLAB<number> | OKLAB<string>,
+    ["l", "a", "b", "ok"]
+  );
 }
 
-export function isOKLCH(color: Color): color is OKLCH<number> {
-  return isColorType<OKLCH<number>>(color as OKLCH<number>, [
-    "l",
-    "c",
-    "h",
-    "ok",
-  ]);
+export function isOKLCH(color: Color): color is OKLCH<number> | OKLCH<string> {
+  return isColorType<OKLCH<number> | OKLCH<string>>(
+    color as OKLCH<number> | OKLCH<string>,
+    ["l", "c", "h", "ok"]
+  );
 }
 
 export function isPercentage(value: string) {

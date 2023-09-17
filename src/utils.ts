@@ -15,24 +15,29 @@ import {
   isOKLCH,
   isRGB,
 } from "./classify";
-import { oklabToRGB as oklabToRgb, oklchToRGB as oklchToRgb } from "./okColors";
+import { oklabToRgb, oklchToRgb } from "./okColors";
 import { color as colorRegex } from "./regex";
-import { hslToRgb, hwbToRgb, labToRgb, lchToRgb } from "./colorTranslation";
+import {
+  hslToRgb,
+  hwbToRgb,
+  labToRgb,
+  lchToRgb,
+  rgbToRgb100,
+} from "./colorTranslation";
 
 function parseColorString(color: string): Color {
   const matches = colorRegex.exec(color);
   if (!matches) throw Error("Invalid input: " + color);
-  const [, format, value1, value2, value3, alpha] = matches.filter((v) => v);
+  const [, format, value1, value2, value3, alpha = "1"] = matches.filter(
+    (v) => v
+  );
   switch (format.toLocaleLowerCase()) {
     case "#":
       return {
         r: parseInt(value1.padStart(2, value1), 16),
         g: parseInt(value2.padStart(2, value2), 16),
         b: parseInt(value3.padStart(2, value3), 16),
-        alpha:
-          alpha != null
-            ? parseInt(alpha.padStart(2, alpha), 16) / 255
-            : undefined,
+        alpha: parseInt(alpha.padStart(2, alpha), 16) / 255,
       };
     case "hsl":
     case "hsla":
@@ -91,44 +96,86 @@ function parseColorString(color: string): Color {
   }
 }
 
-export function colorToRgba(color: Color | string): RGB<number> {
+/**
+ * Parse raw color, object or string, into rgb100 object (0 - 100)
+ * @param color
+ * @returns
+ */
+export function colorToRgb100(color: Color | string): RGB<number> {
   if (typeof color === "string") {
     color = parseColorString(color);
   }
-  let result: RGB<number> = { r: 0, g: 0, b: 0 };
-  let rgb100 = undefined;
+  let rgb100: RGB<number> = { r: 0, g: 0, b: 0, alpha: 1 };
   if (isRGB(color)) {
-    result = color;
+    rgb100 = rgbToRgb100(color);
   } else if (isHSL(color)) {
     rgb100 = hslToRgb(standardizeHSL(color));
   } else if (isHWB(color)) {
     rgb100 = hwbToRgb(standardizeHWB(color));
     // The next two 'ok' formats MUST go before the non 'ok' formats
   } else if (isOKLAB(color)) {
-    result = oklabToRgb(color);
+    rgb100 = oklabToRgb(color);
   } else if (isOKLCH(color)) {
-    result = oklchToRgb(color);
+    rgb100 = oklchToRgb(color);
   } else if (isLAB(color)) {
     rgb100 = labToRgb(standardizeLAB(color));
   } else if (isLCH(color)) {
     rgb100 = lchToRgb(standardizeLCH(color));
   }
-  if (rgb100) {
-    const { r, g, b } = rgb100;
-    result = { r: r * 2.55, g: g * 2.55, b: b * 2.55 };
-  }
-  const alpha = color.alpha != null ? +color.alpha : 1;
-  return { ...result, alpha };
+  return { ...rgb100 };
 }
 
 export function clamp(num: number, min: number, max: number) {
   return Math.min(Math.max(num, min), max);
 }
 
-export function degToRad(deg: number): number {
-  return deg * (Math.PI / 180);
+export function gradToDeg(grad: number) {
+  return (grad / 400) * 360;
 }
 
-export function radToDeg(rad: number): number {
-  return rad * (180 / Math.PI);
+export function degToGrad(deg: number) {
+  return (deg / 360) * 400;
+}
+
+export function radToDeg(rad: number) {
+  return (rad / (2 * Math.PI)) * 360;
+}
+
+export function degToRad(deg: number) {
+  return (deg / 360) * (2 * Math.PI);
+}
+
+export function turnToDeg(turn: number) {
+  return turn * 360;
+}
+
+export function degToTurn(deg: number) {
+  return deg / 360;
+}
+
+export function toHex(rgbValue: number) {
+  return Math.round(rgbValue).toString(16).toUpperCase().padStart(2, "0");
+}
+
+export function percentageToNumber(
+  percentage: string | number,
+  min = 0,
+  max = 1
+) {
+  if (typeof percentage === "number") return percentage;
+  if (!percentage.endsWith("%")) return parseFloat(percentage);
+  const range = max - min;
+  return (parseFloat(percentage) / 100) * range - min;
+}
+
+export function rgbRawToNumber(rgbRaw: string | number) {
+  return percentageToNumber(rgbRaw, 0, 255);
+}
+
+export function oklabABRawToNumber(rgbRaw: string | number) {
+  return percentageToNumber(rgbRaw, 0, 0.4);
+}
+
+export function oklchChromaRawToNumber(rgbRaw: string | number) {
+  return percentageToNumber(rgbRaw, 0, 0.4);
 }

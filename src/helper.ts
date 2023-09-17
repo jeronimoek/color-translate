@@ -12,3 +12,9 @@ export function merge<T1 extends UnknownObject, T2 extends UnknownObject>(
 ): T1 & T2 {
   return { ...obj1, ...definedProps(obj2) };
 }
+
+export function round(number: number, decimals = 2) {
+  return (
+    Math.round((number + Number.EPSILON) * 10 ** decimals) / 10 ** decimals
+  );
+}

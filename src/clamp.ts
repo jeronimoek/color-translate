@@ -1,4 +1,4 @@
-import { clamp } from "./utils";
+import { clamp, gradToDeg, radToDeg, turnToDeg } from "./utils";
 
 // Clamps
 
@@ -26,22 +26,16 @@ export function rgbToRange(value: number) {
   return clampPercent(scaled);
 }
 
-export function gradToRange(value: number) {
-  const scale = 360 / 400;
-  const scaled = value * scale;
-  return clampHue(scaled);
+export function gradToRange(grad: number) {
+  return clampHue(gradToDeg(grad));
 }
 
-export function radToRange(value: number) {
-  const scale = 360 / (2 * Math.PI);
-  const scaled = value * scale;
-  return clampHue(scaled);
+export function radToRange(rad: number) {
+  return clampHue(radToDeg(rad));
 }
 
-export function turnToRange(value: number) {
-  const scale = 360;
-  const scaled = value * scale;
-  return clampHue(scaled);
+export function turnToRange(turn: number) {
+  return clampHue(turnToDeg(turn));
 }
 
 export function labABPercentageToRange(value: number) {

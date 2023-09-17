@@ -3,6 +3,8 @@ import {
   standardizePartialHWB,
   standardizePartialLAB,
   standardizePartialLCH,
+  standardizePartialOKLAB,
+  standardizePartialOKLCH,
   standardizePartialRGB,
 } from "./standardize";
 import {
@@ -19,8 +21,13 @@ import {
   RawLAB,
   RawLCH,
   GetColor,
+  HEX,
+  OKLAB,
+  RawOKLAB,
+  OKLCH,
+  RawOKLCH,
 } from "./types";
-import { colorToRgba } from "./utils";
+import { colorToRgb100 } from "./utils";
 import {
   hslToRgb,
   hwbToRgb,
@@ -30,15 +37,21 @@ import {
   rgbToHwb,
   rgbToLab,
   rgbToLch,
+  rgb100ToRgb,
+  rgbToHex,
 } from "./colorTranslation";
 import { merge } from "./helper";
 import {
+  hexToString,
   hslToString,
   hwbToString,
   labToString,
   lchToString,
+  oklabToString,
+  oklchToString,
   rgbToString,
 } from "./stringify";
+import { oklabToRgb, oklchToRgb, rgbToOklab, rgbToOklch } from "./okColors";
 
 export default class ColorTranslator {
   private _rgb: RGB<number>;
@@ -51,15 +64,24 @@ export default class ColorTranslator {
   constructor(color: string | Color, options: Partial<Options> = {}) {
     this._options = merge(this._options, options);
 
-    this._rgb = colorToRgba(color);
+    this._rgb = colorToRgb100(color);
+  }
+
+  // HEX
+
+  get hex(): HEX & GetColor {
+    return {
+      ...rgbToHex(rgb100ToRgb(this._rgb)),
+      toString: hexToString,
+      options: this._options,
+    };
   }
 
   // RGB
 
-  get rgb(): Required<RGB<number>> & GetColor {
+  get rgb(): RGB<number> & GetColor {
     return {
-      alpha: 1,
-      ...this._rgb,
+      ...rgb100ToRgb(this._rgb),
       toString: rgbToString,
       options: this._options,
     };
@@ -72,9 +94,8 @@ export default class ColorTranslator {
 
   // HSL
 
-  get hsl(): Required<HSL<number>> & GetColor {
+  get hsl(): HSL<number> & GetColor {
     return {
-      alpha: 1,
       ...rgbToHsl(this._rgb),
       toString: hslToString,
       options: this._options,
@@ -91,9 +112,8 @@ export default class ColorTranslator {
 
   // HWB
 
-  get hwb(): Required<HWB<number>> & GetColor {
+  get hwb(): HWB<number> & GetColor {
     return {
-      alpha: 1,
       ...rgbToHwb(this._rgb),
       toString: hwbToString,
       options: this._options,
@@ -110,9 +130,8 @@ export default class ColorTranslator {
 
   // LAB
 
-  get lab(): Required<LAB<number>> & GetColor {
+  get lab(): LAB<number> & GetColor {
     return {
-      alpha: 1,
       ...rgbToLab(this._rgb),
       toString: labToString,
       options: this._options,
@@ -129,9 +148,8 @@ export default class ColorTranslator {
 
   // LCH
 
-  get lch(): Required<LCH<number>> & GetColor {
+  get lch(): LCH<number> & GetColor {
     return {
-      alpha: 1,
       ...rgbToLch(this._rgb),
       toString: lchToString,
       options: this._options,
@@ -143,6 +161,42 @@ export default class ColorTranslator {
     const currentLch = rgbToLch(this._rgb);
     const newLch = merge(currentLch, lch);
     const rgb = lchToRgb(newLch);
+    this._rgb = rgb;
+  }
+
+  // LAB
+
+  get oklab(): OKLAB<number> & GetColor {
+    return {
+      ...rgbToOklab(this._rgb),
+      toString: oklabToString,
+      options: this._options,
+    };
+  }
+
+  updateOklab(oklabRaw: Partial<RawOKLAB>) {
+    const oklab = standardizePartialOKLAB(oklabRaw);
+    const currentOklab = rgbToOklab(this._rgb);
+    const newOklab = merge(currentOklab, oklab);
+    const rgb = oklabToRgb(newOklab);
+    this._rgb = rgb;
+  }
+
+  // LCH
+
+  get oklch(): OKLCH<number> & GetColor {
+    return {
+      ...rgbToOklch(this._rgb),
+      toString: oklchToString,
+      options: this._options,
+    };
+  }
+
+  updateokLch(oklchRaw: Partial<RawOKLCH>) {
+    const oklch = standardizePartialOKLCH(oklchRaw);
+    const currentokLch = rgbToOklch(this._rgb);
+    const newokLch = merge(currentokLch, oklch);
+    const rgb = oklchToRgb(newokLch);
     this._rgb = rgb;
   }
 
