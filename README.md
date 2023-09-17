@@ -18,11 +18,16 @@ import ColorTranslator from "color-translator";
 const color = new ColorTranslator("hsl(0 100% 50%)");
 color.updateRgb({ r: 127.5, b: 255 });
 color.updateRgb({ alpha: 0.4 });
-color.updateOptions({ spaced: false });
-color.lch;
-// TODO:
-// color.lch.toString();
-// color.lch.toString({ legacy: true });
+color.updateOptions({ angleUnit: "grad" });
+
+console.log(color.lch.l);
+// 39.282796563892475
+
+console.log(color.lch.toString());
+// "lch(39.28 121.27 -57.78grad / 0.4)"
+
+console.log(color.lch.toString({ legacy: true }));
+// "lch(39.28, 121.27, -57.78grad, 0.4)"
 ```
 
 ### Options:

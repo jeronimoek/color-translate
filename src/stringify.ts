@@ -134,7 +134,12 @@ export function lchToString(
   const stringOptions = merge(options, customOptions);
   return genericToString(
     "lch",
-    [round(l), round(c), round(h), round(alpha)],
+    [
+      round(l),
+      round(c),
+      stringifyDeg(round(h), stringOptions.angleUnit),
+      round(alpha),
+    ],
     stringOptions
   );
 }
@@ -169,7 +174,12 @@ export function oklchToString(
   const stringOptions = merge(options, customOptions);
   return genericToString(
     "oklch",
-    [round(l), round(c), round(h), round(alpha)],
+    [
+      round(l),
+      round(c),
+      stringifyDeg(round(h), stringOptions.angleUnit),
+      round(alpha),
+    ],
     stringOptions
   );
 }
