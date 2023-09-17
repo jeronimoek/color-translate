@@ -5,6 +5,8 @@ import {
   labABParse,
   percentageParse,
   rgbParse,
+  oklabABParse,
+  oklchChromaParse,
 } from "./unitTranslation";
 import {
   RGB,
@@ -17,7 +19,12 @@ import {
   HWB,
   LAB,
   LCH,
+  RawOKLAB,
+  OKLAB,
+  RawOKLCH,
+  OKLCH,
 } from "./types";
+import { percentageToNumber } from "./utils";
 
 // These functions clamp color values to use them directly with the library "@csstools/convert-colors"
 
@@ -29,7 +36,7 @@ export function standardizePartialRGB(
     r: r != null ? rgbParse(r) : undefined,
     g: g != null ? rgbParse(g) : undefined,
     b: b != null ? rgbParse(b) : undefined,
-    alpha: alpha != null ? +alpha : undefined,
+    alpha: alpha != null ? percentageToNumber(alpha) : undefined,
   };
 }
 
@@ -45,7 +52,7 @@ export function standardizePartialHSL(
     h: h != null ? hueParse(h) : undefined,
     s: s != null ? percentageParse(s) : undefined,
     l: l != null ? percentageParse(l) : undefined,
-    alpha: alpha != null ? +alpha : undefined,
+    alpha: alpha != null ? percentageToNumber(alpha) : undefined,
   };
 }
 
@@ -61,7 +68,7 @@ export function standardizePartialHWB(
     h: h != null ? hueParse(h) : undefined,
     w: w != null ? percentageParse(w) : undefined,
     b: b != null ? percentageParse(b) : undefined,
-    alpha: alpha != null ? +alpha : undefined,
+    alpha: alpha != null ? percentageToNumber(alpha) : undefined,
   };
 }
 
@@ -77,7 +84,7 @@ export function standardizePartialLAB(
     l: l != null ? percentageParse(l) : undefined,
     a: a != null ? labABParse(a) : undefined,
     b: b != null ? labABParse(b) : undefined,
-    alpha: alpha != null ? +alpha : undefined,
+    alpha: alpha != null ? percentageToNumber(alpha) : undefined,
   };
 }
 
@@ -93,10 +100,42 @@ export function standardizePartialLCH(
     l: l != null ? percentageParse(l) : undefined,
     c: c != null ? lchChromaParse(c) : undefined,
     h: h != null ? lchHueParse(h) : undefined,
-    alpha: alpha != null ? +alpha : undefined,
+    alpha: alpha != null ? percentageToNumber(alpha) : undefined,
   };
 }
 
 export function standardizeLCH(color: RawLCH): LCH<number> {
   return standardizePartialLCH(color) as LCH<number>;
+}
+
+export function standardizePartialOKLAB(
+  color: Partial<RawOKLAB>
+): Partial<OKLAB<number>> {
+  const { l, a, b, alpha } = color;
+  return {
+    l: l != null ? percentageParse(l) : undefined,
+    a: a != null ? oklabABParse(a) : undefined,
+    b: b != null ? oklabABParse(b) : undefined,
+    alpha: alpha != null ? percentageToNumber(alpha) : undefined,
+  };
+}
+
+export function standardizeOKLAB(color: RawOKLAB): OKLAB<number> {
+  return standardizePartialOKLAB(color) as OKLAB<number>;
+}
+
+export function standardizePartialOKLCH(
+  color: Partial<RawOKLCH>
+): Partial<OKLCH<number>> {
+  const { l, c, h, alpha } = color;
+  return {
+    l: l != null ? percentageParse(l) : undefined,
+    c: c != null ? oklchChromaParse(c) : undefined,
+    h: h != null ? hueParse(h) : undefined,
+    alpha: alpha != null ? percentageToNumber(alpha) : undefined,
+  };
+}
+
+export function standardizeOKLCH(color: RawOKLCH): OKLCH<number> {
+  return standardizePartialOKLCH(color) as OKLCH<number>;
 }
