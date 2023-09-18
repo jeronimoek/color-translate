@@ -65,7 +65,7 @@ const fuchsiaLchString = `lch(${fuchsiaLch.l} ${fuchsiaLch.c} ${fuchsiaLch.h})`;
 const fuchsiaOklab = { l: 0.63, a: 0.22, b: 0, ok: true };
 const fuchsiaOklabString = `oklab(${fuchsiaOklab.l} ${fuchsiaOklab.a} ${fuchsiaOklab.b})`;
 const fuchsiaOklch = { l: 0.63, c: 0.26, h: 0, ok: true };
-const fuchsiaOklchString = `oklch(${fuchsiaOklch.l} ${fuchsiaOklch.c} 0.22)`; // Different value, same rgb color
+const fuchsiaOklchString = `oklch(${fuchsiaOklch.l} ${fuchsiaOklch.c} ${fuchsiaOklch.h})`;
 
 describe("Class ColorTranslator", () => {
   it("should be defined", () => {

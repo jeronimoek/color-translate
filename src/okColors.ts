@@ -1,5 +1,5 @@
 import { OKLAB, OKLCH, RGB } from "./types";
-import { clamp, degToRad, radToDeg } from "./utils";
+import { degToRad, radToDeg } from "./utils";
 
 // correlary of first psuedocode block here (f_inv) : https://bottosson.github.io/posts/colorwrong/#what-can-we-do%3F ; "applying the inverse of the sRGB nonlinear transform function.." -- keeping the abbreviated syntax of arrow functions and ? : if/then, despite that they confuse and stretch my noob brain:
 const gammaToLinear = (c: number) =>
@@ -44,10 +44,6 @@ export function oklabToRgb(lab: OKLAB<number>): RGB<number> {
   r = 100 * linearToGamma(r);
   g = 100 * linearToGamma(g);
   b = 100 * linearToGamma(b);
-  // OPTION: clamp r g and b values to the range 0-255; but if you use the values immediately to draw, JavaScript clamps them on use:
-  r = clamp(r, 0, 100);
-  g = clamp(g, 0, 100);
-  b = clamp(b, 0, 100);
   return { r, g, b, alpha: lab.alpha };
 }
 
