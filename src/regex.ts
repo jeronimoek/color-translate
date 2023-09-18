@@ -142,10 +142,8 @@ const oklch = new RegExp(
   colorWrap(oklchName, decimalOrPercentage, decimalOrPercentage, angle)
 );
 
-const color = new RegExp(
+export const color = new RegExp(
   orJoin(
     ...[hex, rgb, hsl, hwb, lab, lch, oklab, oklch].map((regex) => regex.source)
   )
 );
-
-export { hex, rgb, hsl, hwb, lab, lch, oklab, oklch, color };

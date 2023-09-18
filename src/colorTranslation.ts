@@ -9,24 +9,10 @@ import {
   rgb2lch,
 } from "@csstools/convert-colors";
 import { HEX, HSL, HWB, LAB, LCH, RGB } from "./types";
-import { rgbRawToNumber, toHex } from "./utils";
+import { toHex } from "./utils";
 
 export function rgb100ToRgb({ r, g, b, alpha }: RGB<number>): RGB<number> {
   return { r: r * 2.55, g: g * 2.55, b: b * 2.55, alpha };
-}
-
-export function rgbToRgb100({
-  r,
-  g,
-  b,
-  alpha,
-}: RGB<number> | RGB<string>): RGB<number> {
-  return {
-    r: rgbRawToNumber(r) / 2.55,
-    g: rgbRawToNumber(g) / 2.55,
-    b: rgbRawToNumber(b) / 2.55,
-    alpha: typeof alpha === "string" ? parseFloat(alpha) : alpha,
-  };
 }
 
 export function hslToRgb({ h, s, l, alpha }: HSL<number>): RGB<number> {

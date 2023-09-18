@@ -49,15 +49,3 @@ export function lchChromaPercentageToRange(value: number) {
   const scaled = value * scale;
   return clampChroma(scaled);
 }
-
-export function oklabABNumberToRange(value: number) {
-  const scale = 125 / 0.4;
-  const scaled = value * scale;
-  return clampLab(scaled);
-}
-
-export function oklchChromaNumberToRange(value: number) {
-  const scale = 150 / 0.4;
-  const scaled = value * scale;
-  return clampChroma(scaled);
-}
