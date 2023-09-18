@@ -47,7 +47,7 @@ function genericToString(
   }${+values[3] !== 1 ? alphaSeparator + values[3] : ""})`;
 }
 
-export function stringifyDeg(angle: number, angleUnit: AngleUnitType) {
+function stringifyDeg(angle: number, angleUnit: AngleUnitType) {
   switch (angleUnit) {
     case AngleUnit.GRAD:
       return round(degToGrad(angle)) + "grad";
@@ -56,6 +56,7 @@ export function stringifyDeg(angle: number, angleUnit: AngleUnitType) {
     case AngleUnit.TURN:
       return round(degToTurn(angle)) + "turn";
     case AngleUnit.NONE:
+      return round(angle);
     case AngleUnit.DEG:
     default:
       return round(angle) + "deg";

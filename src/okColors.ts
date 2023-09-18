@@ -1,13 +1,5 @@
 import { OKLAB, OKLCH, RGB } from "./types";
-import { hueParse } from "./unitTranslation";
-import {
-  clamp,
-  degToRad,
-  oklabABRawToNumber,
-  oklchChromaRawToNumber,
-  percentageToNumber,
-  radToDeg,
-} from "./utils";
+import { clamp, degToRad, radToDeg } from "./utils";
 
 // correlary of first psuedocode block here (f_inv) : https://bottosson.github.io/posts/colorwrong/#what-can-we-do%3F ; "applying the inverse of the sRGB nonlinear transform function.." -- keeping the abbreviated syntax of arrow functions and ? : if/then, despite that they confuse and stretch my noob brain:
 const gammaToLinear = (c: number) =>
@@ -38,20 +30,10 @@ export function rgbToOklab({ r, g, b, alpha }: RGB<number>): OKLAB<number> {
   };
 }
 
-export function oklabToRgb(lab: OKLAB<number> | OKLAB<string>): RGB<number> {
-  const numberLab: OKLAB<number> = {
-    l: percentageToNumber(lab.l),
-    a: oklabABRawToNumber(lab.a),
-    b: oklabABRawToNumber(lab.b),
-    alpha: percentageToNumber(lab.alpha),
-    ok: lab.ok,
-  };
-  let l =
-    numberLab.l + numberLab.a * +0.3963377774 + numberLab.b * +0.2158037573;
-  let m =
-    numberLab.l + numberLab.a * -0.1055613458 + numberLab.b * -0.0638541728;
-  let s =
-    numberLab.l + numberLab.a * -0.0894841775 + numberLab.b * -1.291485548;
+export function oklabToRgb(lab: OKLAB<number>): RGB<number> {
+  let l = lab.l + lab.a * +0.3963377774 + lab.b * +0.2158037573;
+  let m = lab.l + lab.a * -0.1055613458 + lab.b * -0.0638541728;
+  let s = lab.l + lab.a * -0.0894841775 + lab.b * -1.291485548;
   l = l ** 3;
   m = m ** 3;
   s = s ** 3;
@@ -66,24 +48,11 @@ export function oklabToRgb(lab: OKLAB<number> | OKLAB<string>): RGB<number> {
   r = clamp(r, 0, 100);
   g = clamp(g, 0, 100);
   b = clamp(b, 0, 100);
-  return { r, g, b, alpha: numberLab.alpha };
+  return { r, g, b, alpha: lab.alpha };
 }
 
-export function oklchToRgb({
-  l,
-  c,
-  h,
-  alpha,
-  ok,
-}: OKLCH<number> | OKLCH<string>): RGB<number> {
-  const numberLch: OKLCH<number> = {
-    l: percentageToNumber(l),
-    c: oklchChromaRawToNumber(c),
-    h: hueParse(h),
-    alpha: percentageToNumber(alpha),
-    ok,
-  };
-  return oklabToRgb(lchToLab(numberLch));
+export function oklchToRgb(lch: OKLCH<number>): RGB<number> {
+  return oklabToRgb(lchToLab(lch));
 }
 
 export function rgbToOklch(rgb: RGB<number>): OKLCH<number> {

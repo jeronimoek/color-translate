@@ -1,46 +1,26 @@
 import {
-  standardizePartialHSL,
-  standardizePartialHWB,
-  standardizePartialLAB,
-  standardizePartialLCH,
-  standardizePartialOKLAB,
-  standardizePartialOKLCH,
-  standardizePartialRGB,
-} from "./standardize";
-import {
-  Color,
-  RGB,
-  Options,
-  HSL,
-  RawRGB,
-  RawHSL,
-  HWB,
-  LAB,
-  LCH,
-  RawHWB,
-  RawLAB,
-  RawLCH,
-  GetColor,
-  HEX,
-  OKLAB,
-  RawOKLAB,
-  OKLCH,
-  RawOKLCH,
-} from "./types";
-import { colorToRgb100 } from "./utils";
-import {
   hslToRgb,
   hwbToRgb,
   labToRgb,
   lchToRgb,
+  rgb100ToRgb,
+  rgbToHex,
   rgbToHsl,
   rgbToHwb,
   rgbToLab,
   rgbToLch,
-  rgb100ToRgb,
-  rgbToHex,
 } from "./colorTranslation";
 import { merge } from "./helper";
+import { oklabToRgb, oklchToRgb, rgbToOklab, rgbToOklch } from "./okColors";
+import {
+  standardizePartialHsl,
+  standardizePartialHwb,
+  standardizePartialLab,
+  standardizePartialLch,
+  standardizePartialOklab,
+  standardizePartialOklch,
+  standardizePartialRgb,
+} from "./standardize";
 import {
   hexToString,
   hslToString,
@@ -51,7 +31,27 @@ import {
   oklchToString,
   rgbToString,
 } from "./stringify";
-import { oklabToRgb, oklchToRgb, rgbToOklab, rgbToOklch } from "./okColors";
+import {
+  Color,
+  GetColor,
+  HEX,
+  HSL,
+  HWB,
+  LAB,
+  LCH,
+  OKLAB,
+  OKLCH,
+  Options,
+  RawHSL,
+  RawHWB,
+  RawLAB,
+  RawLCH,
+  RawOKLAB,
+  RawOKLCH,
+  RawRGB,
+  RGB,
+} from "./types";
+import { colorToRgb100 } from "./utils";
 
 export default class ColorTranslator {
   private _rgb: RGB<number>;
@@ -88,7 +88,7 @@ export default class ColorTranslator {
   }
 
   updateRgb(rgbRaw: Partial<RawRGB>) {
-    const rgb = standardizePartialRGB(rgbRaw);
+    const rgb = standardizePartialRgb(rgbRaw);
     this._rgb = merge(this._rgb, rgb);
   }
 
@@ -103,7 +103,7 @@ export default class ColorTranslator {
   }
 
   updateHsl(hslRaw: Partial<RawHSL>) {
-    const hsl = standardizePartialHSL(hslRaw);
+    const hsl = standardizePartialHsl(hslRaw);
     const currentHsl = rgbToHsl(this._rgb);
     const newHsl = merge(currentHsl, hsl);
     const rgb = hslToRgb(newHsl);
@@ -121,7 +121,7 @@ export default class ColorTranslator {
   }
 
   updateHwb(hwbRaw: Partial<RawHWB>) {
-    const hwb = standardizePartialHWB(hwbRaw);
+    const hwb = standardizePartialHwb(hwbRaw);
     const currentHwb = rgbToHwb(this._rgb);
     const newHwb = merge(currentHwb, hwb);
     const rgb = hwbToRgb(newHwb);
@@ -139,7 +139,7 @@ export default class ColorTranslator {
   }
 
   updateLab(labRaw: Partial<RawLAB>) {
-    const lab = standardizePartialLAB(labRaw);
+    const lab = standardizePartialLab(labRaw);
     const currentLab = rgbToLab(this._rgb);
     const newLab = merge(currentLab, lab);
     const rgb = labToRgb(newLab);
@@ -157,7 +157,7 @@ export default class ColorTranslator {
   }
 
   updateLch(lchRaw: Partial<RawLCH>) {
-    const lch = standardizePartialLCH(lchRaw);
+    const lch = standardizePartialLch(lchRaw);
     const currentLch = rgbToLch(this._rgb);
     const newLch = merge(currentLch, lch);
     const rgb = lchToRgb(newLch);
@@ -175,7 +175,7 @@ export default class ColorTranslator {
   }
 
   updateOklab(oklabRaw: Partial<RawOKLAB>) {
-    const oklab = standardizePartialOKLAB(oklabRaw);
+    const oklab = standardizePartialOklab(oklabRaw);
     const currentOklab = rgbToOklab(this._rgb);
     const newOklab = merge(currentOklab, oklab);
     const rgb = oklabToRgb(newOklab);
@@ -192,8 +192,8 @@ export default class ColorTranslator {
     };
   }
 
-  updateokLch(oklchRaw: Partial<RawOKLCH>) {
-    const oklch = standardizePartialOKLCH(oklchRaw);
+  updateOklch(oklchRaw: Partial<RawOKLCH>) {
+    const oklch = standardizePartialOklch(oklchRaw);
     const currentokLch = rgbToOklch(this._rgb);
     const newokLch = merge(currentokLch, oklch);
     const rgb = oklchToRgb(newokLch);

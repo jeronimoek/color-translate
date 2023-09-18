@@ -1,6 +1,6 @@
 type UnknownObject = Record<string, any>;
 
-export function definedProps<T extends UnknownObject>(obj: T): T {
+function definedProps<T extends UnknownObject>(obj: T): T {
   return Object.fromEntries(
     Object.entries(obj).filter(([, v]) => v !== undefined)
   ) as T;

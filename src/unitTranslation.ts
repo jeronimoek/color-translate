@@ -6,8 +6,6 @@ import {
   gradToRange,
   labABPercentageToRange,
   lchChromaPercentageToRange,
-  oklabABNumberToRange,
-  oklchChromaNumberToRange,
   radToRange,
   rgbToRange,
   turnToRange,
@@ -26,12 +24,17 @@ export const rgbParse: ParseFunc = (value) => {
     return rgbToRange(value);
   }
   if (isPercentage(value)) return clampPercent(parseFloat(value));
-
-  return rgbToRange(parseFloat(value) / 2.55);
+  return rgbToRange(parseFloat(value));
 };
 
 /**
  * Clamp percentage to 0 - 100
+ * @example
+ * percentageParse(50)      // 50
+ * percentageParse('50')    // 50
+ * percentageParse('50%')   // 50
+ * percentageParse('125%')  // 100
+ * percentageParse('-125%') // 0
  */
 export const percentageParse: ParseFunc = (value) => {
   if (typeof value === "number") {
@@ -86,14 +89,6 @@ export const lchChromaParse: ParseFunc = (value) => {
 };
 
 /**
- * Clamp lch hue to -180 - 180
- */
-export const lchHueParse: ParseFunc = (value) => {
-  const result = hueParse(value);
-  return result - 180;
-};
-
-/**
  * Clamp percentage to 0 - 100
  */
 export const numberPercentageParse: ParseFunc = (value) => {
@@ -104,30 +99,4 @@ export const numberPercentageParse: ParseFunc = (value) => {
     return clampPercent(parseFloat(value));
   }
   return clampPercent(parseFloat(value) * 100);
-};
-
-/**
- * Clamp oklab a/b to -125 - 125
- */
-export const oklabABParse: ParseFunc = (value) => {
-  if (typeof value === "number") {
-    return oklabABNumberToRange(value);
-  }
-  if (isPercentage(value)) {
-    return labABPercentageToRange(parseFloat(value));
-  }
-  return oklabABNumberToRange(parseFloat(value));
-};
-
-/**
- * Clamp oklch chroma to 0 - 150
- */
-export const oklchChromaParse: ParseFunc = (value) => {
-  if (typeof value === "number") {
-    return oklchChromaNumberToRange(value);
-  }
-  if (isPercentage(value)) {
-    return lchChromaPercentageToRange(parseFloat(value));
-  }
-  return oklchChromaNumberToRange(parseFloat(value));
 };

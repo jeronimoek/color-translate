@@ -111,7 +111,7 @@ export type ColorFormat =
   | "rgb"
   | "rgba";
 
-export type ToStringColor = (options: Partial<Options>) => string;
+type ToStringColor = (options: Partial<Options>) => string;
 
 export interface GetColor {
   toString: ToStringColor;
