@@ -3,6 +3,7 @@ import {
   clampHue,
   clampLab,
   clampPercent,
+  clampUnit,
   gradToRange,
   labABPercentageToRange,
   lchChromaPercentageToRange,
@@ -30,17 +31,20 @@ export const rgbParse: ParseFunc = (value) => {
 /**
  * Clamp percentage to 0 - 100
  * @example
- * percentageParse(50)      // 50
- * percentageParse('50')    // 50
- * percentageParse('50%')   // 50
- * percentageParse('125%')  // 100
+ * percentageParse(0.5)     // 0.5
+ * percentageParse('0.5')   // 0.5
+ * percentageParse('50%')   // 0.5
+ * percentageParse('125%')  // 1
  * percentageParse('-125%') // 0
  */
 export const percentageParse: ParseFunc = (value) => {
   if (typeof value === "number") {
-    return clampPercent(value);
+    return clampUnit(value);
   }
-  return clampPercent(parseFloat(value));
+  if (isPercentage(value)) {
+    return clampUnit(parseFloat(value) / 100);
+  }
+  return clampUnit(parseFloat(value));
 };
 
 /**
@@ -86,17 +90,4 @@ export const lchChromaParse: ParseFunc = (value) => {
     return lchChromaPercentageToRange(parseFloat(value));
   }
   return clampChroma(parseFloat(value));
-};
-
-/**
- * Clamp percentage to 0 - 100
- */
-export const numberPercentageParse: ParseFunc = (value) => {
-  if (typeof value === "number") {
-    return clampPercent(value * 100);
-  }
-  if (isPercentage(value)) {
-    return clampPercent(parseFloat(value));
-  }
-  return clampPercent(parseFloat(value) * 100);
 };

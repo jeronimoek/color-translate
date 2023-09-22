@@ -92,6 +92,12 @@ export type Color =
   | OKLCH<number>
   | OKLCH<string>;
 
+type MapOptionalAlpha<U> = U extends Color
+  ? Omit<U, "alpha"> & { alpha?: Color["alpha"] }
+  : never;
+
+export type ColorInput = MapOptionalAlpha<Color>;
+
 export type AngleUnitType = `${AngleUnit}`;
 
 export interface Options {

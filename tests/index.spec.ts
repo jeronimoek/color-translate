@@ -1,6 +1,6 @@
 import * as matchers from "jest-extended";
-import { round } from "../dist/cjs/helper";
-import ColorTranslator from "../dist/cjs/index";
+import { round } from "../src/helper";
+import ColorTranslator from "../src/index";
 
 expect.extend(matchers);
 
@@ -66,6 +66,24 @@ const fuchsiaOklab = { l: 0.63, a: 0.22, b: 0, ok: true };
 const fuchsiaOklabString = `oklab(${fuchsiaOklab.l} ${fuchsiaOklab.a} ${fuchsiaOklab.b})`;
 const fuchsiaOklch = { l: 0.63, c: 0.26, h: 0, ok: true };
 const fuchsiaOklchString = `oklch(${fuchsiaOklch.l} ${fuchsiaOklch.c} ${fuchsiaOklch.h})`;
+
+const alpha = 0.5;
+
+const redRgbStringAlpha = `rgba(${redRgb.r} ${redRgb.g} ${redRgb.b} / ${alpha})`;
+const redRgbStringAlphaPercentage = `rgba(${redRgb.r} ${redRgb.g} ${
+  redRgb.b
+} / ${alpha * 100}%)`;
+
+const hexAlpha = "88";
+
+const redHexStringShortAlpha = `#${redHex.r[0]}${redHex.g[0]}${redHex.b[0]}${hexAlpha[0]}`;
+const redHexStringAlpha = `#${redHex.r}${redHex.g}${redHex.b}${hexAlpha}`;
+
+const redHslStringAlpha = `hsla(${redHsl.h} ${redHsl.s}% ${redHsl.l}% / ${alpha})`;
+const redHslStringAlphaPercentage = `hsla(${redHsl.h} ${redHsl.s}% ${
+  redHsl.l
+}% / ${alpha * 100}%)`;
+const redHslStringLegacyAlpha = `hsla(${redHsl.h}, ${redHsl.s}%, ${redHsl.l}%, ${alpha})`;
 
 describe("Class ColorTranslator", () => {
   it("should be defined", () => {
@@ -244,6 +262,7 @@ describe("Update colors", () => {
   it("should update rgb", () => {
     const color = new ColorTranslator(redRgb);
     color.updateRgb({ g: yellowRgb.g });
+    color.updateRgb({});
     expect(color.rgb.toString()).toEqual(yellowRgbString);
     expect(color.hex.toString()).toEqual(yellowHexString);
   });
@@ -251,41 +270,53 @@ describe("Update colors", () => {
   it("should update hsl", () => {
     const color = new ColorTranslator(redHsl);
     color.updateHsl({ l: maroonHsl.l });
+    color.updateHsl({});
     expect(color.hsl.toString()).toEqual(maroonHslString);
   });
 
   it("should update hwb", () => {
     const color = new ColorTranslator(redHwb);
     color.updateHwb({ b: maroonHwb.b });
+    color.updateHwb({});
     expect(color.hwb.toString()).toEqual(maroonHwbString);
   });
 
   it("should update lab", () => {
     const color = new ColorTranslator(redLab);
     color.updateLab({ b: fuchsiaLab.b });
+    color.updateLab({});
     expect(color.lab.toString()).toEqual(fuchsiaLabString);
   });
 
   it("should update lch", () => {
     const color = new ColorTranslator(redLch);
     color.updateLch({ h: fuchsiaLch.h });
+    color.updateLch({});
     expect(color.lch.toString()).toEqual(fuchsiaLchString);
   });
 
   it("should update oklab", () => {
     const color = new ColorTranslator(redOklab);
     color.updateOklab({ b: fuchsiaOklab.b });
+    color.updateOklab({});
     expect(color.oklab.toString()).toEqual(fuchsiaOklabString);
   });
 
   it("should update oklch", () => {
     const color = new ColorTranslator(redOklch);
     color.updateOklch({ h: fuchsiaOklch.h });
+    color.updateOklch({});
     expect(color.oklch.toString()).toEqual(fuchsiaOklchString);
   });
 });
 
 describe("Input string", () => {
+  it("should throw error", () => {
+    expect(() => {
+      new ColorTranslator("abcdefg");
+    }).toThrow();
+  });
+
   it("should return the same rgb string color", () => {
     const color = new ColorTranslator(redRgbString);
     expect(color.rgb.toString()).toEqual(redRgbString);
@@ -369,5 +400,57 @@ describe("Input string", () => {
   it("should return the same oklch string color (percentage)", () => {
     const color = new ColorTranslator(redOklchStringPercentage);
     expect(color.oklch.toString()).toEqual(redOklchString);
+  });
+});
+
+describe("Alpha input", () => {
+  it("should match alpha value rgb property", () => {
+    const color = new ColorTranslator(redRgbStringAlpha);
+    expect(color.rgb.alpha).toEqual(alpha);
+  });
+
+  it("should match alpha value rgb", () => {
+    const color = new ColorTranslator(redRgbStringAlpha);
+    expect(color.rgb.toString()).toEqual(redRgbStringAlpha);
+  });
+
+  it("should match alpha value rgb percentage", () => {
+    const color = new ColorTranslator(redRgbStringAlphaPercentage);
+    expect(color.rgb.toString()).toEqual(redRgbStringAlpha);
+  });
+
+  it("should match alpha value hex property", () => {
+    const color = new ColorTranslator(redHexStringAlpha);
+    expect(color.hex.alpha).toEqual(hexAlpha);
+  });
+
+  it("should match alpha value hex", () => {
+    const color = new ColorTranslator(redHexStringAlpha);
+    expect(color.hex.toString()).toEqual(redHexStringAlpha);
+  });
+
+  it("should match alpha value hex short", () => {
+    const color = new ColorTranslator(redHexStringShortAlpha);
+    expect(color.hex.toString()).toEqual(redHexStringAlpha);
+  });
+
+  it("should match alpha value hsl property", () => {
+    const color = new ColorTranslator(redHslStringAlpha);
+    expect(color.hsl.alpha).toEqual(alpha);
+  });
+
+  it("should match alpha value hsl", () => {
+    const color = new ColorTranslator(redHslStringAlpha);
+    expect(color.hsl.toString()).toEqual(redHslStringAlpha);
+  });
+
+  it("should match alpha value hsl percentage", () => {
+    const color = new ColorTranslator(redHslStringAlphaPercentage);
+    expect(color.hsl.toString()).toEqual(redHslStringAlpha);
+  });
+
+  it("should match alpha value hsl legacy", () => {
+    const color = new ColorTranslator(redHslStringLegacyAlpha);
+    expect(color.hsl.toString()).toEqual(redHslStringAlpha);
   });
 });
