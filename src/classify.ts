@@ -1,52 +1,66 @@
-import { Color, HSL, HWB, LAB, LCH, OKLAB, OKLCH, RGB } from "./types";
+import {
+  Color,
+  ColorInput,
+  HSL,
+  HWB,
+  LAB,
+  LCH,
+  OKLAB,
+  OKLCH,
+  RGB,
+} from "./types";
 
 function isColorType<T extends Color>(color: T, keys: (keyof T)[]) {
   return keys.every((key) => color[key] != null);
 }
 
-export function isRGB(color: Color): color is RGB<number> | RGB<string> {
+export function isRGB(color: ColorInput): color is RGB<number> | RGB<string> {
   return isColorType<RGB<number> | RGB<string>>(
     color as RGB<number> | RGB<string>,
     ["r", "g", "b"]
   );
 }
 
-export function isHSL(color: Color): color is HSL<number> | HSL<string> {
+export function isHSL(color: ColorInput): color is HSL<number> | HSL<string> {
   return isColorType<HSL<number> | HSL<string>>(
     color as HSL<number> | HSL<string>,
     ["h", "s", "l"]
   );
 }
 
-export function isHWB(color: Color): color is HWB<number> | HWB<string> {
+export function isHWB(color: ColorInput): color is HWB<number> | HWB<string> {
   return isColorType<HWB<number> | HWB<string>>(
     color as HWB<number> | HWB<string>,
     ["h", "w", "b"]
   );
 }
 
-export function isLAB(color: Color): color is LAB<number> | LAB<string> {
+export function isLAB(color: ColorInput): color is LAB<number> | LAB<string> {
   return isColorType<LAB<number> | LAB<string>>(
     color as LAB<number> | LAB<string>,
     ["l", "a", "b"]
   );
 }
 
-export function isLCH(color: Color): color is LCH<number> | LCH<string> {
+export function isLCH(color: ColorInput): color is LCH<number> | LCH<string> {
   return isColorType<LCH<number> | LCH<string>>(
     color as LCH<number> | LCH<string>,
     ["l", "c", "h"]
   );
 }
 
-export function isOKLAB(color: Color): color is OKLAB<number> | OKLAB<string> {
+export function isOKLAB(
+  color: ColorInput
+): color is OKLAB<number> | OKLAB<string> {
   return isColorType<OKLAB<number> | OKLAB<string>>(
     color as OKLAB<number> | OKLAB<string>,
     ["l", "a", "b", "ok"]
   );
 }
 
-export function isOKLCH(color: Color): color is OKLCH<number> | OKLCH<string> {
+export function isOKLCH(
+  color: ColorInput
+): color is OKLCH<number> | OKLCH<string> {
   return isColorType<OKLCH<number> | OKLCH<string>>(
     color as OKLCH<number> | OKLCH<string>,
     ["l", "c", "h", "ok"]

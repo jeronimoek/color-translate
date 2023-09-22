@@ -32,7 +32,7 @@ import {
   rgbToString,
 } from "./stringify";
 import {
-  Color,
+  ColorInput,
   GetColor,
   HEX,
   HSL,
@@ -61,7 +61,7 @@ export default class ColorTranslator {
     spaced: true,
   };
 
-  constructor(color: string | Color, options: Partial<Options> = {}) {
+  constructor(color: string | ColorInput, options: Partial<Options> = {}) {
     this._options = merge(this._options, options);
 
     this._rgb = colorToRgb100(color);

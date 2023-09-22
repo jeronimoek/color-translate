@@ -41,7 +41,7 @@
     "prepack": "npm run compile",
     "checks": "npm run lint && npm run test",
     "pre-push": "bash scripts/no-push-master.sh && npm run checks",
-    "unused-code": "ts-prune"
+    "unused-code": "ts-prune tsconfig.unused-code.json"
   },
   "pre-push": [
     "pre-push"

@@ -2,6 +2,10 @@ import { clamp, gradToDeg, radToDeg, turnToDeg } from "./utils";
 
 // Clamps
 
+export function clampUnit(value: number) {
+  return clamp(value, 0, 1);
+}
+
 export function clampPercent(value: number) {
   return clamp(value, 0, 100);
 }

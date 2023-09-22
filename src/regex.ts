@@ -44,10 +44,10 @@ const angle = decimal + angleUnit + "?";
 // Color formats alpha
 
 const optionalAlphaLegacy = optionalWrap(
-  spacing + commaSeparator + spacing + capture(decimal)
+  spacing + commaSeparator + spacing + capture(decimalOrPercentage)
 );
 const optionalAlphaCurrent = optionalWrap(
-  spacing + alphaSeparator + spacing + capture(decimal)
+  spacing + alphaSeparator + spacing + capture(decimalOrPercentage)
 );
 
 // Color formats template function

@@ -20,7 +20,7 @@ import {
   standardizeOklch,
   standardizeRgb,
 } from "./standardize";
-import { Color, RGB } from "./types";
+import { Color, ColorInput, RGB } from "./types";
 
 function parseColorString(color: string): Color {
   const matches = colorRegex.exec(color);
@@ -103,12 +103,9 @@ function parseColorString(color: string): Color {
  * @param color
  * @returns
  */
-export function colorToRgb100(color: Color | string): RGB<number> {
+export function colorToRgb100(color: ColorInput | string): RGB<number> {
   if (typeof color === "string") {
     color = parseColorString(color);
-  }
-  if (color.alpha === undefined) {
-    color.alpha = 1;
   }
   let rgb100: RGB<number> = { r: 0, g: 0, b: 0, alpha: 1 };
   if (isRGB(color)) {
@@ -168,15 +165,19 @@ export function toHex(rgbValue: number) {
  * percentageToNumber('0.5')    // 0.5
  * percentageToNumber('50%')    // 0.5
  */
-export function percentageToNumber(
+function percentageToNumber(
   percentage: string | number,
-  inputMin = 0,
-  inputMax = 1
+  inputMin: number,
+  inputMax: number
 ) {
   if (typeof percentage === "number") return percentage;
   if (!percentage.endsWith("%")) return parseFloat(percentage);
   const range = inputMax - inputMin;
   return (parseFloat(percentage) / 100) * range - inputMin;
+}
+
+export function percentageRawToNumber(ABRaw: string | number) {
+  return percentageToNumber(ABRaw, 0, 100);
 }
 
 export function oklabABRawToNumber(ABRaw: string | number) {
