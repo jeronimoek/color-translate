@@ -59,6 +59,8 @@ export default class ColorTranslator {
     angleUnit: "none",
     legacy: false,
     spaced: true,
+    limitToColorSpace: true,
+    maxDigits: 2,
   };
 
   constructor(color: string | ColorInput, options: Partial<Options> = {}) {

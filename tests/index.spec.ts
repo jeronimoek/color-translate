@@ -85,6 +85,8 @@ const redHslStringAlphaPercentage = `hsla(${redHsl.h} ${redHsl.s}% ${
 }% / ${alpha * 100}%)`;
 const redHslStringLegacyAlpha = `hsla(${redHsl.h}, ${redHsl.s}%, ${redHsl.l}%, ${alpha})`;
 
+const redOklabExceeded = "oklab(0.65 0.26 0.15)";
+
 describe("Class ColorTranslator", () => {
   it("should be defined", () => {
     expect(ColorTranslator).toBeDefined();
@@ -452,5 +454,89 @@ describe("Alpha input", () => {
   it("should match alpha value hsl legacy", () => {
     const color = new ColorTranslator(redHslStringLegacyAlpha);
     expect(color.hsl.toString()).toEqual(redHslStringAlpha);
+  });
+});
+
+describe("Clamp output", () => {
+  const color = new ColorTranslator(redOklabExceeded);
+
+  it("should not clamp rgb output", () => {
+    expect(color.rgb.toString({ limitToColorSpace: false })).toEqual(
+      "rgb(279.45 -135.76 -83.7)"
+    );
+  });
+
+  it("should clamp rgb output", () => {
+    expect(color.rgb.toString()).toEqual("rgb(255 0 0)");
+  });
+
+  it("should not clamp hsl output", () => {
+    expect(color.hsl.toString({ limitToColorSpace: false })).toEqual(
+      "hsl(352.48 288.95% 28.18%)"
+    );
+  });
+
+  it("should clamp hsl output", () => {
+    expect(color.hsl.toString()).toEqual("hsl(352.48 100% 28.18%)");
+  });
+
+  it("should not clamp hwb output", () => {
+    expect(color.hwb.toString({ limitToColorSpace: false })).toEqual(
+      "hwb(352.48 -53.24% -9.59%)"
+    );
+  });
+
+  it("should clamp hwb output", () => {
+    expect(color.hwb.toString()).toEqual("hwb(352.48 0% 0%)");
+  });
+
+  it("should not clamp lab output", () => {
+    expect(color.lab.toString({ limitToColorSpace: false })).toEqual(
+      "lab(56.39 94.37 106.63)"
+    );
+  });
+
+  it("should clamp lab output (no effect)", () => {
+    expect(color.lab.toString()).toEqual("lab(56.39 94.37 106.63)");
+  });
+
+  it("should not clamp lch output", () => {
+    expect(color.lch.toString({ limitToColorSpace: false })).toEqual(
+      "lch(56.39 142.39 48.49)"
+    );
+  });
+
+  it("should clamp lch output (no effect)", () => {
+    expect(color.lch.toString()).toEqual("lch(56.39 142.39 48.49)");
+  });
+
+  it("should not clamp hex output", () => {
+    expect(color.hex.toString({ limitToColorSpace: false })).toEqual(
+      "#117-88-54"
+    );
+  });
+
+  it("should clamp hex output", () => {
+    expect(color.hex.toString()).toEqual("#FF0000");
+  });
+
+  it("should not clamp oklab output", () => {
+    expect(color.oklab.toString({ limitToColorSpace: false })).toEqual(
+      "oklab(0.65 0.26 0.15)"
+    );
+  });
+
+  it("should clamp oklab output (no effect)", () => {
+    expect(color.oklab.toString()).toEqual("oklab(0.65 0.26 0.15)");
+  });
+
+  it("should not clamp oklch output", () => {
+    expect(color.oklch.toString({ limitToColorSpace: false })).toEqual(
+      "oklch(0.65 0.3 29.98)"
+    );
+  });
+
+  it("should clamp oklch output (no effect)", () => {
+    expect(color.oklch.toString()).toEqual("oklch(0.65 0.3 29.98)");
   });
 });
