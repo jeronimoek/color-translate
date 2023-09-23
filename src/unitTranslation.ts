@@ -1,17 +1,10 @@
+import { isGrad, isPercentage, isRad, isTurn } from "./classify";
 import {
-  clampChroma,
-  clampHue,
-  clampLab,
-  clampPercent,
-  clampUnit,
-  gradToRange,
   labABPercentageToRange,
   lchChromaPercentageToRange,
-  radToRange,
   rgbToRange,
-  turnToRange,
-} from "./clamp";
-import { isGrad, isPercentage, isRad, isTurn } from "./classify";
+} from "./toRange";
+import { gradToDeg, radToDeg, turnToDeg } from "./utils";
 
 // Value parse
 
@@ -24,7 +17,7 @@ export const rgbParse: ParseFunc = (value) => {
   if (typeof value === "number") {
     return rgbToRange(value);
   }
-  if (isPercentage(value)) return clampPercent(parseFloat(value));
+  if (isPercentage(value)) return parseFloat(value);
   return rgbToRange(parseFloat(value));
 };
 
@@ -39,12 +32,12 @@ export const rgbParse: ParseFunc = (value) => {
  */
 export const percentageParse: ParseFunc = (value) => {
   if (typeof value === "number") {
-    return clampUnit(value);
+    return value;
   }
   if (isPercentage(value)) {
-    return clampUnit(parseFloat(value) / 100);
+    return parseFloat(value) / 100;
   }
-  return clampUnit(parseFloat(value));
+  return parseFloat(value);
 };
 
 /**
@@ -52,18 +45,18 @@ export const percentageParse: ParseFunc = (value) => {
  */
 export const hueParse: ParseFunc = (value) => {
   if (typeof value === "number") {
-    return clampHue(value);
+    return value;
   }
   if (isGrad(value)) {
-    return gradToRange(parseFloat(value));
+    return gradToDeg(parseFloat(value));
   }
   if (isRad(value)) {
-    return radToRange(parseFloat(value));
+    return radToDeg(parseFloat(value));
   }
   if (isTurn(value)) {
-    return turnToRange(parseFloat(value));
+    return turnToDeg(parseFloat(value));
   }
-  return clampHue(parseFloat(value));
+  return parseFloat(value);
 };
 
 /**
@@ -71,12 +64,12 @@ export const hueParse: ParseFunc = (value) => {
  */
 export const labABParse: ParseFunc = (value) => {
   if (typeof value === "number") {
-    return clampLab(value);
+    return value;
   }
   if (isPercentage(value)) {
     return labABPercentageToRange(parseFloat(value));
   }
-  return clampLab(parseFloat(value));
+  return parseFloat(value);
 };
 
 /**
@@ -84,10 +77,10 @@ export const labABParse: ParseFunc = (value) => {
  */
 export const lchChromaParse: ParseFunc = (value) => {
   if (typeof value === "number") {
-    return clampChroma(value);
+    return value;
   }
   if (isPercentage(value)) {
     return lchChromaPercentageToRange(parseFloat(value));
   }
-  return clampChroma(parseFloat(value));
+  return parseFloat(value);
 };

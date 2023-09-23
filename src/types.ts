@@ -98,12 +98,14 @@ type MapOptionalAlpha<U> = U extends Color
 
 export type ColorInput = MapOptionalAlpha<Color>;
 
-export type AngleUnitType = `${AngleUnit}`;
+type AngleUnitType = `${AngleUnit}`;
 
 export interface Options {
   legacy: boolean;
   spaced: boolean;
   angleUnit: AngleUnitType;
+  maxDigits: number;
+  limitToColorSpace: boolean;
 }
 
 export type ColorFormat =

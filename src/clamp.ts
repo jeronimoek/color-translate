@@ -1,55 +1,115 @@
-import { clamp, gradToDeg, radToDeg, turnToDeg } from "./utils";
+import { HEX, HSL, HWB, LAB, LCH, OKLAB, OKLCH, RGB } from "./types";
+import { clamp, toHex } from "./utils";
 
 // Clamps
 
-export function clampUnit(value: number) {
+function clampUnit(value: number) {
   return clamp(value, 0, 1);
 }
 
-export function clampPercent(value: number) {
+function clampPercentage(value: number) {
   return clamp(value, 0, 100);
 }
 
-export function clampHue(value: number) {
+function clampRgb(value: number) {
+  return clamp(value, 0, 255);
+}
+
+function clampDeg(value: number) {
   return clamp(value, 0, 360);
 }
 
-export function clampLab(value: number) {
+function clampLabAB(value: number) {
   return clamp(value, -125, 125);
 }
 
-export function clampChroma(value: number) {
+function clampChroma(value: number) {
   return clamp(value, 0, 150);
 }
 
-// Value to range
-
-export function rgbToRange(value: number) {
-  const scale = 100 / 255;
-  const scaled = value * scale;
-  return clampPercent(scaled);
+function clampOklabAB(value: number) {
+  return clamp(value, -0.4, 0.4);
 }
 
-export function gradToRange(grad: number) {
-  return clampHue(gradToDeg(grad));
+function clampOklchChroma(value: number) {
+  return clamp(value, 0, 0.4);
 }
 
-export function radToRange(rad: number) {
-  return clampHue(radToDeg(rad));
+function clampHex(value: string) {
+  const intValue = parseInt(value, 16);
+  const intClamped = clampRgb(intValue);
+  const hexClamped = toHex(intClamped);
+  return hexClamped;
 }
 
-export function turnToRange(turn: number) {
-  return clampHue(turnToDeg(turn));
+export function clampRgbColor({ r, g, b, alpha }: RGB<number>) {
+  return {
+    r: clampRgb(r),
+    g: clampRgb(g),
+    b: clampRgb(b),
+    alpha: clampUnit(alpha),
+  };
 }
 
-export function labABPercentageToRange(value: number) {
-  const scale = 125 / 100;
-  const scaled = value * scale;
-  return clampLab(scaled);
+export function clampHslColor({ h, s, l, alpha }: HSL<number>) {
+  return {
+    h: clampDeg(h),
+    s: clampPercentage(s),
+    l: clampPercentage(l),
+    alpha: clampUnit(alpha),
+  };
 }
 
-export function lchChromaPercentageToRange(value: number) {
-  const scale = 150 / 100;
-  const scaled = value * scale;
-  return clampChroma(scaled);
+export function clampHwbColor({ h, w, b, alpha }: HWB<number>) {
+  return {
+    h: clampDeg(h),
+    w: clampPercentage(w),
+    b: clampPercentage(b),
+    alpha: clampUnit(alpha),
+  };
+}
+
+export function clampLabColor({ l, a, b, alpha }: LAB<number>) {
+  return {
+    l: clampPercentage(l),
+    a: clampLabAB(a),
+    b: clampLabAB(b),
+    alpha: clampUnit(alpha),
+  };
+}
+
+export function clampLchColor({ l, c, h, alpha }: LCH<number>) {
+  return {
+    l: clampPercentage(l),
+    c: clampChroma(c),
+    h: clampDeg(h),
+    alpha: clampUnit(alpha),
+  };
+}
+
+export function clampOklabColor({ l, a, b, alpha }: OKLAB<number>) {
+  return {
+    l: clampUnit(l),
+    a: clampOklabAB(a),
+    b: clampOklabAB(b),
+    alpha: clampUnit(alpha),
+  };
+}
+
+export function clampOklchColor({ l, c, h, alpha }: OKLCH<number>) {
+  return {
+    l: clampUnit(l),
+    c: clampOklchChroma(c),
+    h: clampDeg(h),
+    alpha: clampUnit(alpha),
+  };
+}
+
+export function clampHexColor({ r, g, b, alpha }: HEX) {
+  return {
+    r: clampHex(r),
+    g: clampHex(g),
+    b: clampHex(b),
+    alpha: clampHex(alpha),
+  };
 }
