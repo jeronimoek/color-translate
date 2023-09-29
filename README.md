@@ -1,6 +1,6 @@
 # Color Translator
 
-This package allows translating colors between all valid css formats
+This package allows translating colors among all valid css formats
 
 ## Installation
 
