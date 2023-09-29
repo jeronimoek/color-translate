@@ -7,13 +7,13 @@ This package allows translating colors among all valid css formats
 Using npm:
 
 ```shell
-npm i color-translator
+npm i color-space-translate
 ```
 
 ## Usage
 
 ```js
-import ColorTranslator from "color-translator";
+import ColorTranslator from "color-space-translate";
 
 const color = new ColorTranslator("hsl(0 100% 50%)");
 color.updateRgb({ r: 127.5, b: 255 });
@@ -40,6 +40,6 @@ console.log(color.lch.toString({ legacy: true }));
 
 ## 🌐 Links
 
-[NPM](https://www.npmjs.com/package/color-translator)
+[NPM](https://www.npmjs.com/package/color-space-translate)
 
-[Github Repository](https://github.com/jeronimoek/color-translator)
+[Github Repository](https://github.com/jeronimoek/color-space-translate)
