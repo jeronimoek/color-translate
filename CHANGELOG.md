@@ -1,3 +1,12 @@
+## [0.1.3](https://github.com/jeronimoek/color-translate/compare/v0.1.2...v0.1.3) (2023-09-29)
+
+
+### Bug Fixes
+
+* types path ([8fe9acc](https://github.com/jeronimoek/color-translate/commit/8fe9accc172ec804a3afdef5e12bfe4c77ae7d6f))
+
+
+
 ## [0.1.2](https://github.com/jeronimoek/color-translate/compare/v0.1.1...v0.1.2) (2023-09-29)
 
 
