@@ -11,5 +11,13 @@ const config: Config.InitialOptions = {
   testMatch: ["<rootDir>/tests/**/*.spec.ts"],
 
   setupFilesAfterEnv: ["jest-extended/all"],
+  coverageThreshold: {
+    global: {
+      lines: 90,
+      branches: 90,
+      functions: 90,
+      statements: 90,
+    },
+  },
 };
 export default config;
