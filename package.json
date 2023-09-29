@@ -15,17 +15,17 @@
   "repository": "jeronimoek/color-translate",
   "license": "MIT",
   "main": "./dist/cjs/index.js",
-  "types": "./dist/cjs/types/src/index.d.ts",
+  "types": "./dist/cjs/types/index.d.ts",
   "files": [
     "dist/**/*"
   ],
   "exports": {
     "import": {
-      "types": "./dist/esm/types/src/index.d.ts",
+      "types": "./dist/esm/types/index.d.ts",
       "default": "./dist/esm/index.mjs"
     },
     "require": {
-      "types": "./dist/cjs/types/src/index.d.ts",
+      "types": "./dist/cjs/types/index.d.ts",
       "default": "./dist/cjs/index.js"
     }
   },
