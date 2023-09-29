@@ -1,5 +1,5 @@
 {
-  "name": "color-space-translate",
+  "name": "color-translate",
   "displayName": "Translate Colors Formats",
   "description": "Translate colors among all valid css formats",
   "version": "0.1.1",
@@ -12,7 +12,7 @@
     "email": "jeronimoek@gmail.com",
     "name": "Jerónimo Ekerdt"
   },
-  "repository": "jeronimoek/color-space-translate",
+  "repository": "jeronimoek/color-translate",
   "license": "MIT",
   "main": "./dist/cjs/index.js",
   "types": "./dist/cjs/types/src/index.d.ts",
