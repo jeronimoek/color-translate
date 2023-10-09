@@ -6,12 +6,13 @@ expect.extend(matchers);
 
 const redRgb = { r: 255, g: 0, b: 0 };
 const redHex = { r: "FF", g: "00", b: "00", alpha: "FF" };
-const redHsl = { h: 0, s: 100, l: 50 };
+const redHsl = { h: 0, s: 1, l: 0.5 };
 const redHwb = { h: 0, w: 0, b: 0 };
 const redLab = { l: 54.29, a: 80.82, b: 69.88 };
 const redLch = { l: 54.29, c: 106.84, h: 40.85 };
 const redOklab = { l: 0.63, a: 0.22, b: 0.13, ok: true };
 const redOklch = { l: 0.63, c: 0.26, h: 29.23, ok: true };
+const redCmyk = { c: 0, m: 1, y: 1, k: 0 };
 
 const redRgbString = `rgb(${redRgb.r} ${redRgb.g} ${redRgb.b})`;
 const redRgbStringPercentage = `rgb(${redRgb.r / 2.55}% ${redRgb.g / 2.55}% ${
@@ -19,17 +20,21 @@ const redRgbStringPercentage = `rgb(${redRgb.r / 2.55}% ${redRgb.g / 2.55}% ${
 }%)`;
 const redRgbStringLegacy = `rgb(${redRgb.r}, ${redRgb.g}, ${redRgb.b})`;
 const redRgbStringLegacyUnspaced = `rgb(${redRgb.r},${redRgb.g},${redRgb.b})`;
-const redHslStringDeg = `hsl(${redHsl.h}deg ${redHsl.s}% ${redHsl.l}%)`;
-const redHslStringTurn = `hsl(${redHsl.h / 360}turn ${redHsl.s}% ${redHsl.l}%)`;
-const redHslStringRad = `hsl(${(redHsl.h / 360) * (2 * Math.PI)}rad ${
-  redHsl.s
-}% ${redHsl.l}%)`;
-const redHslStringGrad = `hsl(${(redHsl.h / 360) * 400}grad ${redHsl.s}% ${
-  redHsl.l
+const redHslStringDeg = `hsl(${redHsl.h}deg ${redHsl.s * 100}% ${
+  redHsl.l * 100
 }%)`;
+const redHslStringTurn = `hsl(${redHsl.h / 360}turn ${redHsl.s * 100}% ${
+  redHsl.l * 100
+}%)`;
+const redHslStringRad = `hsl(${(redHsl.h / 360) * (2 * Math.PI)}rad ${
+  redHsl.s * 100
+}% ${redHsl.l * 100}%)`;
+const redHslStringGrad = `hsl(${(redHsl.h / 360) * 400}grad ${
+  redHsl.s * 100
+}% ${redHsl.l * 100}%)`;
 
 const redHexString = `#${redHex.r}${redHex.g}${redHex.b}`;
-const redHslString = `hsl(${redHsl.h} ${redHsl.s}% ${redHsl.l}%)`;
+const redHslString = `hsl(${redHsl.h} ${redHsl.s * 100}% ${redHsl.l * 100}%)`;
 const redHwbString = `hwb(${redHwb.h} ${redHwb.w}% ${redHwb.b}%)`;
 const redLabString = `lab(${redLab.l} ${redLab.a} ${redLab.b})`;
 const redLabStringPercentage = `lab(${redLab.l}% ${redLab.a / 1.25}% ${
@@ -47,16 +52,24 @@ const redOklchString = `oklch(${redOklch.l} ${redOklch.c} ${redOklch.h})`;
 const redOklchStringPercentage = `oklch(${redOklch.l * 100}% ${
   redOklch.c * 250
 }% ${redOklch.h})`;
+const redCmykString = `device-cmyk(${redCmyk.c} ${redCmyk.m} ${redCmyk.y} ${redCmyk.k})`;
+const redCmykStringPercentage = `device-cmyk(${redCmyk.c * 100}% ${
+  redCmyk.m * 100
+}% ${redCmyk.y * 100}% ${redCmyk.k * 100}%)`;
 
 const yellowRgb = { r: 255, g: 255, b: 0 };
 const yellowRgbString = `rgb(${yellowRgb.r} ${yellowRgb.g} ${yellowRgb.b})`;
 const yellowHex = { r: "FF", g: "FF", b: "00" };
 const yellowHexString = `#${yellowHex.r}${yellowHex.g}${yellowHex.b}`;
 
-const maroonHsl = { h: 0, s: 100, l: 20 };
-const maroonHslString = `hsl(${maroonHsl.h} ${maroonHsl.s}% ${maroonHsl.l}%)`;
-const maroonHwb = { h: 0, w: 0, b: 60 };
-const maroonHwbString = `hwb(${maroonHwb.h} ${maroonHwb.w}% ${maroonHwb.b}%)`;
+const maroonHsl = { h: 0, s: 1, l: 0.2 };
+const maroonHslString = `hsl(${maroonHsl.h} ${maroonHsl.s * 100}% ${
+  maroonHsl.l * 100
+}%)`;
+const maroonHwb = { h: 0, w: 0, b: 0.6 };
+const maroonHwbString = `hwb(${maroonHwb.h} ${maroonHwb.w * 100}% ${
+  maroonHwb.b * 100
+}%)`;
 
 const fuchsiaLab = { l: 54.29, a: 80.82, b: 0 };
 const fuchsiaLabString = `lab(${fuchsiaLab.l} ${fuchsiaLab.a} ${fuchsiaLab.b})`;
@@ -66,6 +79,9 @@ const fuchsiaOklab = { l: 0.63, a: 0.22, b: 0, ok: true };
 const fuchsiaOklabString = `oklab(${fuchsiaOklab.l} ${fuchsiaOklab.a} ${fuchsiaOklab.b})`;
 const fuchsiaOklch = { l: 0.63, c: 0.26, h: 0, ok: true };
 const fuchsiaOklchString = `oklch(${fuchsiaOklch.l} ${fuchsiaOklch.c} ${fuchsiaOklch.h})`;
+
+const magentaCmyk = { c: 0, m: 1, y: 0, k: 0 };
+const magentaCmykString = `device-cmyk(${magentaCmyk.c} ${magentaCmyk.m} ${magentaCmyk.y} ${magentaCmyk.k})`;
 
 const alpha = 0.5;
 
@@ -79,13 +95,20 @@ const hexAlpha = "88";
 const redHexStringShortAlpha = `#${redHex.r[0]}${redHex.g[0]}${redHex.b[0]}${hexAlpha[0]}`;
 const redHexStringAlpha = `#${redHex.r}${redHex.g}${redHex.b}${hexAlpha}`;
 
-const redHslStringAlpha = `hsla(${redHsl.h} ${redHsl.s}% ${redHsl.l}% / ${alpha})`;
-const redHslStringAlphaPercentage = `hsla(${redHsl.h} ${redHsl.s}% ${
-  redHsl.l
+const redHslStringAlpha = `hsla(${redHsl.h} ${redHsl.s * 100}% ${
+  redHsl.l * 100
+}% / ${alpha})`;
+const redHslStringAlphaPercentage = `hsla(${redHsl.h} ${redHsl.s * 100}% ${
+  redHsl.l * 100
 }% / ${alpha * 100}%)`;
-const redHslStringLegacyAlpha = `hsla(${redHsl.h}, ${redHsl.s}%, ${redHsl.l}%, ${alpha})`;
+const redHslStringLegacyAlpha = `hsla(${redHsl.h}, ${redHsl.s * 100}%, ${
+  redHsl.l * 100
+}%, ${alpha})`;
 
 const redOklabExceeded = "oklab(0.65 0.26 0.15)";
+
+const blackCmyk = { c: 0, m: 0, y: 0, k: 1 };
+const blackCmykString = `device-cmyk(${blackCmyk.c} ${blackCmyk.m} ${blackCmyk.y} ${blackCmyk.k})`;
 
 describe("Class ColorTranslator", () => {
   it("should be defined", () => {
@@ -174,6 +197,16 @@ describe("Output object", () => {
     expect(color.oklch.ok).toEqual(redOklch.ok);
     expect(round(color.oklch.alpha)).toEqual(1);
   });
+
+  it("should return the same CMYK color", () => {
+    const color = new ColorTranslator(redCmyk);
+    expect(color.cmyk).toBeObject();
+    expect(round(color.cmyk.c)).toEqual(redCmyk.c);
+    expect(round(color.cmyk.m)).toEqual(redCmyk.m);
+    expect(round(color.cmyk.y)).toEqual(redCmyk.y);
+    expect(round(color.cmyk.k)).toEqual(redCmyk.k);
+    expect(round(color.cmyk.alpha)).toEqual(1);
+  });
 });
 
 describe("Output string", () => {
@@ -200,7 +233,7 @@ describe("Output string", () => {
     expect(color.rgb.toString()).toEqual(redRgbStringLegacyUnspaced);
   });
 
-  it("should return legacy unspaced rgb string color", () => {
+  it("should return correct hsl hue units", () => {
     const color = new ColorTranslator(redRgb);
     expect(color.hsl.toString({ angleUnit: "turn" })).toEqual(redHslStringTurn);
     expect(color.hsl.toString({ angleUnit: "none" })).toEqual(redHslString);
@@ -257,6 +290,7 @@ describe("Translate colors", () => {
     expect(color.lch.toString()).toEqual(redLchString);
     expect(color.oklab.toString()).toEqual(redOklabString);
     expect(color.oklch.toString()).toEqual(redOklchString);
+    expect(color.cmyk.toString()).toEqual(redCmykString);
   });
 });
 
@@ -309,6 +343,13 @@ describe("Update colors", () => {
     color.updateOklch({ h: fuchsiaOklch.h });
     color.updateOklch({});
     expect(color.oklch.toString()).toEqual(fuchsiaOklchString);
+  });
+
+  it("should update cmyk", () => {
+    const color = new ColorTranslator(redCmyk);
+    color.updateCmyk({ y: magentaCmyk.y });
+    color.updateCmyk({});
+    expect(color.cmyk.toString()).toEqual(magentaCmykString);
   });
 });
 
@@ -402,6 +443,16 @@ describe("Input string", () => {
   it("should return the same oklch string color (percentage)", () => {
     const color = new ColorTranslator(redOklchStringPercentage);
     expect(color.oklch.toString()).toEqual(redOklchString);
+  });
+
+  it("should return the same cmyk string color", () => {
+    const color = new ColorTranslator(redCmykString);
+    expect(color.cmyk.toString()).toEqual(redCmykString);
+  });
+
+  it("should return the same cmyk string color (percentage)", () => {
+    const color = new ColorTranslator(redCmykStringPercentage);
+    expect(color.cmyk.toString()).toEqual(redCmykString);
   });
 });
 
@@ -538,5 +589,22 @@ describe("Clamp output", () => {
 
   it("should clamp oklch output (no effect)", () => {
     expect(color.oklch.toString()).toEqual("oklch(0.65 0.3 29.98)");
+  });
+
+  it("should not clamp cmyk output", () => {
+    expect(color.cmyk.toString({ limitToColorSpace: false })).toEqual(
+      "device-cmyk(0 1.49 1.3 -0.1)"
+    );
+  });
+
+  it("should clamp cmyk output", () => {
+    expect(color.cmyk.toString()).toEqual("device-cmyk(0 1 1 0)");
+  });
+});
+
+describe("Cmyk black support", () => {
+  it("should not clamp rgb output", () => {
+    const color = new ColorTranslator(blackCmyk);
+    expect(color.cmyk.toString()).toEqual(blackCmykString);
   });
 });

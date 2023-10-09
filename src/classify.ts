@@ -1,4 +1,5 @@
 import {
+  CMYK,
   Color,
   ColorInput,
   HSL,
@@ -64,6 +65,15 @@ export function isOKLCH(
   return isColorType<OKLCH<number> | OKLCH<string>>(
     color as OKLCH<number> | OKLCH<string>,
     ["l", "c", "h", "ok"]
+  );
+}
+
+export function isCMYK(
+  color: ColorInput
+): color is CMYK<number> | CMYK<string> {
+  return isColorType<CMYK<number> | CMYK<string>>(
+    color as CMYK<number> | CMYK<string>,
+    ["c", "m", "y", "k"]
   );
 }
 

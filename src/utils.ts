@@ -1,5 +1,6 @@
 /// <reference path='./index.d.ts' />
 import {
+  isCMYK,
   isHSL,
   isHWB,
   isLAB,
@@ -8,10 +9,17 @@ import {
   isOKLCH,
   isRGB,
 } from "./classify";
-import { hslToRgb, hwbToRgb, labToRgb, lchToRgb } from "./colorTranslation";
+import {
+  cmykToRgb,
+  hslToRgb,
+  hwbToRgb,
+  labToRgb,
+  lchToRgb,
+} from "./colorTranslation";
 import { oklabToRgb, oklchToRgb } from "./okColors";
 import { color as colorRegex } from "./regex";
 import {
+  standardizeCmyk,
   standardizeHsl,
   standardizeHwb,
   standardizeLab,
@@ -22,80 +30,97 @@ import {
 } from "./standardize";
 import { Color, ColorInput, RGB } from "./types";
 
-function parseColorString(color: string): Color {
-  const matches = colorRegex.exec(color);
-  if (!matches) throw Error("Invalid input: " + color);
-  const [, format, value1, value2, value3, _alpha] = matches.filter((v) => v);
-  let alpha = _alpha;
+function parseColorString(colorString: string): Color {
+  const matches = colorRegex.exec(colorString);
+  if (!matches) throw Error("Invalid input: " + colorString);
+  const [, format, ...values] = matches.filter((v) => v);
 
   if (format === "#") {
-    alpha ??= "FF";
+    values[3] ??= "FF";
     return {
-      r: parseInt(value1.padStart(2, value1), 16),
-      g: parseInt(value2.padStart(2, value2), 16),
-      b: parseInt(value3.padStart(2, value3), 16),
-      alpha: parseInt(alpha.padStart(2, alpha), 16) / 255,
+      r: parseInt(values[0].padStart(2, values[0]), 16),
+      g: parseInt(values[1].padStart(2, values[1]), 16),
+      b: parseInt(values[2].padStart(2, values[2]), 16),
+      alpha: parseInt(values[3].padStart(2, values[3]), 16) / 255,
     };
   }
 
-  alpha ??= "1";
+  let color: Color;
 
   switch (format.toLocaleLowerCase()) {
     case "hsl":
     case "hsla":
-      return {
-        h: value1,
-        s: value2,
-        l: value3,
-        alpha,
+      color = {
+        h: values[0],
+        s: values[1],
+        l: values[2],
+        alpha: values[3],
       };
+      break;
     case "hwb":
-      return {
-        h: value1,
-        w: value2,
-        b: value3,
-        alpha,
+      color = {
+        h: values[0],
+        w: values[1],
+        b: values[2],
+        alpha: values[3],
       };
+      break;
     case "lab":
-      return {
-        l: value1,
-        a: value2,
-        b: value3,
-        alpha,
+      color = {
+        l: values[0],
+        a: values[1],
+        b: values[2],
+        alpha: values[3],
       };
+      break;
     case "lch":
-      return {
-        l: value1,
-        c: value2,
-        h: value3,
-        alpha,
+      color = {
+        l: values[0],
+        c: values[1],
+        h: values[2],
+        alpha: values[3],
       };
+      break;
     case "oklab":
-      return {
+      color = {
         ok: true,
-        l: value1,
-        a: value2,
-        b: value3,
-        alpha,
+        l: values[0],
+        a: values[1],
+        b: values[2],
+        alpha: values[3],
       };
+      break;
     case "oklch":
-      return {
+      color = {
         ok: true,
-        l: value1,
-        c: value2,
-        h: value3,
-        alpha,
+        l: values[0],
+        c: values[1],
+        h: values[2],
+        alpha: values[3],
       };
+      break;
+    case "device-cmyk":
+      color = {
+        c: values[0],
+        m: values[1],
+        y: values[2],
+        k: values[3],
+        alpha: values[4],
+      };
+      break;
     case "rgb":
     case "rgba":
     default:
-      return {
-        r: value1,
-        g: value2,
-        b: value3,
-        alpha,
+      color = {
+        r: values[0],
+        g: values[1],
+        b: values[2],
+        alpha: values[3],
       };
+      break;
   }
+
+  return { ...color, alpha: color.alpha ?? "1" };
 }
 
 /**
@@ -123,6 +148,8 @@ export function colorToRgb100(color: ColorInput | string): RGB<number> {
     rgb100 = labToRgb(standardizeLab(color));
   } else if (isLCH(color)) {
     rgb100 = lchToRgb(standardizeLch(color));
+  } else if (isCMYK(color)) {
+    rgb100 = cmykToRgb(standardizeCmyk(color));
   }
   return { ...rgb100, alpha: rgb100.alpha ?? 1 };
 }
@@ -165,15 +192,16 @@ export function toHex(rgbValue: number) {
  * percentageToNumber('0.5')    // 0.5
  * percentageToNumber('50%')    // 0.5
  */
-function percentageToNumber(
+export function percentageToNumber(
   percentage: string | number,
-  inputMin: number,
-  inputMax: number
+  inputMin = 0,
+  inputMax = 1
 ) {
   if (typeof percentage === "number") return percentage;
-  if (!percentage.endsWith("%")) return parseFloat(percentage);
   const range = inputMax - inputMin;
-  return (parseFloat(percentage) / 100) * range - inputMin;
+  if (percentage.endsWith("%"))
+    return (parseFloat(percentage) / 100) * range - inputMin;
+  return parseFloat(percentage);
 }
 
 export function percentageRawToNumber(ABRaw: string | number) {

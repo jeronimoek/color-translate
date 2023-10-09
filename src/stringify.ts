@@ -1,4 +1,5 @@
 import {
+  clampCmykColor,
   clampHexColor,
   clampHslColor,
   clampHwbColor,
@@ -11,6 +12,7 @@ import {
 import { AngleUnit } from "./enum";
 import { merge, round } from "./helper";
 import {
+  CMYK,
   ColorFormat,
   GetColor,
   HEX,
@@ -29,8 +31,11 @@ import { degToGrad, degToRad, degToTurn } from "./utils";
 function genericToString(
   format: ColorFormat,
   values: ValuesArray,
-  { legacy, spaced }: Options
+  _alpha: number,
+  { legacy, spaced, maxDigits }: Options
 ) {
+  const alpha = round(_alpha, maxDigits);
+
   let separator;
   let alphaSeparator;
 
@@ -51,9 +56,9 @@ function genericToString(
     }
   }
 
-  return `${format}(${values[0]}${separator}${values[1]}${separator}${
-    values[2]
-  }${+values[3] !== 1 ? alphaSeparator + values[3] : ""})`;
+  return `${format}(${values.join(separator)}${
+    +alpha !== 1 ? alphaSeparator + alpha : ""
+  })`;
 }
 
 function stringifyDeg(angle: number, options: Options) {
@@ -89,12 +94,8 @@ export function rgbToString(
 
   return genericToString(
     format,
-    [
-      round(r, maxDigits),
-      round(g, maxDigits),
-      round(b, maxDigits),
-      round(alpha, maxDigits),
-    ],
+    [round(r, maxDigits), round(g, maxDigits), round(b, maxDigits)],
+    alpha,
     stringOptions
   );
 }
@@ -116,10 +117,10 @@ export function hslToString(
     format,
     [
       stringifyDeg(h, stringOptions),
-      round(s, maxDigits) + "%",
-      round(l, maxDigits) + "%",
-      round(alpha, maxDigits),
+      round(s * 100, maxDigits) + "%",
+      round(l * 100, maxDigits) + "%",
     ],
+    alpha,
     stringOptions
   );
 }
@@ -140,10 +141,10 @@ export function hwbToString(
     "hwb",
     [
       stringifyDeg(h, stringOptions),
-      round(w, maxDigits) + "%",
-      round(b, maxDigits) + "%",
-      round(alpha, maxDigits),
+      round(w * 100, maxDigits) + "%",
+      round(b * 100, maxDigits) + "%",
     ],
+    alpha,
     stringOptions
   );
 }
@@ -162,12 +163,8 @@ export function labToString(
   const { maxDigits } = stringOptions;
   return genericToString(
     "lab",
-    [
-      round(l, maxDigits),
-      round(a, maxDigits),
-      round(b, maxDigits),
-      round(alpha, maxDigits),
-    ],
+    [round(l, maxDigits), round(a, maxDigits), round(b, maxDigits)],
+    alpha,
     stringOptions
   );
 }
@@ -186,12 +183,8 @@ export function lchToString(
   const { maxDigits } = stringOptions;
   return genericToString(
     "lch",
-    [
-      round(l, maxDigits),
-      round(c, maxDigits),
-      stringifyDeg(h, stringOptions),
-      round(alpha, maxDigits),
-    ],
+    [round(l, maxDigits), round(c, maxDigits), stringifyDeg(h, stringOptions)],
+    alpha,
     stringOptions
   );
 }
@@ -228,12 +221,8 @@ export function oklabToString(
   const { maxDigits } = stringOptions;
   return genericToString(
     "oklab",
-    [
-      round(l, maxDigits),
-      round(a, maxDigits),
-      round(b, maxDigits),
-      round(alpha, maxDigits),
-    ],
+    [round(l, maxDigits), round(a, maxDigits), round(b, maxDigits)],
+    alpha,
     stringOptions
   );
 }
@@ -252,12 +241,34 @@ export function oklchToString(
   const { maxDigits } = stringOptions;
   return genericToString(
     "oklch",
+    [round(l, maxDigits), round(c, maxDigits), stringifyDeg(h, stringOptions)],
+    alpha,
+    stringOptions
+  );
+}
+
+export function cmykToString(
+  this: CMYK<number> & GetColor,
+  customOptions: Partial<Options> = {}
+) {
+  const { options } = this;
+  const stringOptions = merge(options, customOptions);
+  let { c, m, y, k, alpha } = this;
+  if (stringOptions.limitToColorSpace) {
+    ({ c, m, y, k, alpha } = clampCmykColor({ c, m, y, k, alpha }));
+  }
+
+  const { maxDigits } = stringOptions;
+  const format = "device-cmyk";
+  return genericToString(
+    format,
     [
-      round(l, maxDigits),
       round(c, maxDigits),
-      stringifyDeg(h, stringOptions),
-      round(alpha, maxDigits),
+      round(m, maxDigits),
+      round(y, maxDigits),
+      round(k, maxDigits),
     ],
+    alpha,
     stringOptions
   );
 }
