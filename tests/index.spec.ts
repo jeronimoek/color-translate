@@ -34,6 +34,7 @@ const redHslStringGrad = `hsl(${(redHsl.h / 360) * 400}grad ${
 }% ${redHsl.l * 100}%)`;
 
 const redHexString = `#${redHex.r}${redHex.g}${redHex.b}`;
+const redHex0xString = `0x${redHex.r}${redHex.g}${redHex.b}`;
 const redHslString = `hsl(${redHsl.h} ${redHsl.s * 100}% ${redHsl.l * 100}%)`;
 const redHwbString = `hwb(${redHwb.h} ${redHwb.w}% ${redHwb.b}%)`;
 const redLabString = `lab(${redLab.l} ${redLab.a} ${redLab.b})`;
@@ -61,6 +62,7 @@ const yellowRgb = { r: 255, g: 255, b: 0 };
 const yellowRgbString = `rgb(${yellowRgb.r} ${yellowRgb.g} ${yellowRgb.b})`;
 const yellowHex = { r: "FF", g: "FF", b: "00" };
 const yellowHexString = `#${yellowHex.r}${yellowHex.g}${yellowHex.b}`;
+const yellowHex0xString = `0x${yellowHex.r}${yellowHex.g}${yellowHex.b}`;
 
 const maroonHsl = { h: 0, s: 1, l: 0.2 };
 const maroonHslString = `hsl(${maroonHsl.h} ${maroonHsl.s * 100}% ${
@@ -93,7 +95,9 @@ const redRgbStringAlphaPercentage = `rgba(${redRgb.r} ${redRgb.g} ${
 const hexAlpha = "88";
 
 const redHexStringShortAlpha = `#${redHex.r[0]}${redHex.g[0]}${redHex.b[0]}${hexAlpha[0]}`;
+const redHex0xStringShortAlpha = `0x${redHex.r[0]}${redHex.g[0]}${redHex.b[0]}${hexAlpha[0]}`;
 const redHexStringAlpha = `#${redHex.r}${redHex.g}${redHex.b}${hexAlpha}`;
+const redHex0xStringAlpha = `0x${redHex.r}${redHex.g}${redHex.b}${hexAlpha}`;
 
 const redHslStringAlpha = `hsla(${redHsl.h} ${redHsl.s * 100}% ${
   redHsl.l * 100
@@ -140,6 +144,12 @@ describe("Output object", () => {
     const color = new ColorTranslator(redRgb);
     expect(color.hex).toBeObject();
     expect(color.hex).toMatchObject(redHex);
+  });
+
+  it("should return the same HEX 0x color", () => {
+    const color = new ColorTranslator(redRgb);
+    expect(color.hex0x).toBeObject();
+    expect(color.hex0x).toMatchObject(redHex);
   });
 
   it("should return the same HSL color", () => {
@@ -284,6 +294,7 @@ describe("Translate colors", () => {
     const color = new ColorTranslator(redRgb);
     expect(color.rgb.toString()).toEqual(redRgbString);
     expect(color.hex.toString()).toEqual(redHexString);
+    expect(color.hex0x.toString()).toEqual(redHex0xString);
     expect(color.hsl.toString()).toEqual(redHslString);
     expect(color.hwb.toString()).toEqual(redHwbString);
     expect(color.lab.toString()).toEqual(redLabString);
@@ -301,6 +312,7 @@ describe("Update colors", () => {
     color.updateRgb({});
     expect(color.rgb.toString()).toEqual(yellowRgbString);
     expect(color.hex.toString()).toEqual(yellowHexString);
+    expect(color.hex0x.toString()).toEqual(yellowHex0xString);
   });
 
   it("should update hsl", () => {
@@ -373,6 +385,11 @@ describe("Input string", () => {
   it("should return the same hex string color", () => {
     const color = new ColorTranslator(redHexString);
     expect(color.hex.toString()).toEqual(redHexString);
+  });
+
+  it("should return the same hex 0x string color", () => {
+    const color = new ColorTranslator(redHex0xString);
+    expect(color.hex0x.toString()).toEqual(redHex0xString);
   });
 
   it("should return the same hsl string color", () => {
@@ -487,6 +504,21 @@ describe("Alpha input", () => {
     expect(color.hex.toString()).toEqual(redHexStringAlpha);
   });
 
+  it("should match alpha value hex 0x property", () => {
+    const color = new ColorTranslator(redHex0xStringAlpha);
+    expect(color.hex0x.alpha).toEqual(hexAlpha);
+  });
+
+  it("should match alpha value hex 0x", () => {
+    const color = new ColorTranslator(redHex0xStringAlpha);
+    expect(color.hex0x.toString()).toEqual(redHex0xStringAlpha);
+  });
+
+  it("should match alpha value hex 0x short", () => {
+    const color = new ColorTranslator(redHex0xStringShortAlpha);
+    expect(color.hex0x.toString()).toEqual(redHex0xStringAlpha);
+  });
+
   it("should match alpha value hsl property", () => {
     const color = new ColorTranslator(redHslStringAlpha);
     expect(color.hsl.alpha).toEqual(alpha);
@@ -569,6 +601,16 @@ describe("Clamp output", () => {
 
   it("should clamp hex output", () => {
     expect(color.hex.toString()).toEqual("#FF0000");
+  });
+
+  it("should not clamp hex 0x output", () => {
+    expect(color.hex0x.toString({ limitToColorSpace: false })).toEqual(
+      "0x117-88-54"
+    );
+  });
+
+  it("should clamp hex 0x output", () => {
+    expect(color.hex0x.toString()).toEqual("0xFF0000");
   });
 
   it("should not clamp oklab output", () => {
