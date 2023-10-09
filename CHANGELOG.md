@@ -1,3 +1,12 @@
+# [0.2.0](https://github.com/jeronimoek/color-translate/compare/v0.1.3...v0.2.0) (2023-10-09)
+
+
+### Features
+
+* add support for cmyk format and standarize hsl and hwb object values ([65a5820](https://github.com/jeronimoek/color-translate/commit/65a5820efbfbe39ca85c62ecdd5aebaf078fb470))
+
+
+
 ## [0.1.3](https://github.com/jeronimoek/color-translate/compare/v0.1.2...v0.1.3) (2023-09-29)
 
 
