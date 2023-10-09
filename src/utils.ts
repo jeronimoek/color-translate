@@ -35,7 +35,7 @@ function parseColorString(colorString: string): Color {
   if (!matches) throw Error("Invalid input: " + colorString);
   const [, format, ...values] = matches.filter((v) => v);
 
-  if (format === "#") {
+  if (format === "#" || format === "0x") {
     values[3] ??= "FF";
     return {
       r: parseInt(values[0].padStart(2, values[0]), 16),

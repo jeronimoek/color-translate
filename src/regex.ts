@@ -77,7 +77,7 @@ const hexSingle = new RegExp(capture(hexaValue).repeat(4) + "?").source;
 const hexDouble = new RegExp(capture(hexaValue + hexaValue).repeat(4) + "?")
   .source;
 const hex = new RegExp(
-  start + capture("#") + orJoin(hexSingle, hexDouble) + end
+  start + capture(orJoin("#", "0x")) + orJoin(hexSingle, hexDouble) + end
 );
 
 const rgbLegacy = colorWrap(rgbName, [decimal, decimal, decimal], true);

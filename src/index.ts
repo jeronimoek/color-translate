@@ -26,6 +26,7 @@ import {
 } from "./standardize";
 import {
   cmykToString,
+  hex0xToString,
   hexToString,
   hslToString,
   hwbToString,
@@ -81,6 +82,16 @@ export default class ColorTranslator {
     return {
       ...rgbToHex(rgb100ToRgb(this._rgb)),
       toString: hexToString,
+      options: this._options,
+    };
+  }
+
+  // HEX 0x
+
+  get hex0x(): HEX & GetColor {
+    return {
+      ...rgbToHex(rgb100ToRgb(this._rgb)),
+      toString: hex0xToString,
       options: this._options,
     };
   }

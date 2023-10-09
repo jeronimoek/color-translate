@@ -191,7 +191,8 @@ export function lchToString(
 
 export function hexToString(
   this: HEX & GetColor,
-  customOptions: Partial<Options> = {}
+  customOptions: Partial<Options> = {},
+  is0x = false
 ) {
   const { options } = this;
   const stringOptions = merge(options, customOptions);
@@ -204,7 +205,17 @@ export function hexToString(
   if (alpha !== "FF") {
     values.push(alpha);
   }
-  return "#" + values.join("");
+
+  const prefix = is0x ? "0x" : "#";
+
+  return prefix + values.join("");
+}
+
+export function hex0xToString(
+  this: HEX & GetColor,
+  customOptions: Partial<Options> = {}
+) {
+  return hexToString.bind(this)(customOptions, true);
 }
 
 export function oklabToString(
