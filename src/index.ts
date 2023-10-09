@@ -1,9 +1,11 @@
 import {
+  cmykToRgb,
   hslToRgb,
   hwbToRgb,
   labToRgb,
   lchToRgb,
   rgb100ToRgb,
+  rgbToCmyk,
   rgbToHex,
   rgbToHsl,
   rgbToHwb,
@@ -13,6 +15,7 @@ import {
 import { merge } from "./helper";
 import { oklabToRgb, oklchToRgb, rgbToOklab, rgbToOklch } from "./okColors";
 import {
+  standardizePartialCmyk,
   standardizePartialHsl,
   standardizePartialHwb,
   standardizePartialLab,
@@ -22,6 +25,7 @@ import {
   standardizePartialRgb,
 } from "./standardize";
 import {
+  cmykToString,
   hexToString,
   hslToString,
   hwbToString,
@@ -32,6 +36,7 @@ import {
   rgbToString,
 } from "./stringify";
 import {
+  CMYK,
   ColorInput,
   GetColor,
   HEX,
@@ -42,6 +47,7 @@ import {
   OKLAB,
   OKLCH,
   Options,
+  RawCMYK,
   RawHSL,
   RawHWB,
   RawLAB,
@@ -199,6 +205,24 @@ export default class ColorTranslator {
     const currentokLch = rgbToOklch(this._rgb);
     const newokLch = merge(currentokLch, oklch);
     const rgb = oklchToRgb(newokLch);
+    this._rgb = rgb;
+  }
+
+  // CMYK
+
+  get cmyk(): CMYK<number> & GetColor {
+    return {
+      ...rgbToCmyk(this._rgb),
+      toString: cmykToString,
+      options: this._options,
+    };
+  }
+
+  updateCmyk(cmykRaw: Partial<RawCMYK>) {
+    const cmyk = standardizePartialCmyk(cmykRaw);
+    const currentCmyk = rgbToCmyk(this._rgb);
+    const newCmyk = merge(currentCmyk, cmyk);
+    const rgb = cmykToRgb(newCmyk);
     this._rgb = rgb;
   }
 

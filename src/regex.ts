@@ -34,6 +34,7 @@ const labName = capture("lab");
 const lchName = capture("lch");
 const oklabName = capture("oklab");
 const oklchName = capture("oklch");
+const cmykName = capture("device-cmyk");
 
 // Color formats special decimals
 
@@ -52,13 +53,7 @@ const optionalAlphaCurrent = optionalWrap(
 
 // Color formats template function
 
-const colorWrap = (
-  name: string,
-  param1: string,
-  param2: string,
-  param3: string,
-  legacy = false
-) => {
+const colorWrap = (name: string, params: string[], legacy = false) => {
   const separator = legacy
     ? spacing + commaSeparator + spacing
     : spaceSeparator;
@@ -68,11 +63,7 @@ const colorWrap = (
     name +
     open +
     spacing +
-    capture(param1) +
-    separator +
-    capture(param2) +
-    separator +
-    capture(param3) +
+    params.map((param) => capture(param)).join(separator) +
     alpha +
     spacing +
     close +
@@ -89,61 +80,67 @@ const hex = new RegExp(
   start + capture("#") + orJoin(hexSingle, hexDouble) + end
 );
 
-const rgbLegacy = colorWrap(rgbName, decimal, decimal, decimal, true);
+const rgbLegacy = colorWrap(rgbName, [decimal, decimal, decimal], true);
 const rgbLegacyPercentage = colorWrap(
   rgbName,
-  percentage,
-  percentage,
-  percentage,
+  [percentage, percentage, percentage],
   true
 );
-const rgbCurrent = colorWrap(rgbName, decimal, decimal, decimal);
-const rgbCurrentPercentage = colorWrap(
-  rgbName,
+const rgbCurrent = colorWrap(rgbName, [decimal, decimal, decimal]);
+const rgbCurrentPercentage = colorWrap(rgbName, [
   percentage,
   percentage,
-  percentage
-);
+  percentage,
+]);
 
 const rgb = new RegExp(
   orJoin(rgbCurrent, rgbCurrentPercentage, rgbLegacy, rgbLegacyPercentage)
 );
 
-const hslLegacy = colorWrap(hslName, angle, percentage, percentage, true);
-const hslCurrent = colorWrap(hslName, angle, percentage, percentage);
+const hslLegacy = colorWrap(hslName, [angle, percentage, percentage], true);
+const hslCurrent = colorWrap(hslName, [angle, percentage, percentage]);
 
 const hsl = new RegExp(orJoin(hslCurrent, hslLegacy));
 
-const hwb = new RegExp(colorWrap(hwbName, angle, percentage, percentage));
+const hwb = new RegExp(colorWrap(hwbName, [angle, percentage, percentage]));
 
 const lab = new RegExp(
-  colorWrap(
-    labName,
+  colorWrap(labName, [
     decimalOrPercentage,
     decimalOrPercentage,
-    decimalOrPercentage
-  )
+    decimalOrPercentage,
+  ])
 );
 
 const lch = new RegExp(
-  colorWrap(lchName, decimalOrPercentage, decimalOrPercentage, angle)
+  colorWrap(lchName, [decimalOrPercentage, decimalOrPercentage, angle])
 );
 
 const oklab = new RegExp(
-  colorWrap(
-    oklabName,
+  colorWrap(oklabName, [
     decimalOrPercentage,
     decimalOrPercentage,
-    decimalOrPercentage
-  )
+    decimalOrPercentage,
+  ])
 );
 
 const oklch = new RegExp(
-  colorWrap(oklchName, decimalOrPercentage, decimalOrPercentage, angle)
+  colorWrap(oklchName, [decimalOrPercentage, decimalOrPercentage, angle])
+);
+
+const cmyk = new RegExp(
+  colorWrap(cmykName, [
+    decimalOrPercentage,
+    decimalOrPercentage,
+    decimalOrPercentage,
+    decimalOrPercentage,
+  ])
 );
 
 export const color = new RegExp(
   orJoin(
-    ...[hex, rgb, hsl, hwb, lab, lch, oklab, oklch].map((regex) => regex.source)
+    ...[hex, rgb, hsl, hwb, lab, lch, oklab, oklch, cmyk].map(
+      (regex) => regex.source
+    )
   )
 );

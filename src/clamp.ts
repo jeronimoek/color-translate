@@ -1,4 +1,4 @@
-import { HEX, HSL, HWB, LAB, LCH, OKLAB, OKLCH, RGB } from "./types";
+import { CMYK, HEX, HSL, HWB, LAB, LCH, OKLAB, OKLCH, RGB } from "./types";
 import { clamp, toHex } from "./utils";
 
 // Clamps
@@ -54,8 +54,8 @@ export function clampRgbColor({ r, g, b, alpha }: RGB<number>) {
 export function clampHslColor({ h, s, l, alpha }: HSL<number>) {
   return {
     h: clampDeg(h),
-    s: clampPercentage(s),
-    l: clampPercentage(l),
+    s: clampUnit(s),
+    l: clampUnit(l),
     alpha: clampUnit(alpha),
   };
 }
@@ -63,8 +63,8 @@ export function clampHslColor({ h, s, l, alpha }: HSL<number>) {
 export function clampHwbColor({ h, w, b, alpha }: HWB<number>) {
   return {
     h: clampDeg(h),
-    w: clampPercentage(w),
-    b: clampPercentage(b),
+    w: clampUnit(w),
+    b: clampUnit(b),
     alpha: clampUnit(alpha),
   };
 }
@@ -111,5 +111,15 @@ export function clampHexColor({ r, g, b, alpha }: HEX) {
     g: clampHex(g),
     b: clampHex(b),
     alpha: clampHex(alpha),
+  };
+}
+
+export function clampCmykColor({ c, m, y, k, alpha }: CMYK<number>) {
+  return {
+    c: clampUnit(c),
+    m: clampUnit(m),
+    y: clampUnit(y),
+    k: clampUnit(k),
+    alpha: clampUnit(alpha),
   };
 }

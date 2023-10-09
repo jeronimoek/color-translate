@@ -76,6 +76,22 @@ export interface OKLCH<T extends number | string> {
 
 export type RawOKLCH = OKLCH<number> | OKLCH<string>;
 
+/**
+ * Cyan: 0-1
+ * Magenta: 0-1
+ * Yellow: 0-1
+ * Black: 0-1
+ */
+export interface CMYK<T extends number | string> {
+  c: T;
+  m: T;
+  y: T;
+  k: T;
+  alpha: T;
+}
+
+export type RawCMYK = CMYK<number> | CMYK<string>;
+
 export type Color =
   | RGB<number>
   | RGB<string>
@@ -90,7 +106,9 @@ export type Color =
   | OKLAB<number>
   | OKLAB<string>
   | OKLCH<number>
-  | OKLCH<string>;
+  | OKLCH<string>
+  | CMYK<number>
+  | CMYK<string>;
 
 type MapOptionalAlpha<U> = U extends Color
   ? Omit<U, "alpha"> & { alpha?: Color["alpha"] }
@@ -109,6 +127,8 @@ export interface Options {
 }
 
 export type ColorFormat =
+  | "rgb"
+  | "rgba"
   | "hsl"
   | "hsla"
   | "hwb"
@@ -116,8 +136,7 @@ export type ColorFormat =
   | "lch"
   | "oklab"
   | "oklch"
-  | "rgb"
-  | "rgba";
+  | "device-cmyk";
 
 type ToStringColor = (options: Partial<Options>) => string;
 
@@ -126,9 +145,4 @@ export interface GetColor {
   options: Options;
 }
 
-export type ValuesArray = [
-  number | string,
-  number | string,
-  number | string,
-  number | string
-];
+export type ValuesArray = (number | string)[];

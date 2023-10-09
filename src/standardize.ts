@@ -1,10 +1,12 @@
 import {
+  CMYK,
   HSL,
   HWB,
   LAB,
   LCH,
   OKLAB,
   OKLCH,
+  RawCMYK,
   RawHSL,
   RawHWB,
   RawLAB,
@@ -25,6 +27,7 @@ import {
   oklabABRawToNumber,
   oklchChromaRawToNumber,
   percentageRawToNumber,
+  percentageToNumber,
 } from "./utils";
 
 // These functions clamp color values to use them directly with the library "@csstools/convert-colors"
@@ -51,8 +54,8 @@ export function standardizePartialHsl(
   const { h, s, l, alpha } = color;
   return {
     h: h != null ? hueParse(h) : undefined,
-    s: s != null ? percentageRawToNumber(s) : undefined,
-    l: l != null ? percentageRawToNumber(l) : undefined,
+    s: s != null ? percentageToNumber(s) : undefined,
+    l: l != null ? percentageToNumber(l) : undefined,
     alpha: alpha != null ? percentageParse(alpha) : undefined,
   };
 }
@@ -67,8 +70,8 @@ export function standardizePartialHwb(
   const { h, w, b, alpha } = color;
   return {
     h: h != null ? hueParse(h) : undefined,
-    w: w != null ? percentageRawToNumber(w) : undefined,
-    b: b != null ? percentageRawToNumber(b) : undefined,
+    w: w != null ? percentageToNumber(w) : undefined,
+    b: b != null ? percentageToNumber(b) : undefined,
     alpha: alpha != null ? percentageParse(alpha) : undefined,
   };
 }
@@ -141,4 +144,21 @@ export function standardizePartialOklch(
 
 export function standardizeOklch(color: RawOKLCH): OKLCH<number> {
   return standardizePartialOklch(color) as OKLCH<number>;
+}
+
+export function standardizePartialCmyk(
+  color: Partial<RawCMYK>
+): Partial<CMYK<number>> {
+  const { c, m, y, k, alpha } = color;
+  return {
+    c: c != null ? percentageToNumber(c) : undefined,
+    m: m != null ? percentageToNumber(m) : undefined,
+    y: y != null ? percentageToNumber(y) : undefined,
+    k: k != null ? percentageToNumber(k) : undefined,
+    alpha: alpha != null ? percentageParse(alpha) : undefined,
+  };
+}
+
+export function standardizeCmyk(color: RawCMYK): CMYK<number> {
+  return standardizePartialCmyk(color) as CMYK<number>;
 }
