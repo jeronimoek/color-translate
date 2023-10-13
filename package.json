@@ -47,7 +47,8 @@
     "pre-push"
   ],
   "dependencies": {
-    "@csstools/convert-colors": "^2.0.0"
+    "@csstools/convert-colors": "^2.0.0",
+    "core-js": "^3.33.0"
   },
   "devDependencies": {
     "@babel/cli": "7.21.0",

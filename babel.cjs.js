@@ -8,7 +8,7 @@ module.exports = {
           node: "8",
         },
         useBuiltIns: "usage",
-        corejs: "3.28.0",
+        corejs: "3.33.0",
         modules: "commonjs",
       },
     ],
