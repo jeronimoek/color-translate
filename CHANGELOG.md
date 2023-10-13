@@ -1,3 +1,12 @@
+## [0.3.1](https://github.com/jeronimoek/color-translate/compare/v0.3.0...v0.3.1) (2023-10-13)
+
+
+### Bug Fixes
+
+* corejs explicit dependency ([7968669](https://github.com/jeronimoek/color-translate/commit/79686696738b24c7cb1831a2afb441f1cd9af5ad))
+
+
+
 # [0.3.0](https://github.com/jeronimoek/color-translate/compare/v0.2.0...v0.3.0) (2023-10-09)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * package rename ([897fd14](https://github.com/jeronimoek/color-translate/commit/897fd149eaf1d3a9390aa13847cf8879a3c63c94))
-
-
-
-## [0.1.1](https://github.com/jeronimoek/color-translate/compare/v0.1.0...v0.1.1) (2023-09-29)
-
-
-### Bug Fixes
-
-* rename repository due to taken npm name ([1b389fe](https://github.com/jeronimoek/color-translate/commit/1b389fe8174e2bc5c3a611fabfca66f10cf2daab))
 
 
 
