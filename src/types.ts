@@ -126,18 +126,6 @@ export interface Options {
   limitToColorSpace: boolean;
 }
 
-export type ColorFormat =
-  | "rgb"
-  | "rgba"
-  | "hsl"
-  | "hsla"
-  | "hwb"
-  | "lab"
-  | "lch"
-  | "oklab"
-  | "oklch"
-  | "device-cmyk";
-
 type ToStringColor = (options: Partial<Options>) => string;
 
 export interface GetColor {
