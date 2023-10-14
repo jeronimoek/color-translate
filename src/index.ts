@@ -2,6 +2,7 @@ import ColorTranslator from "./colorTranslator";
 import {
   cmyk as cmykRegex,
   color as colorRegex,
+  hex0x as hex0xRegex,
   hex as hexRegex,
   hsl as hslRegex,
   hwb as hwbRegex,
@@ -18,6 +19,7 @@ export {
   cmykRegex,
   colorRegex,
   hexRegex,
+  hex0xRegex,
   hslRegex,
   hwbRegex,
   labRegex,

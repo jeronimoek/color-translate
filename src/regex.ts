@@ -77,7 +77,10 @@ const hexSingle = new RegExp(capture(hexaValue).repeat(4) + "?").source;
 const hexDouble = new RegExp(capture(hexaValue + hexaValue).repeat(4) + "?")
   .source;
 const hex = new RegExp(
-  start + capture(orJoin("#", "0x")) + orJoin(hexSingle, hexDouble) + end
+  start + capture("#") + orJoin(hexSingle, hexDouble) + end
+);
+const hex0x = new RegExp(
+  start + capture("0x") + orJoin(hexSingle, hexDouble) + end
 );
 
 const rgbLegacy = colorWrap(rgbName, [decimal, decimal, decimal], true);
@@ -139,10 +142,10 @@ const cmyk = new RegExp(
 
 const color = new RegExp(
   orJoin(
-    ...[hex, rgb, hsl, hwb, lab, lch, oklab, oklch, cmyk].map(
+    ...[hex, hex0x, rgb, hsl, hwb, lab, lch, oklab, oklch, cmyk].map(
       (regex) => regex.source
     )
   )
 );
 
-export { hex, rgb, hsl, hwb, lab, lch, oklab, oklch, cmyk, color };
+export { hex, hex0x, rgb, hsl, hwb, lab, lch, oklab, oklch, cmyk, color };
