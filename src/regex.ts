@@ -137,10 +137,12 @@ const cmyk = new RegExp(
   ])
 );
 
-export const color = new RegExp(
+const color = new RegExp(
   orJoin(
     ...[hex, rgb, hsl, hwb, lab, lch, oklab, oklch, cmyk].map(
       (regex) => regex.source
     )
   )
 );
+
+export { hex, rgb, hsl, hwb, lab, lch, oklab, oklch, cmyk, color };
