@@ -9,11 +9,10 @@ import {
   clampOklchColor,
   clampRgbColor,
 } from "./clamp";
-import { AngleUnit } from "./enum";
+import { AngleUnit, ColorFormat } from "./enum";
 import { merge, round } from "./helper";
 import {
   CMYK,
-  ColorFormat,
   GetColor,
   HEX,
   HSL,
@@ -28,6 +27,15 @@ import {
 } from "./types";
 import { degToGrad, degToRad, degToTurn } from "./utils";
 
+function formatAllowLegacy(format: ColorFormat) {
+  return [
+    ColorFormat.RGB,
+    ColorFormat.RGBA,
+    ColorFormat.HSL,
+    ColorFormat.HSLA,
+  ].includes(format);
+}
+
 function genericToString(
   format: ColorFormat,
   values: ValuesArray,
@@ -39,7 +47,7 @@ function genericToString(
   let separator;
   let alphaSeparator;
 
-  if (legacy) {
+  if (legacy && formatAllowLegacy(format)) {
     if (spaced) {
       separator = ", ";
       alphaSeparator = ", ";
@@ -90,7 +98,7 @@ export function rgbToString(
   }
 
   const { maxDigits } = stringOptions;
-  const format = alpha === 1 ? "rgb" : "rgba";
+  const format = alpha === 1 ? ColorFormat.RGB : ColorFormat.RGBA;
 
   return genericToString(
     format,
@@ -112,7 +120,7 @@ export function hslToString(
   }
 
   const { maxDigits } = stringOptions;
-  const format = alpha === 1 ? "hsl" : "hsla";
+  const format = alpha === 1 ? ColorFormat.HSL : ColorFormat.HSLA;
   return genericToString(
     format,
     [
@@ -138,7 +146,7 @@ export function hwbToString(
 
   const { maxDigits } = stringOptions;
   return genericToString(
-    "hwb",
+    ColorFormat.HWB,
     [
       stringifyDeg(h, stringOptions),
       round(w * 100, maxDigits) + "%",
@@ -162,7 +170,7 @@ export function labToString(
 
   const { maxDigits } = stringOptions;
   return genericToString(
-    "lab",
+    ColorFormat.LAB,
     [round(l, maxDigits), round(a, maxDigits), round(b, maxDigits)],
     alpha,
     stringOptions
@@ -182,7 +190,7 @@ export function lchToString(
 
   const { maxDigits } = stringOptions;
   return genericToString(
-    "lch",
+    ColorFormat.LCH,
     [round(l, maxDigits), round(c, maxDigits), stringifyDeg(h, stringOptions)],
     alpha,
     stringOptions
@@ -231,7 +239,7 @@ export function oklabToString(
 
   const { maxDigits } = stringOptions;
   return genericToString(
-    "oklab",
+    ColorFormat.OKLAB,
     [round(l, maxDigits), round(a, maxDigits), round(b, maxDigits)],
     alpha,
     stringOptions
@@ -251,7 +259,7 @@ export function oklchToString(
 
   const { maxDigits } = stringOptions;
   return genericToString(
-    "oklch",
+    ColorFormat.OKLCH,
     [round(l, maxDigits), round(c, maxDigits), stringifyDeg(h, stringOptions)],
     alpha,
     stringOptions
@@ -270,9 +278,8 @@ export function cmykToString(
   }
 
   const { maxDigits } = stringOptions;
-  const format = "device-cmyk";
   return genericToString(
-    format,
+    ColorFormat.DEVICE_CMYK,
     [
       round(c, maxDigits),
       round(m, maxDigits),
