@@ -1,3 +1,12 @@
+## [0.3.2](https://github.com/jeronimoek/color-translate/compare/v0.3.1...v0.3.2) (2023-10-14)
+
+
+### Bug Fixes
+
+* avoid returning invalid legacy mode colors ([d5e4ece](https://github.com/jeronimoek/color-translate/commit/d5e4ecea37fca4b1989d7b3f198650b18bd718eb))
+
+
+
 ## [0.3.1](https://github.com/jeronimoek/color-translate/compare/v0.3.0...v0.3.1) (2023-10-13)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * types path ([8fe9acc](https://github.com/jeronimoek/color-translate/commit/8fe9accc172ec804a3afdef5e12bfe4c77ae7d6f))
-
-
-
-## [0.1.2](https://github.com/jeronimoek/color-translate/compare/v0.1.1...v0.1.2) (2023-09-29)
-
-
-### Bug Fixes
-
-* package rename ([897fd14](https://github.com/jeronimoek/color-translate/commit/897fd149eaf1d3a9390aa13847cf8879a3c63c94))
 
 
 
