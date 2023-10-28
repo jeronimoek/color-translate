@@ -11,7 +11,7 @@ import { gradToDeg, radToDeg, turnToDeg } from "./utils";
 type ParseFunc = (value: string | number) => number;
 
 /**
- * Clamp rgb to 0 - 100
+ * Rgb to 0 - 100
  */
 export const rgbParse: ParseFunc = (value) => {
   if (typeof value === "number") {
@@ -22,13 +22,13 @@ export const rgbParse: ParseFunc = (value) => {
 };
 
 /**
- * Clamp percentage to 0 - 100
+ * Percentage to float
  * @example
  * percentageParse(0.5)     // 0.5
  * percentageParse('0.5')   // 0.5
  * percentageParse('50%')   // 0.5
- * percentageParse('125%')  // 1
- * percentageParse('-125%') // 0
+ * percentageParse('125%')  // 1.25
+ * percentageParse('-125%') // -1.25
  */
 export const percentageParse: ParseFunc = (value) => {
   if (typeof value === "number") {
@@ -41,7 +41,7 @@ export const percentageParse: ParseFunc = (value) => {
 };
 
 /**
- * Translate and clamp hue to 0 - 360
+ * Translate hue to 0 - 360
  */
 export const hueParse: ParseFunc = (value) => {
   if (typeof value === "number") {
@@ -60,7 +60,7 @@ export const hueParse: ParseFunc = (value) => {
 };
 
 /**
- * Clamp lab a/b to -125 - 125
+ * Lab a/b to -125 - 125
  */
 export const labABParse: ParseFunc = (value) => {
   if (typeof value === "number") {
@@ -73,7 +73,7 @@ export const labABParse: ParseFunc = (value) => {
 };
 
 /**
- * Clamp lch chroma to 0 - 150
+ * Lch chroma to 0 - 150
  */
 export const lchChromaParse: ParseFunc = (value) => {
   if (typeof value === "number") {
