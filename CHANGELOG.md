@@ -1,3 +1,12 @@
+# [0.4.0](https://github.com/jeronimoek/color-translate/compare/v0.3.3...v0.4.0) (2023-12-24)
+
+
+### Features
+
+* export all types ([73cf306](https://github.com/jeronimoek/color-translate/commit/73cf306909109f82a8564f5e27092d9f0f77645c))
+
+
+
 ## [0.3.3](https://github.com/jeronimoek/color-translate/compare/v0.3.2...v0.3.3) (2023-10-14)
 
 
@@ -32,15 +41,6 @@
 ### Features
 
 * add support for hex 0x format ([5b349da](https://github.com/jeronimoek/color-translate/commit/5b349dacdc45c66ac79d2c66c9aab85c774874c6))
-
-
-
-# [0.2.0](https://github.com/jeronimoek/color-translate/compare/v0.1.3...v0.2.0) (2023-10-09)
-
-
-### Features
-
-* add support for cmyk format and standarize hsl and hwb object values ([65a5820](https://github.com/jeronimoek/color-translate/commit/65a5820efbfbe39ca85c62ecdd5aebaf078fb470))
 
 
 
