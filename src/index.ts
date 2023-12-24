@@ -14,6 +14,7 @@ import {
 } from "./regex";
 
 export default ColorTranslator;
+export * from "./types";
 export {
   ColorTranslator,
   cmykRegex,
