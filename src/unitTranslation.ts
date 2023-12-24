@@ -56,6 +56,9 @@ export const hueParse: ParseFunc = (value) => {
   if (isTurn(value)) {
     return turnToDeg(parseFloat(value));
   }
+  if (isPercentage(value)) {
+    return parseFloat(value) * 3.6;
+  }
   return parseFloat(value);
 };
 
