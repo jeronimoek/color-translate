@@ -20,6 +20,7 @@ import {
   hueParse,
   labABParse,
   lchChromaParse,
+  lchHueParse,
   percentageParse,
   rgbParse,
 } from "./unitTranslation";
@@ -103,7 +104,7 @@ export function standardizePartialLch(
   return {
     l: l != null ? percentageRawToNumber(l) : undefined,
     c: c != null ? lchChromaParse(c) : undefined,
-    h: h != null ? hueParse(h) : undefined,
+    h: h != null ? lchHueParse(h) : undefined,
     alpha: alpha != null ? percentageParse(alpha) : undefined,
   };
 }
