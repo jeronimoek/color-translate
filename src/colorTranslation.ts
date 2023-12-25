@@ -52,7 +52,7 @@ export function lchToRgb({ l, c, h, alpha }: LCH<number>): RGB<number> {
 
 export function rgbToLch({ r, g, b, alpha }: RGB<number>): LCH<number> {
   const [l, c, h] = rgb2lch(r, g, b);
-  return { l, c, h, alpha };
+  return { l, c, h: h < 0 ? h + 360 : h, alpha };
 }
 
 export function rgbToHex({ r, g, b, alpha }: RGB<number>): HEX {

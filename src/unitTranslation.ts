@@ -87,10 +87,3 @@ export const lchChromaParse: ParseFunc = (value) => {
   }
   return parseFloat(value);
 };
-
-/**
- * Lch hue to -180 - 180
- */
-export const lchHueParse: ParseFunc = (value) => {
-  return hueParse(value) - 180;
-};
