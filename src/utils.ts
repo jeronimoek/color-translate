@@ -16,6 +16,7 @@ import {
   labToRgb,
   lchToRgb,
 } from "./colorTranslation";
+import { ColorFormat } from "./enum";
 import { oklabToRgb, oklchToRgb } from "./okColors";
 import { color as colorRegex } from "./regex";
 import {
@@ -28,7 +29,7 @@ import {
   standardizeOklch,
   standardizeRgb,
 } from "./standardize";
-import { Color, ColorInput, RGB } from "./types";
+import { Color, ColorInput, OKLAB, OKLCH, RGB } from "./types";
 
 function parseColorString(colorString: string): Color {
   const matches = colorRegex.exec(colorString);
@@ -128,30 +129,58 @@ function parseColorString(colorString: string): Color {
  * @param color
  * @returns
  */
-export function colorToRgb100(color: ColorInput | string): RGB<number> {
+export function colorToRgb100(color: ColorInput | string): {
+  rgb100: RGB<number>;
+  format: ColorFormat;
+  standardizedColor: Color;
+} {
   if (typeof color === "string") {
     color = parseColorString(color);
   }
   let rgb100: RGB<number> = { r: 0, g: 0, b: 0, alpha: 1 };
+  let format = ColorFormat.RGB;
+  let standardizedColor: Color = rgb100;
   if (isRGB(color)) {
-    rgb100 = standardizeRgb(color);
+    standardizedColor = standardizeRgb(color);
+    rgb100 = standardizedColor;
   } else if (isHSL(color)) {
-    rgb100 = hslToRgb(standardizeHsl(color));
+    standardizedColor = standardizeHsl(color);
+    format = ColorFormat.HSL;
+    rgb100 = hslToRgb(standardizedColor);
   } else if (isHWB(color)) {
-    rgb100 = hwbToRgb(standardizeHwb(color));
+    standardizedColor = standardizeHwb(color);
+    format = ColorFormat.HWB;
+    rgb100 = hwbToRgb(standardizedColor);
     // The next two 'ok' formats MUST go before the non 'ok' formats
   } else if (isOKLAB(color)) {
-    rgb100 = oklabToRgb(standardizeOklab(color));
+    standardizedColor = standardizeOklab(color);
+    format = ColorFormat.OKLAB;
+    rgb100 = oklabToRgb(standardizedColor as OKLAB<number>);
   } else if (isOKLCH(color)) {
-    rgb100 = oklchToRgb(standardizeOklch(color));
+    standardizedColor = standardizeOklch(color);
+    format = ColorFormat.OKLCH;
+    rgb100 = oklchToRgb(standardizedColor as OKLCH<number>);
   } else if (isLAB(color)) {
-    rgb100 = labToRgb(standardizeLab(color));
+    standardizedColor = standardizeLab(color);
+    format = ColorFormat.LAB;
+    rgb100 = labToRgb(standardizedColor);
   } else if (isLCH(color)) {
-    rgb100 = lchToRgb(standardizeLch(color));
+    standardizedColor = standardizeLch(color);
+    format = ColorFormat.LCH;
+    rgb100 = lchToRgb(standardizedColor);
   } else if (isCMYK(color)) {
-    rgb100 = cmykToRgb(standardizeCmyk(color));
+    standardizedColor = standardizeCmyk(color);
+    format = ColorFormat.DEVICE_CMYK;
+    rgb100 = cmykToRgb(standardizedColor);
   }
-  return { ...rgb100, alpha: rgb100.alpha ?? 1 };
+  return {
+    rgb100: { ...rgb100, alpha: rgb100.alpha ?? 1 },
+    format,
+    standardizedColor: {
+      ...standardizedColor,
+      alpha: standardizedColor.alpha ?? 1,
+    },
+  };
 }
 
 export function clamp(num: number, min: number, max: number) {

@@ -69,7 +69,7 @@ export default class ColorTranslator {
     spaced: true,
     limitToColorSpace: true,
     maxDigits: 2,
-    cacheInput: false,
+    cacheInput: true,
   };
   private _lastInput?: { format: ColorFormat; color: ColorInput };
 
@@ -79,7 +79,10 @@ export default class ColorTranslator {
   ) {
     this._options = merge(this._options, options);
 
-    this._rgb = colorToRgb100(color);
+    const { rgb100, format, standardizedColor } = colorToRgb100(color);
+
+    this.setCachedInput(format, standardizedColor);
+    this._rgb = rgb100;
   }
 
   cachedInput(format: ColorFormat) {
