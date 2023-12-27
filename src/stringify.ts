@@ -21,8 +21,8 @@ import {
   LCH,
   OKLAB,
   OKLCH,
-  Options,
   RGB,
+  StringOptions,
   ValuesArray,
 } from "./types";
 import { degToGrad, degToRad, degToTurn } from "./utils";
@@ -40,7 +40,7 @@ function genericToString(
   format: ColorFormat,
   values: ValuesArray,
   _alpha: number,
-  { legacy, spaced, maxDigits }: Options
+  { legacy, spaced, maxDigits }: StringOptions
 ) {
   const alpha = round(_alpha, maxDigits);
 
@@ -69,7 +69,7 @@ function genericToString(
   })`;
 }
 
-function stringifyDeg(angle: number, options: Options) {
+function stringifyDeg(angle: number, options: StringOptions) {
   const { maxDigits, angleUnit } = options;
   switch (angleUnit) {
     case AngleUnit.GRAD:
@@ -88,7 +88,7 @@ function stringifyDeg(angle: number, options: Options) {
 
 export function rgbToString(
   this: RGB<number> & GetColor,
-  customOptions: Partial<Options> = {}
+  customOptions: Partial<StringOptions> = {}
 ) {
   const { options } = this;
   const stringOptions = merge(options, customOptions);
@@ -110,7 +110,7 @@ export function rgbToString(
 
 export function hslToString(
   this: HSL<number> & GetColor,
-  customOptions: Partial<Options> = {}
+  customOptions: Partial<StringOptions> = {}
 ) {
   const { options } = this;
   const stringOptions = merge(options, customOptions);
@@ -135,7 +135,7 @@ export function hslToString(
 
 export function hwbToString(
   this: HWB<number> & GetColor,
-  customOptions: Partial<Options> = {}
+  customOptions: Partial<StringOptions> = {}
 ) {
   const { options } = this;
   const stringOptions = merge(options, customOptions);
@@ -159,7 +159,7 @@ export function hwbToString(
 
 export function labToString(
   this: LAB<number> & GetColor,
-  customOptions: Partial<Options> = {}
+  customOptions: Partial<StringOptions> = {}
 ) {
   const { options } = this;
   const stringOptions = merge(options, customOptions);
@@ -179,7 +179,7 @@ export function labToString(
 
 export function lchToString(
   this: LCH<number> & GetColor,
-  customOptions: Partial<Options> = {}
+  customOptions: Partial<StringOptions> = {}
 ) {
   const { options } = this;
   const stringOptions = merge(options, customOptions);
@@ -199,7 +199,7 @@ export function lchToString(
 
 export function hexToString(
   this: HEX & GetColor,
-  customOptions: Partial<Options> = {},
+  customOptions: Partial<StringOptions> = {},
   is0x = false
 ) {
   const { options } = this;
@@ -221,14 +221,14 @@ export function hexToString(
 
 export function hex0xToString(
   this: HEX & GetColor,
-  customOptions: Partial<Options> = {}
+  customOptions: Partial<StringOptions> = {}
 ) {
   return hexToString.bind(this)(customOptions, true);
 }
 
 export function oklabToString(
   this: OKLAB<number> & GetColor,
-  customOptions: Partial<Options> = {}
+  customOptions: Partial<StringOptions> = {}
 ) {
   const { options } = this;
   const stringOptions = merge(options, customOptions);
@@ -248,7 +248,7 @@ export function oklabToString(
 
 export function oklchToString(
   this: OKLCH<number> & GetColor,
-  customOptions: Partial<Options> = {}
+  customOptions: Partial<StringOptions> = {}
 ) {
   const { options } = this;
   const stringOptions = merge(options, customOptions);
@@ -268,7 +268,7 @@ export function oklchToString(
 
 export function cmykToString(
   this: CMYK<number> & GetColor,
-  customOptions: Partial<Options> = {}
+  customOptions: Partial<StringOptions> = {}
 ) {
   const { options } = this;
   const stringOptions = merge(options, customOptions);
