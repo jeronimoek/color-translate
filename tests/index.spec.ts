@@ -114,6 +114,14 @@ const redOklabExceeded = "oklab(0.65 0.26 0.15)";
 const blackCmyk = { c: 0, m: 0, y: 0, k: 1 };
 const blackCmykString = `device-cmyk(${blackCmyk.c} ${blackCmyk.m} ${blackCmyk.y} ${blackCmyk.k})`;
 
+const blueLch = { l: 32.3, c: 133.82, h: 306.29 };
+
+const blackHsl = { h: 0, s: 0, l: 0 };
+const blackHslSaturated = { h: 0, s: 90, l: 0 };
+
+const grayHwb = { h: 0, w: 80, b: 80 };
+const grayHwbModified = { h: 180, w: -79, b: -79 };
+
 describe("Class ColorTranslator", () => {
   it("should be defined", () => {
     expect(ColorTranslator).toBeDefined();
@@ -648,5 +656,67 @@ describe("Cmyk black support", () => {
   it("should not clamp rgb output", () => {
     const color = new ColorTranslator(blackCmyk);
     expect(color.cmyk.toString()).toEqual(blackCmykString);
+  });
+});
+
+describe("Lch hue fix", () => {
+  it("should return the same LCH color", () => {
+    const color = new ColorTranslator(blueLch);
+    expect(color.lch).toBeObject();
+    expect(round(color.lch.l)).toEqual(blueLch.l);
+    expect(round(color.lch.c)).toEqual(blueLch.c);
+    expect(round(color.lch.h)).toEqual(blueLch.h);
+    expect(round(color.lch.alpha)).toEqual(1);
+  });
+});
+
+describe("Cache input color", () => {
+  it("should ignore HSL saturation", () => {
+    const color = new ColorTranslator(blackHsl, { cacheInput: false });
+    expect(color.hsl.h).toEqual(blackHsl.h);
+    expect(color.hsl.s).toEqual(blackHsl.s);
+    expect(color.hsl.l).toEqual(blackHsl.l);
+    color.updateHsl(blackHslSaturated);
+    expect(color.hsl.h).toEqual(blackHsl.h);
+    expect(color.hsl.s).toEqual(blackHsl.s);
+    expect(color.hsl.l).toEqual(blackHsl.l);
+  });
+
+  it("should maintain HSL saturation", () => {
+    const color = new ColorTranslator(blackHsl);
+    expect(color.hsl.h).toEqual(blackHsl.h);
+    expect(color.hsl.s).toEqual(blackHsl.s);
+    expect(color.hsl.l).toEqual(blackHsl.l);
+    color.updateHsl(blackHslSaturated);
+    expect(color.hsl.h).toEqual(blackHslSaturated.h);
+    expect(color.hsl.s).toEqual(blackHslSaturated.s);
+    expect(color.hsl.l).toEqual(blackHslSaturated.l);
+  });
+
+  it("should modify HWB w/b values", () => {
+    const color = new ColorTranslator(grayHwb, { cacheInput: false });
+    expect(color.hwb.h).toEqual(grayHwbModified.h);
+    expect(color.hwb.w).toEqual(grayHwbModified.w);
+    expect(color.hwb.b).toEqual(grayHwbModified.b);
+    color.updateHwb(grayHwb);
+    expect(color.hwb.h).toEqual(grayHwbModified.h);
+    expect(color.hwb.w).toEqual(grayHwbModified.w);
+    expect(color.hwb.b).toEqual(grayHwbModified.b);
+    color.updateOptions({ cacheInput: true });
+    color.updateHwb(grayHwb);
+    expect(color.hwb.h).toEqual(grayHwb.h);
+    expect(color.hwb.w).toEqual(grayHwb.w);
+    expect(color.hwb.b).toEqual(grayHwb.b);
+  });
+
+  it("should maintain HWB w/b values", () => {
+    const color = new ColorTranslator(grayHwb);
+    expect(color.hwb.h).toEqual(grayHwb.h);
+    expect(color.hwb.w).toEqual(grayHwb.w);
+    expect(color.hwb.b).toEqual(grayHwb.b);
+    color.updateHwb(grayHwb);
+    expect(color.hwb.h).toEqual(grayHwb.h);
+    expect(color.hwb.w).toEqual(grayHwb.w);
+    expect(color.hwb.b).toEqual(grayHwb.b);
   });
 });

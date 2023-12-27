@@ -118,7 +118,7 @@ export type ColorInput = MapOptionalAlpha<Color>;
 
 type AngleUnitType = `${AngleUnit}`;
 
-export interface Options {
+export interface StringOptions {
   legacy: boolean;
   spaced: boolean;
   angleUnit: AngleUnitType;
@@ -126,11 +126,15 @@ export interface Options {
   limitToColorSpace: boolean;
 }
 
-type ToStringColor = (options: Partial<Options>) => string;
+export interface GeneralOptions extends StringOptions {
+  cacheInput: boolean;
+}
+
+type ToStringColor = (options: Partial<StringOptions>) => string;
 
 export interface GetColor {
   toString: ToStringColor;
-  options: Options;
+  options: StringOptions;
 }
 
 export type ValuesArray = (number | string)[];
