@@ -1,3 +1,13 @@
+# [0.5.0](https://github.com/jeronimoek/color-translate/compare/v0.4.2...v0.5.0) (2023-12-27)
+
+
+### Features
+
+* add option to maintain a copy of the last input color ([c4cb2dc](https://github.com/jeronimoek/color-translate/commit/c4cb2dcfc2f6c9f2cdf7a2293bd001c46d3172a3))
+* enable cached input by default, add tests ([3bbc6bf](https://github.com/jeronimoek/color-translate/commit/3bbc6bf0c1328045edce2c129010cabc20af4599))
+
+
+
 ## [0.4.2](https://github.com/jeronimoek/color-translate/compare/v0.4.1...v0.4.2) (2023-12-25)
 
 
@@ -33,15 +43,6 @@
 
 * expose regexs ([3d72886](https://github.com/jeronimoek/color-translate/commit/3d728861d7ac352e8ad2196f698920677f045446))
 * separate hex0x regex ([e179fe8](https://github.com/jeronimoek/color-translate/commit/e179fe81f27dad35b0797358ffe99963ac20e615))
-
-
-
-## [0.3.2](https://github.com/jeronimoek/color-translate/compare/v0.3.1...v0.3.2) (2023-10-14)
-
-
-### Bug Fixes
-
-* avoid returning invalid legacy mode colors ([d5e4ece](https://github.com/jeronimoek/color-translate/commit/d5e4ecea37fca4b1989d7b3f198650b18bd718eb))
 
 
 
