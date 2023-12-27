@@ -48,24 +48,25 @@ export function oklabToRgb(lab: OKLAB<number>): RGB<number> {
 }
 
 export function oklchToRgb(lch: OKLCH<number>): RGB<number> {
-  return oklabToRgb(lchToLab(lch));
+  return oklabToRgb(oklchToOklab(lch));
 }
 
 export function rgbToOklch(rgb: RGB<number>): OKLCH<number> {
-  return labToLch(rgbToOklab(rgb));
+  return oklabToOklch(rgbToOklab(rgb));
 }
 
-function labToLch({ l, a, b, alpha, ok }: OKLAB<number>): OKLCH<number> {
+function oklabToOklch({ l, a, b, alpha, ok }: OKLAB<number>): OKLCH<number> {
+  const h = radToDeg(Math.atan2(b, a));
   return {
     l,
     c: Math.sqrt(a ** 2 + b ** 2),
-    h: radToDeg(Math.atan2(b, a)),
+    h: h < 0 ? h + 360 : h,
     alpha,
     ok,
   };
 }
 
-function lchToLab({ l, c, h, alpha, ok }: OKLCH<number>): OKLAB<number> {
+function oklchToOklab({ l, c, h, alpha, ok }: OKLCH<number>): OKLAB<number> {
   return {
     l,
     a: c * Math.cos(degToRad(h)),
