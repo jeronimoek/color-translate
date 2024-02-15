@@ -32,11 +32,14 @@ console.log(color.lch.toString({ legacy: true }));
 
 ### Options:
 
-| Option | Description | Default value      |
-| ------ | ----------- | ------------------ |
-| this   | row info    | `'package.json'`   |
-| is an  | row info    | `'README.md'`      |
-| option | row info    | inputPath value \* |
+| Option            | Description                                          | Default value |
+| ----------------- | ---------------------------------------------------- | ------------- |
+| angleUnit         | Angle unit                                           | `'none'`      |
+| cacheInput        | Persist last input                                   | `false`       |
+| legacy            | Legacy mode                                          | `true`        |
+| limitToColorSpace | Clamp colors to format space                         | `true`        |
+| maxDigits         | Round color values to a max number of decimal places | `2`           |
+| spaced            | Space between string color values                    | `false`       |
 
 ## 🌐 Links
 
