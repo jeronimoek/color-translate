@@ -1,3 +1,12 @@
+## [1.1.1](https://github.com/jeronimoek/color-translate/compare/v1.1.0...v1.1.1) (2024-07-20)
+
+
+### Bug Fixes
+
+* add a98 regex export ([5290e93](https://github.com/jeronimoek/color-translate/commit/5290e9334ad9fbe52def5d8f2f58098c7c109f47))
+
+
+
 # [1.1.0](https://github.com/jeronimoek/color-translate/compare/v0.5.1...v1.1.0) (2024-07-20)
 
 
@@ -39,15 +48,6 @@
 
 * lch hue ([0969784](https://github.com/jeronimoek/color-translate/commit/0969784dd315ee1ef2f0e2b9f0d6bc9af84a1977))
 * lch hue output ([0076003](https://github.com/jeronimoek/color-translate/commit/0076003764b79ab2b1157999e346fa6cca208fce))
-
-
-
-## [0.4.1](https://github.com/jeronimoek/color-translate/compare/v0.4.0...v0.4.1) (2023-12-24)
-
-
-### Bug Fixes
-
-* allow percentage input in hue value ([b94570b](https://github.com/jeronimoek/color-translate/commit/b94570b8b435a2df7c5bf2bb332e480076459fe1))
 
 
 
