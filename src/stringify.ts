@@ -101,7 +101,6 @@ export function a98ToString(
   }
 
   const { maxDigits } = stringOptions;
-  const format = ColorFormat.A98;
 
   return genericToString(
     "color",
