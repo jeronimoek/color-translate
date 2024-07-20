@@ -1,4 +1,5 @@
 import {
+  A98,
   CMYK,
   Color,
   ColorInput,
@@ -13,6 +14,13 @@ import {
 
 function isColorType<T extends Color>(color: T, keys: (keyof T)[]) {
   return keys.every((key) => color[key] != null);
+}
+
+export function isA98(color: ColorInput): color is A98<number> | A98<string> {
+  return isColorType<A98<number> | A98<string>>(
+    color as A98<number> | A98<string>,
+    ["r", "g", "b", "a98"]
+  );
 }
 
 export function isRGB(color: ColorInput): color is RGB<number> | RGB<string> {

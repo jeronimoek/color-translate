@@ -7,9 +7,46 @@ import {
   rgb2hwb,
   rgb2lab,
   rgb2lch,
+  rgb2xyz,
+  xyz2rgb,
 } from "@csstools/convert-colors";
-import { CMYK, HEX, HSL, HWB, LAB, LCH, RGB } from "./types";
+import { A98, CMYK, HEX, HSL, HWB, LAB, LCH, RGB } from "./types";
 import { toHex } from "./utils";
+
+/**
+ * rgb a98 (RGB Adobe 1998) input range = 0 - 1.
+ */
+export function a98ToRgb({
+  r: aR,
+  g: aG,
+  b: aB,
+  alpha,
+}: A98<number>): RGB<number> {
+  let [r, g, b] = [aR, aG, aB].map((v) => v ** 2.19921875).map((v) => v * 100);
+
+  const x = r * 0.57667 + g * 0.18555 + b * 0.18819;
+  const y = r * 0.29738 + g * 0.62735 + b * 0.07527;
+  const z = r * 0.02703 + g * 0.07069 + b * 0.9911;
+
+  const [sR, sG, sB] = xyz2rgb(x, y, z);
+
+  return { r: sR, g: sG, b: sB, alpha };
+}
+
+/**
+ * rgb a98 (RGB Adobe 1998) output range = 0 - 1.
+ */
+export function rgbToA98({ r, g, b, alpha }: RGB<number>): A98<number> {
+  const [x, y, z] = rgb2xyz(r, g, b).map((v) => v / 100);
+
+  let aR = x * 2.04137 + y * -0.56495 + z * -0.34469;
+  let aG = x * -0.96927 + y * 1.87601 + z * 0.04156;
+  let aB = x * 0.01345 + y * -0.11839 + z * 1.01541;
+
+  [aR, aG, aB] = [aR, aG, aB].map((v) => v ** (1 / 2.19921875));
+
+  return { r: aR, g: aG, b: aB, a98: true, alpha };
+}
 
 export function rgb100ToRgb({ r, g, b, alpha }: RGB<number>): RGB<number> {
   return { r: r * 2.55, g: g * 2.55, b: b * 2.55, alpha };

@@ -1,10 +1,12 @@
 import {
+  a98ToRgb,
   cmykToRgb,
   hslToRgb,
   hwbToRgb,
   labToRgb,
   lchToRgb,
   rgb100ToRgb,
+  rgbToA98,
   rgbToCmyk,
   rgbToHex,
   rgbToHsl,
@@ -16,6 +18,7 @@ import { ColorFormat } from "./enum";
 import { merge } from "./helper";
 import { oklabToRgb, oklchToRgb, rgbToOklab, rgbToOklch } from "./okColors";
 import {
+  standardizePartialA98,
   standardizePartialCmyk,
   standardizePartialHsl,
   standardizePartialHwb,
@@ -26,6 +29,7 @@ import {
   standardizePartialRgb,
 } from "./standardize";
 import {
+  a98ToString,
   cmykToString,
   hex0xToString,
   hexToString,
@@ -38,6 +42,7 @@ import {
   rgbToString,
 } from "./stringify";
 import {
+  A98,
   CMYK,
   ColorInput,
   GeneralOptions,
@@ -49,6 +54,7 @@ import {
   LCH,
   OKLAB,
   OKLCH,
+  RawA98,
   RawCMYK,
   RawHSL,
   RawHWB,
@@ -137,6 +143,7 @@ export default class ColorTranslator {
     const rgb = standardizePartialRgb(rgbRaw);
     this._rgb = merge(rgb100, rgb);
     this.setCachedInput(ColorFormat.RGB, this._rgb);
+    return this;
   }
 
   // HSL
@@ -161,6 +168,7 @@ export default class ColorTranslator {
     this.setCachedInput(ColorFormat.HSL, newHsl);
     const rgb = hslToRgb(newHsl);
     this._rgb = rgb;
+    return this;
   }
 
   // HWB
@@ -185,6 +193,7 @@ export default class ColorTranslator {
     this.setCachedInput(ColorFormat.HWB, newHwb);
     const rgb = hwbToRgb(newHwb);
     this._rgb = rgb;
+    return this;
   }
 
   // LAB
@@ -209,6 +218,7 @@ export default class ColorTranslator {
     this.setCachedInput(ColorFormat.LAB, newLab);
     const rgb = labToRgb(newLab);
     this._rgb = rgb;
+    return this;
   }
 
   // LCH
@@ -233,6 +243,7 @@ export default class ColorTranslator {
     this.setCachedInput(ColorFormat.LCH, newLch);
     const rgb = lchToRgb(newLch);
     this._rgb = rgb;
+    return this;
   }
 
   // LAB
@@ -257,6 +268,7 @@ export default class ColorTranslator {
     this.setCachedInput(ColorFormat.OKLAB, newOklab);
     const rgb = oklabToRgb(newOklab);
     this._rgb = rgb;
+    return this;
   }
 
   // LCH
@@ -281,6 +293,7 @@ export default class ColorTranslator {
     this.setCachedInput(ColorFormat.OKLCH, newOkLch);
     const rgb = oklchToRgb(newOkLch);
     this._rgb = rgb;
+    return this;
   }
 
   // CMYK
@@ -305,6 +318,32 @@ export default class ColorTranslator {
     this.setCachedInput(ColorFormat.DEVICE_CMYK, newCmyk);
     const rgb = cmykToRgb(newCmyk);
     this._rgb = rgb;
+    return this;
+  }
+
+  // A98
+
+  get a98(): A98<number> & GetColor {
+    const a98 =
+      (this.cachedInput(ColorFormat.A98)?.color as A98<number>) ??
+      rgbToA98(this._rgb);
+    return {
+      ...a98,
+      toString: a98ToString,
+      options: this._options,
+    };
+  }
+
+  updateA98(a98Raw: Partial<RawA98>) {
+    const a98 = standardizePartialA98(a98Raw);
+    const currentA98 =
+      (this.cachedInput(ColorFormat.A98)?.color as A98<number>) ??
+      rgbToA98(this._rgb);
+    const newA98 = merge(currentA98, a98);
+    this.setCachedInput(ColorFormat.A98, newA98);
+    const rgb = a98ToRgb(newA98);
+    this._rgb = rgb;
+    return this;
   }
 
   // Options
@@ -315,5 +354,6 @@ export default class ColorTranslator {
 
   updateOptions(options: Partial<GeneralOptions>) {
     this._options = merge(this._options, options);
+    return this;
   }
 }

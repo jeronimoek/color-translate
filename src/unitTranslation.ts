@@ -10,6 +10,13 @@ import { gradToDeg, radToDeg, turnToDeg } from "./utils";
 
 type ParseFunc = (value: string | number) => number;
 
+export const a98Parse: ParseFunc = (value) => {
+  if (typeof value === "number") {
+    return value;
+  }
+  return parseFloat(value);
+};
+
 /**
  * Rgb to 0 - 100
  */

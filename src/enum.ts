@@ -7,6 +7,7 @@ export enum AngleUnit {
 }
 
 export enum ColorFormat {
+  A98 = "a98",
   RGB = "rgb",
   RGBA = "rgba",
   HSL = "hsl",
