@@ -1,5 +1,6 @@
 /// <reference path='./index.d.ts' />
 import {
+  isA98,
   isCMYK,
   isHSL,
   isHWB,
@@ -10,6 +11,7 @@ import {
   isRGB,
 } from "./classify";
 import {
+  a98ToRgb,
   cmykToRgb,
   hslToRgb,
   hwbToRgb,
@@ -20,6 +22,7 @@ import { ColorFormat } from "./enum";
 import { oklabToRgb, oklchToRgb } from "./okColors";
 import { color as colorRegex } from "./regex";
 import {
+  standardizeA98,
   standardizeCmyk,
   standardizeHsl,
   standardizeHwb,
@@ -29,7 +32,7 @@ import {
   standardizeOklch,
   standardizeRgb,
 } from "./standardize";
-import { Color, ColorInput, OKLAB, OKLCH, RGB } from "./types";
+import { A98, Color, ColorInput, OKLAB, OKLCH, RGB } from "./types";
 
 function parseColorString(colorString: string): Color {
   const matches = colorRegex.exec(colorString);
@@ -109,6 +112,15 @@ function parseColorString(colorString: string): Color {
         alpha: values[4],
       };
       break;
+    case "a98-rgb":
+      color = {
+        r: values[0],
+        g: values[1],
+        b: values[2],
+        a98: true,
+        alpha: values[3],
+      };
+      break;
     case "rgb":
     case "rgba":
     default:
@@ -140,7 +152,12 @@ export function colorToRgb100(color: ColorInput | string): {
   let rgb100: RGB<number> = { r: 0, g: 0, b: 0, alpha: 1 };
   let format = ColorFormat.RGB;
   let standardizedColor: Color = rgb100;
-  if (isRGB(color)) {
+  // The next 'a98' format MUST go before the rgb format
+  if (isA98(color)) {
+    standardizedColor = standardizeA98(color);
+    format = ColorFormat.A98;
+    rgb100 = a98ToRgb(standardizedColor as A98<number>);
+  } else if (isRGB(color)) {
     standardizedColor = standardizeRgb(color);
     rgb100 = standardizedColor;
   } else if (isHSL(color)) {

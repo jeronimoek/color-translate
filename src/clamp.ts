@@ -1,4 +1,4 @@
-import { CMYK, HEX, HSL, HWB, LAB, LCH, OKLAB, OKLCH, RGB } from "./types";
+import { A98, CMYK, HEX, HSL, HWB, LAB, LCH, OKLAB, OKLCH, RGB } from "./types";
 import { clamp, toHex } from "./utils";
 
 // Clamps
@@ -40,6 +40,15 @@ function clampHex(value: string) {
   const intClamped = clampRgb(intValue);
   const hexClamped = toHex(intClamped);
   return hexClamped;
+}
+
+export function clampA98Color({ r, g, b, alpha }: A98<number>) {
+  return {
+    r: clampUnit(r),
+    g: clampUnit(g),
+    b: clampUnit(b),
+    alpha: clampUnit(alpha),
+  };
 }
 
 export function clampRgbColor({ r, g, b, alpha }: RGB<number>) {

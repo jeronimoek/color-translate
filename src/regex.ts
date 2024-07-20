@@ -27,6 +27,8 @@ const hexaValue = /[\da-fA-F]/.source;
 
 // Color formats names
 
+const colorFunctionName = "color";
+const a98Name = "a98-rgb";
 const rgbName = capture("rgba?");
 const hslName = capture("hsla?");
 const hwbName = capture("hwb");
@@ -81,6 +83,10 @@ const hex = new RegExp(
 );
 const hex0x = new RegExp(
   start + capture("0x") + orJoin(hexSingle, hexDouble) + end
+);
+
+const a98 = new RegExp(
+  colorWrap(colorFunctionName, [a98Name, decimal, decimal, decimal])
 );
 
 const rgbLegacy = colorWrap(rgbName, [decimal, decimal, decimal], true);
@@ -142,10 +148,10 @@ const cmyk = new RegExp(
 
 const color = new RegExp(
   orJoin(
-    ...[hex, hex0x, rgb, hsl, hwb, lab, lch, oklab, oklch, cmyk].map(
+    ...[a98, hex, hex0x, rgb, hsl, hwb, lab, lch, oklab, oklch, cmyk].map(
       (regex) => regex.source
     )
   )
 );
 
-export { hex, hex0x, rgb, hsl, hwb, lab, lch, oklab, oklch, cmyk, color };
+export { a98, hex, hex0x, rgb, hsl, hwb, lab, lch, oklab, oklch, cmyk, color };

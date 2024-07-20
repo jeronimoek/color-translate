@@ -92,7 +92,24 @@ export interface CMYK<T extends number | string> {
 
 export type RawCMYK = CMYK<number> | CMYK<string>;
 
+/**
+ * Red: 0-1
+ * Green: 0-1
+ * Blue: 0-1
+ */
+export interface A98<T extends number | string> {
+  r: T;
+  g: T;
+  b: T;
+  a98: true;
+  alpha: T;
+}
+
+export type RawA98 = A98<number> | A98<string>;
+
 export type Color =
+  | A98<number>
+  | A98<string>
   | RGB<number>
   | RGB<string>
   | HSL<number>
@@ -130,7 +147,7 @@ export interface GeneralOptions extends StringOptions {
   cacheInput: boolean;
 }
 
-type ToStringColor = (options: Partial<StringOptions>) => string;
+type ToStringColor = (options?: Partial<StringOptions>) => string;
 
 export interface GetColor {
   toString: ToStringColor;

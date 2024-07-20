@@ -1,4 +1,5 @@
 import {
+  A98,
   CMYK,
   HSL,
   HWB,
@@ -6,6 +7,7 @@ import {
   LCH,
   OKLAB,
   OKLCH,
+  RawA98,
   RawCMYK,
   RawHSL,
   RawHWB,
@@ -17,6 +19,7 @@ import {
   RGB,
 } from "./types";
 import {
+  a98Parse,
   hueParse,
   labABParse,
   lchChromaParse,
@@ -31,6 +34,23 @@ import {
 } from "./utils";
 
 // These functions clamp color values to use them directly with the library "@csstools/convert-colors"
+
+export function standardizePartialA98(
+  color: Partial<RawA98>
+): Partial<A98<number>> {
+  const { r, g, b, a98, alpha } = color;
+  return {
+    r: r != null ? a98Parse(r) : undefined,
+    g: g != null ? a98Parse(g) : undefined,
+    b: b != null ? a98Parse(b) : undefined,
+    a98,
+    alpha: alpha != null ? percentageParse(alpha) : undefined,
+  };
+}
+
+export function standardizeA98(color: RawA98): A98<number> {
+  return standardizePartialA98(color) as A98<number>;
+}
 
 export function standardizePartialRgb(
   color: Partial<RawRGB>

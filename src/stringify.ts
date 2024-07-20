@@ -1,4 +1,5 @@
 import {
+  clampA98Color,
   clampCmykColor,
   clampHexColor,
   clampHslColor,
@@ -12,6 +13,7 @@ import {
 import { AngleUnit, ColorFormat } from "./enum";
 import { merge, round } from "./helper";
 import {
+  A98,
   CMYK,
   GetColor,
   HEX,
@@ -27,17 +29,18 @@ import {
 } from "./types";
 import { degToGrad, degToRad, degToTurn } from "./utils";
 
-function formatAllowLegacy(format: ColorFormat) {
-  return [
+function formatAllowLegacy(format: string) {
+  const allowedLegacyFormats: string[] = [
     ColorFormat.RGB,
     ColorFormat.RGBA,
     ColorFormat.HSL,
     ColorFormat.HSLA,
-  ].includes(format);
+  ];
+  return allowedLegacyFormats.includes(format);
 }
 
 function genericToString(
-  format: ColorFormat,
+  format: string,
   values: ValuesArray,
   _alpha: number,
   { legacy, spaced, maxDigits }: StringOptions
@@ -84,6 +87,27 @@ function stringifyDeg(angle: number, options: StringOptions) {
     default:
       return round(angle, maxDigits) + "deg";
   }
+}
+
+export function a98ToString(
+  this: A98<number> & GetColor,
+  customOptions: Partial<StringOptions> = {}
+) {
+  const { options } = this;
+  const stringOptions = merge(options, customOptions);
+  let { r, g, b, alpha } = this;
+  if (stringOptions.limitToColorSpace) {
+    ({ r, g, b, alpha } = clampA98Color({ r, g, b, a98: true, alpha }));
+  }
+
+  const { maxDigits } = stringOptions;
+
+  return genericToString(
+    "color",
+    ["a98-rgb", round(r, maxDigits), round(g, maxDigits), round(b, maxDigits)],
+    alpha,
+    stringOptions
+  );
 }
 
 export function rgbToString(
