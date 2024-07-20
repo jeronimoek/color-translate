@@ -5,6 +5,7 @@ import ColorTranslator from "../src/index";
 expect.extend(matchers);
 
 const redRgb = { r: 255, g: 0, b: 0 };
+const redA98 = { r: 0.86, g: 0, b: 0, a98: true };
 const redHex = { r: "FF", g: "00", b: "00", alpha: "FF" };
 const redHsl = { h: 0, s: 1, l: 0.5 };
 const redHwb = { h: 0, w: 0, b: 0 };
@@ -23,6 +24,7 @@ const redRgbStringLegacyUnspaced = `rgb(${redRgb.r},${redRgb.g},${redRgb.b})`;
 const redHslStringDeg = `hsl(${redHsl.h}deg ${redHsl.s * 100}% ${
   redHsl.l * 100
 }%)`;
+const redA98String = `color(a98-rgb ${redA98.r} ${redA98.g} ${redA98.b})`;
 const redHslStringTurn = `hsl(${redHsl.h / 360}turn ${redHsl.s * 100}% ${
   redHsl.l * 100
 }%)`;
@@ -60,6 +62,10 @@ const redCmykStringPercentage = `device-cmyk(${redCmyk.c * 100}% ${
 
 const yellowRgb = { r: 255, g: 255, b: 0 };
 const yellowRgbString = `rgb(${yellowRgb.r} ${yellowRgb.g} ${yellowRgb.b})`;
+
+const yellowA98 = { r: 0.86, g: 1, b: 0, a98: true };
+const yellowA98String = `color(a98-rgb ${yellowA98.r} ${yellowA98.g} ${yellowA98.b})`;
+
 const yellowHex = { r: "FF", g: "FF", b: "00" };
 const yellowHexString = `#${yellowHex.r}${yellowHex.g}${yellowHex.b}`;
 const yellowHex0xString = `0x${yellowHex.r}${yellowHex.g}${yellowHex.b}`;
@@ -91,6 +97,8 @@ const redRgbStringAlpha = `rgba(${redRgb.r} ${redRgb.g} ${redRgb.b} / ${alpha})`
 const redRgbStringAlphaPercentage = `rgba(${redRgb.r} ${redRgb.g} ${
   redRgb.b
 } / ${alpha * 100}%)`;
+
+const redA98StringAlpha = `color(a98-rgb ${redA98.r} ${redA98.g} ${redA98.b} / ${alpha})`;
 
 const hexAlpha = "88";
 
@@ -146,6 +154,16 @@ describe("Output object", () => {
     expect(round(color.rgb.g)).toEqual(redRgb.g);
     expect(round(color.rgb.b)).toEqual(redRgb.b);
     expect(round(color.rgb.alpha)).toEqual(1);
+  });
+
+  it("should return the same A98 color", () => {
+    const color = new ColorTranslator(redA98);
+    expect(color.a98).toBeObject();
+    expect(round(color.a98.r)).toEqual(redA98.r);
+    expect(round(color.a98.g)).toEqual(redA98.g);
+    expect(round(color.a98.b)).toEqual(redA98.b);
+    expect(color.a98.a98).toEqual(redA98.a98);
+    expect(round(color.a98.alpha)).toEqual(1);
   });
 
   it("should return the same HEX color", () => {
@@ -301,6 +319,7 @@ describe("Translate colors", () => {
   it("should translate from rgb to all formats", () => {
     const color = new ColorTranslator(redRgb);
     expect(color.rgb.toString()).toEqual(redRgbString);
+    expect(color.a98.toString()).toEqual(redA98String);
     expect(color.hex.toString()).toEqual(redHexString);
     expect(color.hex0x.toString()).toEqual(redHex0xString);
     expect(color.hsl.toString()).toEqual(redHslString);
@@ -321,6 +340,13 @@ describe("Update colors", () => {
     expect(color.rgb.toString()).toEqual(yellowRgbString);
     expect(color.hex.toString()).toEqual(yellowHexString);
     expect(color.hex0x.toString()).toEqual(yellowHex0xString);
+  });
+
+  it("should update a98", () => {
+    const color = new ColorTranslator(redA98);
+    color.updateA98({ g: yellowA98.g });
+    color.updateA98({});
+    expect(color.a98.toString()).toEqual(yellowA98String);
   });
 
   it("should update hsl", () => {
@@ -388,6 +414,11 @@ describe("Input string", () => {
   it("should return the same rgb string color (percentage)", () => {
     const color = new ColorTranslator(redRgbStringPercentage);
     expect(color.rgb.toString()).toEqual(redRgbString);
+  });
+
+  it("should return the same a98 string color", () => {
+    const color = new ColorTranslator(redA98String);
+    expect(color.a98.toString()).toEqual(redA98String);
   });
 
   it("should return the same hex string color", () => {
@@ -497,6 +528,16 @@ describe("Alpha input", () => {
     expect(color.rgb.toString()).toEqual(redRgbStringAlpha);
   });
 
+  it("should match alpha value a98 property", () => {
+    const color = new ColorTranslator(redA98StringAlpha);
+    expect(color.a98.alpha).toEqual(alpha);
+  });
+
+  it("should match alpha value a98", () => {
+    const color = new ColorTranslator(redA98StringAlpha);
+    expect(color.a98.toString()).toEqual(redA98StringAlpha);
+  });
+
   it("should match alpha value hex property", () => {
     const color = new ColorTranslator(redHexStringAlpha);
     expect(color.hex.alpha).toEqual(hexAlpha);
@@ -559,6 +600,16 @@ describe("Clamp output", () => {
 
   it("should clamp rgb output", () => {
     expect(color.rgb.toString()).toEqual("rgb(255 0 0)");
+  });
+
+  it("should not clamp a98 output", () => {
+    expect(color.a98.toString({ limitToColorSpace: false })).toEqual(
+      "color(a98-rgb 0.94 0 0)"
+    );
+  });
+
+  it("should clamp a98 output", () => {
+    expect(color.a98.toString()).toEqual("color(a98-rgb 0.94 0 0)");
   });
 
   it("should not clamp hsl output", () => {
@@ -657,6 +708,11 @@ describe("Cmyk black support", () => {
     const color = new ColorTranslator(blackCmyk);
     expect(color.cmyk.toString()).toEqual(blackCmykString);
   });
+
+  it("should not clamp rgb output without cacheInput", () => {
+    const color = new ColorTranslator(blackCmyk, { cacheInput: false });
+    expect(color.cmyk.toString()).toEqual(blackCmykString);
+  });
 });
 
 describe("Lch hue fix", () => {
@@ -671,7 +727,7 @@ describe("Lch hue fix", () => {
 });
 
 describe("Cache input color", () => {
-  it("should ignore HSL saturation", () => {
+  it("should ignore new HSL saturation", () => {
     const color = new ColorTranslator(blackHsl, { cacheInput: false });
     expect(color.hsl.h).toEqual(blackHsl.h);
     expect(color.hsl.s).toEqual(blackHsl.s);
@@ -682,7 +738,7 @@ describe("Cache input color", () => {
     expect(color.hsl.l).toEqual(blackHsl.l);
   });
 
-  it("should maintain HSL saturation", () => {
+  it("should persist new HSL saturation", () => {
     const color = new ColorTranslator(blackHsl);
     expect(color.hsl.h).toEqual(blackHsl.h);
     expect(color.hsl.s).toEqual(blackHsl.s);

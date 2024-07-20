@@ -38,11 +38,12 @@ import {
 export function standardizePartialA98(
   color: Partial<RawA98>
 ): Partial<A98<number>> {
-  const { r, g, b, alpha } = color;
+  const { r, g, b, a98, alpha } = color;
   return {
     r: r != null ? a98Parse(r) : undefined,
     g: g != null ? a98Parse(g) : undefined,
     b: b != null ? a98Parse(b) : undefined,
+    a98,
     alpha: alpha != null ? percentageParse(alpha) : undefined,
   };
 }

@@ -23,7 +23,7 @@ export function a98ToRgb({
   alpha,
 }: A98<number>): RGB<number> {
   const [r, g, b] = [aR, aG, aB]
-    .map((v) => v ** 2.19921875)
+    .map((v) => (v < 0 ? 0 : v ** 2.19921875))
     .map((v) => v * 100);
 
   const x = r * 0.57667 + g * 0.18555 + b * 0.18819;
@@ -45,7 +45,7 @@ export function rgbToA98({ r, g, b, alpha }: RGB<number>): A98<number> {
   let aG = x * -0.96927 + y * 1.87601 + z * 0.04156;
   let aB = x * 0.01345 + y * -0.11839 + z * 1.01541;
 
-  [aR, aG, aB] = [aR, aG, aB].map((v) => v ** (1 / 2.19921875));
+  [aR, aG, aB] = [aR, aG, aB].map((v) => (v < 0 ? 0 : v ** (1 / 2.19921875)));
 
   return { r: aR, g: aG, b: aB, a98: true, alpha };
 }
