@@ -23,7 +23,6 @@ import {
   hueParse,
   labABParse,
   lchChromaParse,
-  percentageParse,
   rgbParse,
 } from "./unitTranslation";
 import {
@@ -44,7 +43,7 @@ export function standardizePartialA98(
     g: g != null ? a98Parse(g) : undefined,
     b: b != null ? a98Parse(b) : undefined,
     a98,
-    alpha: alpha != null ? percentageParse(alpha) : undefined,
+    alpha: alpha != null ? percentageToNumber(alpha) : undefined,
   };
 }
 
@@ -60,7 +59,7 @@ export function standardizePartialRgb(
     r: r != null ? rgbParse(r) : undefined,
     g: g != null ? rgbParse(g) : undefined,
     b: b != null ? rgbParse(b) : undefined,
-    alpha: alpha != null ? percentageParse(alpha) : undefined,
+    alpha: alpha != null ? percentageToNumber(alpha) : undefined,
   };
 }
 
@@ -76,7 +75,7 @@ export function standardizePartialHsl(
     h: h != null ? hueParse(h) : undefined,
     s: s != null ? percentageToNumber(s) : undefined,
     l: l != null ? percentageToNumber(l) : undefined,
-    alpha: alpha != null ? percentageParse(alpha) : undefined,
+    alpha: alpha != null ? percentageToNumber(alpha) : undefined,
   };
 }
 
@@ -92,7 +91,7 @@ export function standardizePartialHwb(
     h: h != null ? hueParse(h) : undefined,
     w: w != null ? percentageToNumber(w) : undefined,
     b: b != null ? percentageToNumber(b) : undefined,
-    alpha: alpha != null ? percentageParse(alpha) : undefined,
+    alpha: alpha != null ? percentageToNumber(alpha) : undefined,
   };
 }
 
@@ -108,7 +107,7 @@ export function standardizePartialLab(
     l: l != null ? percentageRawToNumber(l) : undefined,
     a: a != null ? labABParse(a) : undefined,
     b: b != null ? labABParse(b) : undefined,
-    alpha: alpha != null ? percentageParse(alpha) : undefined,
+    alpha: alpha != null ? percentageToNumber(alpha) : undefined,
   };
 }
 
@@ -124,7 +123,7 @@ export function standardizePartialLch(
     l: l != null ? percentageRawToNumber(l) : undefined,
     c: c != null ? lchChromaParse(c) : undefined,
     h: h != null ? hueParse(h) : undefined,
-    alpha: alpha != null ? percentageParse(alpha) : undefined,
+    alpha: alpha != null ? percentageToNumber(alpha) : undefined,
   };
 }
 
@@ -137,10 +136,10 @@ export function standardizePartialOklab(
 ): Partial<OKLAB<number>> {
   const { l, a, b, alpha, ok } = color;
   return {
-    l: l != null ? percentageParse(l) : undefined,
+    l: l != null ? percentageToNumber(l) : undefined,
     a: a != null ? oklabABRawToNumber(a) : undefined,
     b: b != null ? oklabABRawToNumber(b) : undefined,
-    alpha: alpha != null ? percentageParse(alpha) : undefined,
+    alpha: alpha != null ? percentageToNumber(alpha) : undefined,
     ok,
   };
 }
@@ -154,10 +153,10 @@ export function standardizePartialOklch(
 ): Partial<OKLCH<number>> {
   const { l, c, h, alpha, ok } = color;
   return {
-    l: l != null ? percentageParse(l) : undefined,
+    l: l != null ? percentageToNumber(l) : undefined,
     c: c != null ? oklchChromaRawToNumber(c) : undefined,
     h: h != null ? hueParse(h) : undefined,
-    alpha: alpha != null ? percentageParse(alpha) : undefined,
+    alpha: alpha != null ? percentageToNumber(alpha) : undefined,
     ok,
   };
 }
@@ -175,7 +174,7 @@ export function standardizePartialCmyk(
     m: m != null ? percentageToNumber(m) : undefined,
     y: y != null ? percentageToNumber(y) : undefined,
     k: k != null ? percentageToNumber(k) : undefined,
-    alpha: alpha != null ? percentageParse(alpha) : undefined,
+    alpha: alpha != null ? percentageToNumber(alpha) : undefined,
   };
 }
 

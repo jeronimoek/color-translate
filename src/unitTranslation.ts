@@ -29,25 +29,6 @@ export const rgbParse: ParseFunc = (value) => {
 };
 
 /**
- * Percentage to float
- * @example
- * percentageParse(0.5)     // 0.5
- * percentageParse('0.5')   // 0.5
- * percentageParse('50%')   // 0.5
- * percentageParse('125%')  // 1.25
- * percentageParse('-125%') // -1.25
- */
-export const percentageParse: ParseFunc = (value) => {
-  if (typeof value === "number") {
-    return value;
-  }
-  if (isPercentage(value)) {
-    return parseFloat(value) / 100;
-  }
-  return parseFloat(value);
-};
-
-/**
  * Translate hue to 0 - 360
  */
 export const hueParse: ParseFunc = (value) => {
