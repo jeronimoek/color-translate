@@ -6,6 +6,8 @@ This package allows translating colors among all valid css formats
 
 [Website](https://jeronimoek.github.io/color-translate-web/)
 
+[Visual Studio Code Extension](https://github.com/jeronimoek/color-picker-universal)
+
 [NPM](https://www.npmjs.com/package/color-translate)
 
 [Github Repository](https://github.com/jeronimoek/color-translate)
