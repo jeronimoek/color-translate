@@ -2,6 +2,14 @@
 
 This package allows translating colors among all valid css formats
 
+## 🌐 Links
+
+[Website](https://jeronimoek.github.io/color-translate-web/)
+
+[NPM](https://www.npmjs.com/package/color-translate)
+
+[Github Repository](https://github.com/jeronimoek/color-translate)
+
 ## Installation
 
 Using npm:
@@ -41,8 +49,4 @@ console.log(color.lch.toString({ legacy: true }));
 | maxDigits         | Round color values to a max number of decimal places | `2`           |
 | spaced            | Space between string color values                    | `false`       |
 
-## 🌐 Links
 
-[NPM](https://www.npmjs.com/package/color-translate)
-
-[Github Repository](https://github.com/jeronimoek/color-translate)
