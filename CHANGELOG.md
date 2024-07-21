@@ -1,3 +1,12 @@
+## [1.1.2](https://github.com/jeronimoek/color-translate/compare/v1.1.1...v1.1.2) (2024-07-21)
+
+
+### Bug Fixes
+
+* remove unnecessary function ([ab2778e](https://github.com/jeronimoek/color-translate/commit/ab2778e08aeddfe6522b132b1a48994f74800c34))
+
+
+
 ## [1.1.1](https://github.com/jeronimoek/color-translate/compare/v1.1.0...v1.1.1) (2024-07-20)
 
 
@@ -38,16 +47,6 @@
 
 * add option to maintain a copy of the last input color ([c4cb2dc](https://github.com/jeronimoek/color-translate/commit/c4cb2dcfc2f6c9f2cdf7a2293bd001c46d3172a3))
 * enable cached input by default, add tests ([3bbc6bf](https://github.com/jeronimoek/color-translate/commit/3bbc6bf0c1328045edce2c129010cabc20af4599))
-
-
-
-## [0.4.2](https://github.com/jeronimoek/color-translate/compare/v0.4.1...v0.4.2) (2023-12-25)
-
-
-### Bug Fixes
-
-* lch hue ([0969784](https://github.com/jeronimoek/color-translate/commit/0969784dd315ee1ef2f0e2b9f0d6bc9af84a1977))
-* lch hue output ([0076003](https://github.com/jeronimoek/color-translate/commit/0076003764b79ab2b1157999e346fa6cca208fce))
 
 
 
