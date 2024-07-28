@@ -1,3 +1,12 @@
+# [1.2.0](https://github.com/jeronimoek/color-translate/compare/v1.1.2...v1.2.0) (2024-07-28)
+
+
+### Features
+
+* add named format ([b94394e](https://github.com/jeronimoek/color-translate/commit/b94394e3be580c9b88947c2ffe9a34c34fefb9f4))
+
+
+
 ## [1.1.2](https://github.com/jeronimoek/color-translate/compare/v1.1.1...v1.1.2) (2024-07-21)
 
 
@@ -37,16 +46,6 @@
 ### Bug Fixes
 
 * oklch hue wrong output ([78d10fc](https://github.com/jeronimoek/color-translate/commit/78d10fc4746d86fca5b134435d3511b6ae6c9c17))
-
-
-
-# [0.5.0](https://github.com/jeronimoek/color-translate/compare/v0.4.2...v0.5.0) (2023-12-27)
-
-
-### Features
-
-* add option to maintain a copy of the last input color ([c4cb2dc](https://github.com/jeronimoek/color-translate/commit/c4cb2dcfc2f6c9f2cdf7a2293bd001c46d3172a3))
-* enable cached input by default, add tests ([3bbc6bf](https://github.com/jeronimoek/color-translate/commit/3bbc6bf0c1328045edce2c129010cabc20af4599))
 
 
 
