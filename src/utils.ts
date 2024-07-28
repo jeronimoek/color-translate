@@ -18,6 +18,7 @@ import {
   labToRgb,
   lchToRgb,
 } from "./colorTranslation";
+import { namedColorsLAB } from "./constants";
 import { ColorFormat } from "./enum";
 import { oklabToRgb, oklchToRgb } from "./okColors";
 import { color as colorRegex } from "./regex";
@@ -32,9 +33,17 @@ import {
   standardizeOklch,
   standardizeRgb,
 } from "./standardize";
-import { A98, Color, ColorInput, OKLAB, OKLCH, RGB } from "./types";
+import { A98, Color, ColorInput, LAB, OKLAB, OKLCH, RGB } from "./types";
 
 function parseColorString(colorString: string): Color {
+  let color: Color;
+
+  const namedMatch = namedColorsLAB[colorString as keyof typeof namedColorsLAB];
+  if (namedMatch) {
+    const [l, a, b] = namedMatch;
+    return { l, a, b, alpha: 1 };
+  }
+
   const matches = colorRegex.exec(colorString);
   if (!matches) throw Error("Invalid input: " + colorString);
   const [, format, ...values] = matches.filter((v) => v);
@@ -48,8 +57,6 @@ function parseColorString(colorString: string): Color {
       alpha: parseInt(values[3].padStart(2, values[3]), 16) / 255,
     };
   }
-
-  let color: Color;
 
   switch (format.toLocaleLowerCase()) {
     case "hsl":
@@ -260,4 +267,41 @@ export function oklabABRawToNumber(ABRaw: string | number) {
 
 export function oklchChromaRawToNumber(chromaRaw: string | number) {
   return percentageToNumber(chromaRaw, 0, 0.4);
+}
+
+export function deltaE(
+  labA: [number, number, number],
+  labB: [number, number, number]
+) {
+  const deltaL = labA[0] - labB[0];
+  const deltaA = labA[1] - labB[1];
+  const deltaB = labA[2] - labB[2];
+  const c1 = Math.sqrt(labA[1] ** 2 + labA[2] ** 2);
+  const c2 = Math.sqrt(labB[1] ** 2 + labB[2] ** 2);
+  const deltaC = c1 - c2;
+  let deltaH = deltaA ** 2 + deltaB ** 2 - deltaC ** 2;
+  deltaH = deltaH < 0 ? 0 : Math.sqrt(deltaH);
+  const sc = 1.0 + 0.045 * c1;
+  const sh = 1.0 + 0.015 * c1;
+  const deltaLKlsl = deltaL / 1.0;
+  const deltaCkcsc = deltaC / sc;
+  const deltaHkhsh = deltaH / sh;
+  const i = deltaLKlsl ** 2 + deltaCkcsc ** 2 + deltaHkhsh ** 2;
+  return i < 0 ? 0 : Math.sqrt(i);
+}
+
+export function findClosestNamedColor(lab: LAB<number>) {
+  let minDelta = Number.POSITIVE_INFINITY;
+  let closestNamedColor = Object.keys(namedColorsLAB)[0];
+
+  Object.entries(namedColorsLAB).forEach(([namedColor, namedColorLAB]) => {
+    const { l, a, b } = lab;
+    const delta = deltaE([l, a, b], namedColorLAB);
+    if (delta < minDelta) {
+      minDelta = delta;
+      closestNamedColor = namedColor;
+    }
+  });
+
+  return closestNamedColor;
 }

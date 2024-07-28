@@ -65,7 +65,7 @@ import {
   RawRGB,
   RGB,
 } from "./types";
-import { colorToRgb100 } from "./utils";
+import { colorToRgb100, findClosestNamedColor } from "./utils";
 
 export default class ColorTranslator {
   private _rgb: RGB<number>;
@@ -344,6 +344,12 @@ export default class ColorTranslator {
     const rgb = a98ToRgb(newA98);
     this._rgb = rgb;
     return this;
+  }
+
+  // Named
+
+  get named(): string {
+    return findClosestNamedColor(this.lab);
   }
 
   // Options

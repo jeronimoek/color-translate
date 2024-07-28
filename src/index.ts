@@ -9,6 +9,7 @@ import {
   hwb as hwbRegex,
   lab as labRegex,
   lch as lchRegex,
+  namedColor as namedColorRegex,
   oklab as oklabRegex,
   oklch as oklchRegex,
   rgb as rgbRegex,
@@ -30,4 +31,5 @@ export {
   oklabRegex,
   oklchRegex,
   rgbRegex,
+  namedColorRegex,
 };

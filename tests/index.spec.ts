@@ -130,6 +130,11 @@ const blackHslSaturated = { h: 0, s: 90, l: 0 };
 const grayHwb = { h: 0, w: 80, b: 80 };
 const grayHwbModified = { h: 180, w: -79, b: -79 };
 
+const namedRed = "red";
+
+const rgbRebeccaPurple = "rgb(100 50 150)";
+const namedRebeccaPurple = "rebeccapurple";
+
 describe("Class ColorTranslator", () => {
   it("should be defined", () => {
     expect(ColorTranslator).toBeDefined();
@@ -774,5 +779,24 @@ describe("Cache input color", () => {
     expect(color.hwb.h).toEqual(grayHwb.h);
     expect(color.hwb.w).toEqual(grayHwb.w);
     expect(color.hwb.b).toEqual(grayHwb.b);
+  });
+});
+
+describe("Named color", () => {
+  it("should return correct lab values", () => {
+    const color = new ColorTranslator(namedRed);
+    expect(color.lab.l).toEqual(redLab.l);
+    expect(color.lab.a).toEqual(redLab.a);
+    expect(color.lab.b).toEqual(redLab.b);
+  });
+
+  it("should return same named value", () => {
+    const color = new ColorTranslator(namedRed);
+    expect(color.named).toEqual(namedRed);
+  });
+
+  it("should return correct named value", () => {
+    const color = new ColorTranslator(rgbRebeccaPurple);
+    expect(color.named).toEqual(namedRebeccaPurple);
   });
 });

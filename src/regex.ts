@@ -1,3 +1,4 @@
+import { namedColorsLAB } from "./constants";
 import { AngleUnit } from "./enum";
 
 const wrap = (regex: string) => "(?:" + regex + ")";
@@ -154,4 +155,20 @@ const color = new RegExp(
   )
 );
 
-export { a98, hex, hex0x, rgb, hsl, hwb, lab, lch, oklab, oklch, cmyk, color };
+const namedColor = new RegExp(`${Object.keys(namedColorsLAB).join("|")}`);
+
+export {
+  a98,
+  hex,
+  hex0x,
+  rgb,
+  hsl,
+  hwb,
+  lab,
+  lch,
+  oklab,
+  oklch,
+  cmyk,
+  color,
+  namedColor,
+};
