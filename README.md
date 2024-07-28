@@ -2,6 +2,16 @@
 
 This package allows translating colors among all valid css formats
 
+## 🌐 Links
+
+[Website](https://jeronimoek.github.io/color-translate-web/)
+
+[Visual Studio Code Extension](https://github.com/jeronimoek/color-picker-universal)
+
+[NPM](https://www.npmjs.com/package/color-translate)
+
+[Github Repository](https://github.com/jeronimoek/color-translate)
+
 ## Installation
 
 Using npm:
@@ -107,9 +117,3 @@ Here is a table with the standard presentations of each color format property (t
 | OKLAB                | a, b                | Number/String -0.4 - 0.4, String Percentage -100% - 100%                     | -0.2, '-0.2', '-50%'                               |
 | OKLCH                | c                   | Number/String 0-0.4, String Percentage                                       | 0.2, '0.2', '50%'                                  |
 | CMYK                 | c, m, y, k          | Number/String 0-1, String Percentage                                         | 0.5, '0.5', '50%'                                  |
-
-## 🌐 Links
-
-[NPM](https://www.npmjs.com/package/color-translate)
-
-[Github Repository](https://github.com/jeronimoek/color-translate)
