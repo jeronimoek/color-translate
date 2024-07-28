@@ -1,3 +1,12 @@
+## [1.2.1](https://github.com/jeronimoek/color-translate/compare/v1.2.0...v1.2.1) (2024-07-28)
+
+
+### Bug Fixes
+
+* update readme and minor changes ([ef1ba34](https://github.com/jeronimoek/color-translate/commit/ef1ba34796a96c79ec88020cbf25f10208c9551f))
+
+
+
 # [1.2.0](https://github.com/jeronimoek/color-translate/compare/v1.1.2...v1.2.0) (2024-07-28)
 
 
@@ -37,15 +46,6 @@
 
 * add a98 format, make options optional, return color object in update functions ([a40739f](https://github.com/jeronimoek/color-translate/commit/a40739f1fa59f6230c4d243170ad414a4b0f4555))
 * add a98 tests and fix errors ([6ce61c1](https://github.com/jeronimoek/color-translate/commit/6ce61c1340d7772abf90717e28635ed054ab12f2))
-
-
-
-## [0.5.1](https://github.com/jeronimoek/color-translate/compare/v0.5.0...v0.5.1) (2023-12-27)
-
-
-### Bug Fixes
-
-* oklch hue wrong output ([78d10fc](https://github.com/jeronimoek/color-translate/commit/78d10fc4746d86fca5b134435d3511b6ae6c9c17))
 
 
 
