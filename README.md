@@ -79,13 +79,13 @@ console.log(color.lch.toString({ angleUnit: "rad" }));
 
 Once created the ColorTranslator instance, we can call these methods
 
-| Method               | Description                                                      | Example                                                                |
-| -------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| .<format>            | Returns a color object, containing it's values as properties     | `.rgb` = `{ r: 255, g: 100, b: 0 }`                                    |
-| .<format>.toString() | Returns a string representation of the color in the given format | `.rgb.toString()` = `rgb(255, 100, 0)`                                 |
-| .update<format>(...) | Updates specific properties in the given format                  | `.updateRgb({ r: 0 }).rgb` = `{ r: 0, g: 100, b: 0 }`                  |
-| .options             | Returns the current options. (See [Options](#options))           | `.options` = `{ spaced: true, ... }`                                   |
-| .updateOptions(...)  | Updates the given options. (See [Options](#options))             | `.updateOptions({ spaced: false }).options` = `{ spaced: false, ... }` |
+| Method                 | Description                                                      | Example                                                                |
+| ---------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| .\<format\>            | Returns a color object, containing it's values as properties     | `.rgb` = `{ r: 255, g: 100, b: 0 }`                                    |
+| .\<format\>.toString() | Returns a string representation of the color in the given format | `.rgb.toString()` = `rgb(255, 100, 0)`                                 |
+| .update\<format\>(...) | Updates specific properties in the given format                  | `.updateRgb({ r: 0 }).rgb` = `{ r: 0, g: 100, b: 0 }`                  |
+| .options               | Returns the current options. (See [Options](#options))           | `.options` = `{ spaced: true, ... }`                                   |
+| .updateOptions(...)    | Updates the given options. (See [Options](#options))             | `.updateOptions({ spaced: false }).options` = `{ spaced: false, ... }` |
 
 ### Options
 
