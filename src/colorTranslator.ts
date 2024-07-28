@@ -87,17 +87,17 @@ export default class ColorTranslator {
 
     const { rgb100, format, standardizedColor } = colorToRgb100(color);
 
-    this.setCachedInput(format, standardizedColor);
+    this._setCachedInput(format, standardizedColor);
     this._rgb = rgb100;
   }
 
-  cachedInput(format: ColorFormat) {
+  private _cachedInput(format: ColorFormat) {
     return this._options.cacheInput && this._lastInput?.format === format
       ? this._lastInput
       : undefined;
   }
 
-  setCachedInput(format: ColorFormat, color: ColorInput) {
+  private _setCachedInput(format: ColorFormat, color: ColorInput) {
     this._lastInput = { format, color };
   }
 
@@ -105,7 +105,7 @@ export default class ColorTranslator {
 
   get hex(): HEX & GetColor {
     const rgb100 =
-      (this.cachedInput(ColorFormat.RGB)?.color as RGB<number>) ?? this._rgb;
+      (this._cachedInput(ColorFormat.RGB)?.color as RGB<number>) ?? this._rgb;
     return {
       ...rgbToHex(rgb100ToRgb(rgb100)),
       toString: hexToString,
@@ -117,7 +117,7 @@ export default class ColorTranslator {
 
   get hex0x(): HEX & GetColor {
     const rgb100 =
-      (this.cachedInput(ColorFormat.RGB)?.color as RGB<number>) ?? this._rgb;
+      (this._cachedInput(ColorFormat.RGB)?.color as RGB<number>) ?? this._rgb;
     return {
       ...rgbToHex(rgb100ToRgb(rgb100)),
       toString: hex0xToString,
@@ -129,7 +129,7 @@ export default class ColorTranslator {
 
   get rgb(): RGB<number> & GetColor {
     const rgb100 =
-      (this.cachedInput(ColorFormat.RGB)?.color as RGB<number>) ?? this._rgb;
+      (this._cachedInput(ColorFormat.RGB)?.color as RGB<number>) ?? this._rgb;
     return {
       ...rgb100ToRgb(rgb100),
       toString: rgbToString,
@@ -139,10 +139,10 @@ export default class ColorTranslator {
 
   updateRgb(rgbRaw: Partial<RawRGB>) {
     const rgb100 =
-      (this.cachedInput(ColorFormat.RGB)?.color as RGB<number>) ?? this._rgb;
+      (this._cachedInput(ColorFormat.RGB)?.color as RGB<number>) ?? this._rgb;
     const rgb = standardizePartialRgb(rgbRaw);
     this._rgb = merge(rgb100, rgb);
-    this.setCachedInput(ColorFormat.RGB, this._rgb);
+    this._setCachedInput(ColorFormat.RGB, this._rgb);
     return this;
   }
 
@@ -150,7 +150,7 @@ export default class ColorTranslator {
 
   get hsl(): HSL<number> & GetColor {
     const hsl =
-      (this.cachedInput(ColorFormat.HSL)?.color as HSL<number>) ??
+      (this._cachedInput(ColorFormat.HSL)?.color as HSL<number>) ??
       rgbToHsl(this._rgb);
     return {
       ...hsl,
@@ -162,10 +162,10 @@ export default class ColorTranslator {
   updateHsl(hslRaw: Partial<RawHSL>) {
     const hsl = standardizePartialHsl(hslRaw);
     const currentHsl =
-      (this.cachedInput(ColorFormat.HSL)?.color as HSL<number>) ??
+      (this._cachedInput(ColorFormat.HSL)?.color as HSL<number>) ??
       rgbToHsl(this._rgb);
     const newHsl = merge(currentHsl, hsl);
-    this.setCachedInput(ColorFormat.HSL, newHsl);
+    this._setCachedInput(ColorFormat.HSL, newHsl);
     const rgb = hslToRgb(newHsl);
     this._rgb = rgb;
     return this;
@@ -175,7 +175,7 @@ export default class ColorTranslator {
 
   get hwb(): HWB<number> & GetColor {
     const hwb =
-      (this.cachedInput(ColorFormat.HWB)?.color as HWB<number>) ??
+      (this._cachedInput(ColorFormat.HWB)?.color as HWB<number>) ??
       rgbToHwb(this._rgb);
     return {
       ...hwb,
@@ -187,10 +187,10 @@ export default class ColorTranslator {
   updateHwb(hwbRaw: Partial<RawHWB>) {
     const hwb = standardizePartialHwb(hwbRaw);
     const currentHwb =
-      (this.cachedInput(ColorFormat.HWB)?.color as HWB<number>) ??
+      (this._cachedInput(ColorFormat.HWB)?.color as HWB<number>) ??
       rgbToHwb(this._rgb);
     const newHwb = merge(currentHwb, hwb);
-    this.setCachedInput(ColorFormat.HWB, newHwb);
+    this._setCachedInput(ColorFormat.HWB, newHwb);
     const rgb = hwbToRgb(newHwb);
     this._rgb = rgb;
     return this;
@@ -200,7 +200,7 @@ export default class ColorTranslator {
 
   get lab(): LAB<number> & GetColor {
     const lab =
-      (this.cachedInput(ColorFormat.LAB)?.color as LAB<number>) ??
+      (this._cachedInput(ColorFormat.LAB)?.color as LAB<number>) ??
       rgbToLab(this._rgb);
     return {
       ...lab,
@@ -212,10 +212,10 @@ export default class ColorTranslator {
   updateLab(labRaw: Partial<RawLAB>) {
     const lab = standardizePartialLab(labRaw);
     const currentLab =
-      (this.cachedInput(ColorFormat.LAB)?.color as LAB<number>) ??
+      (this._cachedInput(ColorFormat.LAB)?.color as LAB<number>) ??
       rgbToLab(this._rgb);
     const newLab = merge(currentLab, lab);
-    this.setCachedInput(ColorFormat.LAB, newLab);
+    this._setCachedInput(ColorFormat.LAB, newLab);
     const rgb = labToRgb(newLab);
     this._rgb = rgb;
     return this;
@@ -225,7 +225,7 @@ export default class ColorTranslator {
 
   get lch(): LCH<number> & GetColor {
     const lch =
-      (this.cachedInput(ColorFormat.LCH)?.color as LCH<number>) ??
+      (this._cachedInput(ColorFormat.LCH)?.color as LCH<number>) ??
       rgbToLch(this._rgb);
     return {
       ...lch,
@@ -237,20 +237,20 @@ export default class ColorTranslator {
   updateLch(lchRaw: Partial<RawLCH>) {
     const lch = standardizePartialLch(lchRaw);
     const currentLch =
-      (this.cachedInput(ColorFormat.LCH)?.color as LCH<number>) ??
+      (this._cachedInput(ColorFormat.LCH)?.color as LCH<number>) ??
       rgbToLch(this._rgb);
     const newLch = merge(currentLch, lch);
-    this.setCachedInput(ColorFormat.LCH, newLch);
+    this._setCachedInput(ColorFormat.LCH, newLch);
     const rgb = lchToRgb(newLch);
     this._rgb = rgb;
     return this;
   }
 
-  // LAB
+  // OKLAB
 
   get oklab(): OKLAB<number> & GetColor {
     const oklab =
-      (this.cachedInput(ColorFormat.OKLAB)?.color as OKLAB<number>) ??
+      (this._cachedInput(ColorFormat.OKLAB)?.color as OKLAB<number>) ??
       rgbToOklab(this._rgb);
     return {
       ...oklab,
@@ -262,20 +262,20 @@ export default class ColorTranslator {
   updateOklab(oklabRaw: Partial<RawOKLAB>) {
     const oklab = standardizePartialOklab(oklabRaw);
     const currentOklab =
-      (this.cachedInput(ColorFormat.OKLAB)?.color as OKLAB<number>) ??
+      (this._cachedInput(ColorFormat.OKLAB)?.color as OKLAB<number>) ??
       rgbToOklab(this._rgb);
     const newOklab = merge(currentOklab, oklab);
-    this.setCachedInput(ColorFormat.OKLAB, newOklab);
+    this._setCachedInput(ColorFormat.OKLAB, newOklab);
     const rgb = oklabToRgb(newOklab);
     this._rgb = rgb;
     return this;
   }
 
-  // LCH
+  // OKLCH
 
   get oklch(): OKLCH<number> & GetColor {
     const oklch =
-      (this.cachedInput(ColorFormat.OKLCH)?.color as OKLCH<number>) ??
+      (this._cachedInput(ColorFormat.OKLCH)?.color as OKLCH<number>) ??
       rgbToOklch(this._rgb);
     return {
       ...oklch,
@@ -287,10 +287,10 @@ export default class ColorTranslator {
   updateOklch(oklchRaw: Partial<RawOKLCH>) {
     const oklch = standardizePartialOklch(oklchRaw);
     const currentokLch =
-      (this.cachedInput(ColorFormat.OKLCH)?.color as OKLCH<number>) ??
+      (this._cachedInput(ColorFormat.OKLCH)?.color as OKLCH<number>) ??
       rgbToOklch(this._rgb);
     const newOkLch = merge(currentokLch, oklch);
-    this.setCachedInput(ColorFormat.OKLCH, newOkLch);
+    this._setCachedInput(ColorFormat.OKLCH, newOkLch);
     const rgb = oklchToRgb(newOkLch);
     this._rgb = rgb;
     return this;
@@ -300,7 +300,7 @@ export default class ColorTranslator {
 
   get cmyk(): CMYK<number> & GetColor {
     const cmyk =
-      (this.cachedInput(ColorFormat.DEVICE_CMYK)?.color as CMYK<number>) ??
+      (this._cachedInput(ColorFormat.DEVICE_CMYK)?.color as CMYK<number>) ??
       rgbToCmyk(this._rgb);
     return {
       ...cmyk,
@@ -312,10 +312,10 @@ export default class ColorTranslator {
   updateCmyk(cmykRaw: Partial<RawCMYK>) {
     const cmyk = standardizePartialCmyk(cmykRaw);
     const currentCmyk =
-      (this.cachedInput(ColorFormat.DEVICE_CMYK)?.color as CMYK<number>) ??
+      (this._cachedInput(ColorFormat.DEVICE_CMYK)?.color as CMYK<number>) ??
       rgbToCmyk(this._rgb);
     const newCmyk = merge(currentCmyk, cmyk);
-    this.setCachedInput(ColorFormat.DEVICE_CMYK, newCmyk);
+    this._setCachedInput(ColorFormat.DEVICE_CMYK, newCmyk);
     const rgb = cmykToRgb(newCmyk);
     this._rgb = rgb;
     return this;
@@ -325,7 +325,7 @@ export default class ColorTranslator {
 
   get a98(): A98<number> & GetColor {
     const a98 =
-      (this.cachedInput(ColorFormat.A98)?.color as A98<number>) ??
+      (this._cachedInput(ColorFormat.A98)?.color as A98<number>) ??
       rgbToA98(this._rgb);
     return {
       ...a98,
@@ -337,10 +337,10 @@ export default class ColorTranslator {
   updateA98(a98Raw: Partial<RawA98>) {
     const a98 = standardizePartialA98(a98Raw);
     const currentA98 =
-      (this.cachedInput(ColorFormat.A98)?.color as A98<number>) ??
+      (this._cachedInput(ColorFormat.A98)?.color as A98<number>) ??
       rgbToA98(this._rgb);
     const newA98 = merge(currentA98, a98);
-    this.setCachedInput(ColorFormat.A98, newA98);
+    this._setCachedInput(ColorFormat.A98, newA98);
     const rgb = a98ToRgb(newA98);
     this._rgb = rgb;
     return this;
