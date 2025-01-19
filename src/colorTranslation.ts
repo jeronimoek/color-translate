@@ -69,7 +69,6 @@ export function hwbToRgb(hwba: HWB<number>): RGB<number> {
   const { w: white, b: black } = hwba;
   const diff = white + black - 1;
   const subtract = diff / 2;
-
   const [r, g, b] = hwb2rgb(
     hwba.h,
     (hwba.w - subtract) * 100,
