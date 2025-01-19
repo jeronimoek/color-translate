@@ -1,3 +1,12 @@
+## [1.2.6](https://github.com/jeronimoek/color-translate/compare/v1.2.3...v1.2.6) (2025-01-19)
+
+
+### Bug Fixes
+
+* release fix ([e3e71a8](https://github.com/jeronimoek/color-translate/commit/e3e71a848ea0fa1246f9f9166786ca45e40de5f9))
+
+
+
 ## [1.2.3](https://github.com/jeronimoek/color-translate/compare/v1.2.2...v1.2.3) (2025-01-19)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * add named format ([b94394e](https://github.com/jeronimoek/color-translate/commit/b94394e3be580c9b88947c2ffe9a34c34fefb9f4))
-
-
-
-## [1.1.2](https://github.com/jeronimoek/color-translate/compare/v1.1.1...v1.1.2) (2024-07-21)
-
-
-### Bug Fixes
-
-* remove unnecessary function ([ab2778e](https://github.com/jeronimoek/color-translate/commit/ab2778e08aeddfe6522b132b1a48994f74800c34))
 
 
 
