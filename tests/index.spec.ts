@@ -125,10 +125,11 @@ const blackCmykString = `device-cmyk(${blackCmyk.c} ${blackCmyk.m} ${blackCmyk.y
 const blueLch = { l: 32.3, c: 133.82, h: 306.29 };
 
 const blackHsl = { h: 0, s: 0, l: 0 };
-const blackHslSaturated = { h: 0, s: 90, l: 0 };
+const blackHslSaturated = { h: 0, s: 1, l: 0 };
 
-const grayHwb = { h: 0, w: 80, b: 80 };
-const grayHwbModified = { h: 180, w: -79, b: -79 };
+const grayRgbString = "rgb(127.5 127.5 127.5)";
+const grayHwb = { h: 0, w: 0.8, b: 0.8 };
+const grayHwbModified = { h: 0, w: 0.5, b: 0.5 };
 
 const namedRed = "red";
 
@@ -798,5 +799,20 @@ describe("Named color", () => {
   it("should return correct named value", () => {
     const color = new ColorTranslator(rgbRebeccaPurple);
     expect(color.named).toEqual(namedRebeccaPurple);
+  });
+});
+
+describe("Oklch hue when chroma zero", () => {
+  it("should return hue zero", () => {
+    const color = new ColorTranslator(grayRgbString);
+    expect(color.oklch).toBeObject();
+    expect(color.oklch.h).toEqual(0);
+  });
+});
+
+describe("Hwb gray to rgb", () => {
+  it("should return gray", () => {
+    const color = new ColorTranslator(grayHwb);
+    expect(color.rgb.toString()).toEqual(grayRgbString);
   });
 });

@@ -56,10 +56,11 @@ export function rgbToOklch(rgb: RGB<number>): OKLCH<number> {
 }
 
 function oklabToOklch({ l, a, b, alpha, ok }: OKLAB<number>): OKLCH<number> {
-  const h = radToDeg(Math.atan2(b, a));
+  const c = Math.sqrt(a ** 2 + b ** 2);
+  const h = c < 0.00001 ? 0 : radToDeg(Math.atan2(b, a));
   return {
     l,
-    c: Math.sqrt(a ** 2 + b ** 2),
+    c,
     h: h < 0 ? h + 360 : h,
     alpha,
     ok,
