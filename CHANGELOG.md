@@ -1,3 +1,12 @@
+## [1.2.3](https://github.com/jeronimoek/color-translate/compare/v1.2.2...v1.2.3) (2025-01-19)
+
+
+### Bug Fixes
+
+* release fix ([0f7b045](https://github.com/jeronimoek/color-translate/commit/0f7b0453d21458c1545dd6d5352447bc0633f91c))
+
+
+
 ## [1.2.2](https://github.com/jeronimoek/color-translate/compare/v1.2.1...v1.2.2) (2025-01-19)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * remove unnecessary function ([ab2778e](https://github.com/jeronimoek/color-translate/commit/ab2778e08aeddfe6522b132b1a48994f74800c34))
-
-
-
-## [1.1.1](https://github.com/jeronimoek/color-translate/compare/v1.1.0...v1.1.1) (2024-07-20)
-
-
-### Bug Fixes
-
-* add a98 regex export ([5290e93](https://github.com/jeronimoek/color-translate/commit/5290e9334ad9fbe52def5d8f2f58098c7c109f47))
 
 
 
