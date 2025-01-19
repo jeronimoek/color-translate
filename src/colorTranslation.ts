@@ -65,7 +65,16 @@ export function rgbToHsl({ r, g, b, alpha }: RGB<number>): HSL<number> {
 }
 
 export function hwbToRgb(hwba: HWB<number>): RGB<number> {
-  const [r, g, b] = hwb2rgb(hwba.h, hwba.w * 100, hwba.b * 100);
+  // Force w+b <== 1
+  const { w: white, b: black } = hwba;
+  const diff = white + black - 1;
+  const subtract = diff / 2;
+
+  const [r, g, b] = hwb2rgb(
+    hwba.h,
+    (hwba.w - subtract) * 100,
+    (hwba.b - subtract) * 100
+  );
   return { r, g, b, alpha: hwba.alpha };
 }
 
