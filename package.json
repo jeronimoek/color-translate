@@ -2,7 +2,7 @@
   "name": "color-translate",
   "displayName": "Translate Colors Formats",
   "description": "Translate colors among all valid css formats",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "keywords": [
     "color",
     "translation",
