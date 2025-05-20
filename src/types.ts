@@ -1,4 +1,12 @@
-import { AngleUnit } from "./enum";
+import { AngleUnit, ColorOutput } from "./enum";
+
+export type ValuesArray = (number | string)[];
+
+export type RecursivePartial<T> = T extends unknown[]
+  ? T
+  : {
+      [P in keyof T]?: RecursivePartial<T[P]>;
+    };
 
 export interface HEX {
   r: string;
@@ -135,23 +143,49 @@ export type ColorInput = MapOptionalAlpha<Color>;
 
 type AngleUnitType = `${AngleUnit}`;
 
+interface ValueProperties {
+  from?: number;
+  to?: number;
+  suffix?: string;
+  maxDigits?: number;
+}
+
+export interface CustomOutput<T extends Color> {
+  template: string;
+  templateWithAlpha: string;
+  values: { [keyof in keyof T]?: ValueProperties };
+}
+
+export interface CustomOutputs {
+  [ColorOutput.RGB]: CustomOutput<RGB<number>>;
+  [ColorOutput.HEX]: CustomOutput<HEX>;
+  [ColorOutput.HEX_0x]: CustomOutput<HEX>;
+  [ColorOutput.HSL]: CustomOutput<HSL<number>>;
+  [ColorOutput.HWB]: CustomOutput<HWB<number>>;
+  [ColorOutput.LAB]: CustomOutput<LAB<number>>;
+  [ColorOutput.LCH]: CustomOutput<LCH<number>>;
+  [ColorOutput.OKLAB]: CustomOutput<OKLAB<number>>;
+  [ColorOutput.OKLCH]: CustomOutput<OKLCH<number>>;
+  [ColorOutput.CMYK]: CustomOutput<CMYK<number>>;
+  [ColorOutput.A98]: CustomOutput<A98<number>>;
+}
+
 export interface StringOptions {
   legacy: boolean;
   spaced: boolean;
   angleUnit: AngleUnitType;
   maxDigits: number;
   limitToColorSpace: boolean;
+  customOutputs?: CustomOutputs;
 }
 
 export interface GeneralOptions extends StringOptions {
   cacheInput: boolean;
 }
 
-type ToStringColor = (options?: Partial<StringOptions>) => string;
+type ToStringColor = (options?: RecursivePartial<StringOptions>) => string;
 
 export interface GetColor {
   toString: ToStringColor;
   options: StringOptions;
 }
-
-export type ValuesArray = (number | string)[];

@@ -305,3 +305,22 @@ export function findClosestNamedColor(lab: LAB<number>) {
 
   return closestNamedColor;
 }
+
+export function remap(
+  value: number,
+  inputMin: number,
+  inputMax: number,
+  outputMin: number,
+  outputMax: number
+) {
+  const inputRange = inputMax - inputMin;
+  if (inputRange == 0) {
+    const outputValue = outputMin;
+    return outputValue;
+  } else {
+    const outputRange = outputMax - outputMin;
+    const outputValue =
+      ((value - inputMin) * outputRange) / inputRange + outputMin;
+    return outputValue;
+  }
+}

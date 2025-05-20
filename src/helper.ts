@@ -1,16 +1,30 @@
-type UnknownObject = Record<string, any>;
+import { RecursivePartial } from "./types";
 
-function definedProps<T extends UnknownObject>(obj: T): T {
-  return Object.fromEntries(
-    Object.entries(obj).filter(([, v]) => v !== undefined)
-  ) as T;
+export function isObject(item: unknown) {
+  return item && typeof item === "object" && !Array.isArray(item);
 }
 
-export function merge<T1 extends UnknownObject, T2 extends UnknownObject>(
-  obj1: T1,
-  obj2: T2
-): T1 & T2 {
-  return { ...obj1, ...definedProps(obj2) };
+export function mergeDeep<T>(
+  baseOriginal: T
+): (partial: RecursivePartial<T>) => T {
+  const base = JSON.parse(JSON.stringify(baseOriginal)); // Deep clone the base object
+  return (partial: RecursivePartial<T>) => {
+    if (isObject(base) && isObject(partial)) {
+      for (const key in partial) {
+        const value = partial[key];
+        const baseValue = base[key as keyof typeof base];
+        if (value !== undefined) {
+          if (isObject(value) && baseValue !== undefined) {
+            (base as any)[key] = mergeDeep(baseValue)(value as any);
+          } else {
+            (base as any)[key] = value;
+          }
+        }
+      }
+    }
+
+    return base;
+  };
 }
 
 export function round(number: number, decimals = 2) {

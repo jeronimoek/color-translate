@@ -19,3 +19,17 @@ export enum ColorFormat {
   OKLCH = "oklch",
   DEVICE_CMYK = "device-cmyk",
 }
+
+export enum ColorOutput {
+  A98 = "a98",
+  RGB = "rgb",
+  HEX = "hex",
+  HEX_0x = "hex0x",
+  HSL = "hsl",
+  HWB = "hwb",
+  LAB = "lab",
+  LCH = "lch",
+  OKLAB = "oklab",
+  OKLCH = "oklch",
+  CMYK = "cmyk",
+}

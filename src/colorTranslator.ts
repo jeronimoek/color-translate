@@ -15,7 +15,7 @@ import {
   rgbToLch,
 } from "./colorTranslation";
 import { ColorFormat } from "./enum";
-import { merge } from "./helper";
+import { mergeDeep } from "./helper";
 import { oklabToRgb, oklchToRgb, rgbToOklab, rgbToOklch } from "./okColors";
 import {
   standardizePartialA98,
@@ -63,6 +63,7 @@ import {
   RawOKLAB,
   RawOKLCH,
   RawRGB,
+  RecursivePartial,
   RGB,
 } from "./types";
 import { colorToRgb100, findClosestNamedColor } from "./utils";
@@ -76,14 +77,15 @@ export default class ColorTranslator {
     limitToColorSpace: true,
     maxDigits: 2,
     cacheInput: true,
+    customOutputs: undefined,
   };
   private _lastInput?: { format: ColorFormat; color: ColorInput };
 
   constructor(
     color: string | ColorInput,
-    options: Partial<GeneralOptions> = {}
+    options: RecursivePartial<GeneralOptions> = {}
   ) {
-    this._options = merge(this._options, options);
+    this._options = mergeDeep(this._options)(options);
 
     const { rgb100, format, standardizedColor } = colorToRgb100(color);
 
@@ -141,7 +143,7 @@ export default class ColorTranslator {
     const rgb100 =
       (this._cachedInput(ColorFormat.RGB)?.color as RGB<number>) ?? this._rgb;
     const rgb = standardizePartialRgb(rgbRaw);
-    this._rgb = merge(rgb100, rgb);
+    this._rgb = mergeDeep(rgb100)(rgb);
     this._setCachedInput(ColorFormat.RGB, this._rgb);
     return this;
   }
@@ -164,7 +166,7 @@ export default class ColorTranslator {
     const currentHsl =
       (this._cachedInput(ColorFormat.HSL)?.color as HSL<number>) ??
       rgbToHsl(this._rgb);
-    const newHsl = merge(currentHsl, hsl);
+    const newHsl = mergeDeep(currentHsl)(hsl);
     this._setCachedInput(ColorFormat.HSL, newHsl);
     const rgb = hslToRgb(newHsl);
     this._rgb = rgb;
@@ -189,7 +191,7 @@ export default class ColorTranslator {
     const currentHwb =
       (this._cachedInput(ColorFormat.HWB)?.color as HWB<number>) ??
       rgbToHwb(this._rgb);
-    const newHwb = merge(currentHwb, hwb);
+    const newHwb = mergeDeep(currentHwb)(hwb);
     this._setCachedInput(ColorFormat.HWB, newHwb);
     const rgb = hwbToRgb(newHwb);
     this._rgb = rgb;
@@ -214,7 +216,7 @@ export default class ColorTranslator {
     const currentLab =
       (this._cachedInput(ColorFormat.LAB)?.color as LAB<number>) ??
       rgbToLab(this._rgb);
-    const newLab = merge(currentLab, lab);
+    const newLab = mergeDeep(currentLab)(lab);
     this._setCachedInput(ColorFormat.LAB, newLab);
     const rgb = labToRgb(newLab);
     this._rgb = rgb;
@@ -239,7 +241,7 @@ export default class ColorTranslator {
     const currentLch =
       (this._cachedInput(ColorFormat.LCH)?.color as LCH<number>) ??
       rgbToLch(this._rgb);
-    const newLch = merge(currentLch, lch);
+    const newLch = mergeDeep(currentLch)(lch);
     this._setCachedInput(ColorFormat.LCH, newLch);
     const rgb = lchToRgb(newLch);
     this._rgb = rgb;
@@ -264,7 +266,7 @@ export default class ColorTranslator {
     const currentOklab =
       (this._cachedInput(ColorFormat.OKLAB)?.color as OKLAB<number>) ??
       rgbToOklab(this._rgb);
-    const newOklab = merge(currentOklab, oklab);
+    const newOklab = mergeDeep(currentOklab)(oklab);
     this._setCachedInput(ColorFormat.OKLAB, newOklab);
     const rgb = oklabToRgb(newOklab);
     this._rgb = rgb;
@@ -289,7 +291,7 @@ export default class ColorTranslator {
     const currentokLch =
       (this._cachedInput(ColorFormat.OKLCH)?.color as OKLCH<number>) ??
       rgbToOklch(this._rgb);
-    const newOkLch = merge(currentokLch, oklch);
+    const newOkLch = mergeDeep(currentokLch)(oklch);
     this._setCachedInput(ColorFormat.OKLCH, newOkLch);
     const rgb = oklchToRgb(newOkLch);
     this._rgb = rgb;
@@ -314,7 +316,7 @@ export default class ColorTranslator {
     const currentCmyk =
       (this._cachedInput(ColorFormat.DEVICE_CMYK)?.color as CMYK<number>) ??
       rgbToCmyk(this._rgb);
-    const newCmyk = merge(currentCmyk, cmyk);
+    const newCmyk = mergeDeep(currentCmyk)(cmyk);
     this._setCachedInput(ColorFormat.DEVICE_CMYK, newCmyk);
     const rgb = cmykToRgb(newCmyk);
     this._rgb = rgb;
@@ -339,7 +341,7 @@ export default class ColorTranslator {
     const currentA98 =
       (this._cachedInput(ColorFormat.A98)?.color as A98<number>) ??
       rgbToA98(this._rgb);
-    const newA98 = merge(currentA98, a98);
+    const newA98 = mergeDeep(currentA98)(a98);
     this._setCachedInput(ColorFormat.A98, newA98);
     const rgb = a98ToRgb(newA98);
     this._rgb = rgb;
@@ -358,8 +360,8 @@ export default class ColorTranslator {
     return this._options;
   }
 
-  updateOptions(options: Partial<GeneralOptions>) {
-    this._options = merge(this._options, options);
+  updateOptions(options: RecursivePartial<GeneralOptions>) {
+    this._options = mergeDeep(this._options)(options);
     return this;
   }
 }
