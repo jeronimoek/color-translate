@@ -1,3 +1,6 @@
+import { ColorOutput } from "./enum";
+import { CustomOutputs } from "./types";
+
 export const namedColorsLAB = {
   aliceblue: [97.12, -1.77, -4.36],
   antiquewhite: [93.86, 2.86, 11.64],
@@ -148,3 +151,117 @@ export const namedColorsLAB = {
   yellow: [97.61, -15.75, 93.38],
   yellowgreen: [76.77, -33.1, 65.61],
 } satisfies Record<string, [number, number, number]>;
+
+export const defaultOutputOptions: CustomOutputs = {
+  [ColorOutput.A98]: {
+    values: {
+      r: { from: 0, to: 1 },
+      g: { from: 0, to: 1 },
+      b: { from: 0, to: 1 },
+      alpha: { from: 0, to: 1 },
+    },
+    template: "color(a98-rgb {{r}} {{g}} {{b}})",
+    templateWithAlpha: "color(a98-rgb {{r}} {{g}} {{b}} / {{alpha}})",
+  },
+  [ColorOutput.CMYK]: {
+    values: {
+      c: { from: 0, to: 1 },
+      m: { from: 0, to: 1 },
+      y: { from: 0, to: 1 },
+      k: { from: 0, to: 1 },
+      alpha: { from: 0, to: 1 },
+    },
+    template: "device-cmyk({{c}} {{m}} {{y}} {{k}})",
+    templateWithAlpha: "device-cmyk({{c}} {{m}} {{y}} {{k}} / {{alpha}})",
+  },
+  [ColorOutput.HSL]: {
+    values: {
+      h: { from: 0, to: 360 },
+      s: { from: 0, to: 100, suffix: "%" },
+      l: { from: 0, to: 100, suffix: "%" },
+      alpha: { from: 0, to: 1 },
+    },
+    template: "hsl({{h}} {{s}} {{l}})",
+    templateWithAlpha: "hsla({{h}} {{s}} {{l}} / {{alpha}})",
+  },
+  [ColorOutput.HWB]: {
+    values: {
+      h: { from: 0, to: 360 },
+      w: { from: 0, to: 100, suffix: "%" },
+      b: { from: 0, to: 100, suffix: "%" },
+      alpha: { from: 0, to: 1 },
+    },
+    template: "hwb({{h}} {{w}} {{b}})",
+    templateWithAlpha: "hwb({{h}} {{w}} {{b}} / {{alpha}})",
+  },
+  [ColorOutput.LAB]: {
+    values: {
+      l: { from: 0, to: 100 },
+      a: { from: -125, to: 125 },
+      b: { from: -125, to: 125 },
+      alpha: { from: 0, to: 1 },
+    },
+    template: "lab({{l}} {{a}} {{b}})",
+    templateWithAlpha: "lab({{l}} {{a}} {{b}} / {{alpha}})",
+  },
+  [ColorOutput.LCH]: {
+    values: {
+      l: { from: 0, to: 100 },
+      c: { from: 0, to: 150 },
+      h: { from: 0, to: 360 },
+      alpha: { from: 0, to: 1 },
+    },
+    template: "lch({{l}} {{c}} {{h}})",
+    templateWithAlpha: "lch({{l}} {{c}} {{h}} / {{alpha}})",
+  },
+  [ColorOutput.OKLAB]: {
+    values: {
+      l: { from: 0, to: 1 },
+      a: { from: -0.4, to: 0.4 },
+      b: { from: -0.4, to: 0.4 },
+      alpha: { from: 0, to: 1 },
+    },
+    template: "oklab({{l}} {{a}} {{b}})",
+    templateWithAlpha: "oklab({{l}} {{a}} {{b}} / {{alpha}})",
+  },
+  [ColorOutput.OKLCH]: {
+    values: {
+      l: { from: 0, to: 1 },
+      c: { from: 0, to: 0.4 },
+      h: { from: 0, to: 360 },
+      alpha: { from: 0, to: 1 },
+    },
+    template: "oklch({{l}} {{c}} {{h}})",
+    templateWithAlpha: "oklch({{l}} {{c}} {{h}} / {{alpha}})",
+  },
+  [ColorOutput.RGB]: {
+    values: {
+      r: { from: 0, to: 255 },
+      g: { from: 0, to: 255 },
+      b: { from: 0, to: 255 },
+      alpha: { from: 0, to: 1 },
+    },
+    template: "rgb({{r}} {{g}} {{b}})",
+    templateWithAlpha: "rgba({{r}} {{g}} {{b}} / {{alpha}})",
+  },
+  [ColorOutput.HEX]: {
+    values: {
+      r: { from: 0, to: 1 },
+      g: { from: 0, to: 1 },
+      b: { from: 0, to: 1 },
+      alpha: { from: 0, to: 1 },
+    },
+    template: "#{{r}}{{g}}{{b}}",
+    templateWithAlpha: "#{{r}}{{g}}{{b}}{{alpha}}",
+  },
+  [ColorOutput.HEX_0x]: {
+    values: {
+      r: { from: 0, to: 1 },
+      g: { from: 0, to: 1 },
+      b: { from: 0, to: 1 },
+      alpha: { from: 0, to: 1 },
+    },
+    template: "0x{{r}}{{g}}{{b}}",
+    templateWithAlpha: "0x{{r}}{{g}}{{b}}{{alpha}}",
+  },
+};

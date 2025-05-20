@@ -10,8 +10,10 @@ import {
   clampOklchColor,
   clampRgbColor,
 } from "./clamp";
-import { AngleUnit, ColorFormat } from "./enum";
-import { merge, round } from "./helper";
+import { customToString } from "./customToString";
+import { AngleUnit, ColorFormat, ColorOutput } from "./enum";
+import { getOutputOptions } from "./getOutputOptions";
+import { mergeDeep, round } from "./helper";
 import {
   A98,
   CMYK,
@@ -23,11 +25,12 @@ import {
   LCH,
   OKLAB,
   OKLCH,
+  RecursivePartial,
   RGB,
   StringOptions,
   ValuesArray,
 } from "./types";
-import { degToGrad, degToRad, degToTurn } from "./utils";
+import { degToGrad, degToRad, degToTurn, remap } from "./utils";
 
 function formatAllowLegacy(format: string) {
   const allowedLegacyFormats: string[] = [
@@ -91,13 +94,26 @@ function stringifyDeg(angle: number, options: StringOptions) {
 
 export function a98ToString(
   this: A98<number> & GetColor,
-  customOptions: Partial<StringOptions> = {}
+  customOptions: RecursivePartial<StringOptions> = {}
 ) {
   const { options } = this;
-  const stringOptions = merge(options, customOptions);
+  const stringOptions = mergeDeep(options)(customOptions);
   let { r, g, b, alpha } = this;
   if (stringOptions.limitToColorSpace) {
     ({ r, g, b, alpha } = clampA98Color({ r, g, b, a98: true, alpha }));
+  }
+
+  if (stringOptions.customOutputs?.a98) {
+    return customToString(
+      {
+        r,
+        g,
+        b,
+        alpha,
+      } as A98<number>,
+      getOutputOptions(stringOptions, ColorOutput.A98),
+      stringOptions
+    );
   }
 
   const { maxDigits } = stringOptions;
@@ -112,13 +128,26 @@ export function a98ToString(
 
 export function rgbToString(
   this: RGB<number> & GetColor,
-  customOptions: Partial<StringOptions> = {}
+  customOptions: RecursivePartial<StringOptions> = {}
 ) {
   const { options } = this;
-  const stringOptions = merge(options, customOptions);
+  const stringOptions = mergeDeep(options)(customOptions);
   let { r, g, b, alpha } = this;
   if (stringOptions.limitToColorSpace) {
     ({ r, g, b, alpha } = clampRgbColor({ r, g, b, alpha }));
+  }
+
+  if (stringOptions.customOutputs?.rgb) {
+    return customToString(
+      {
+        r: remap(r, 0, 255, 0, 1),
+        g: remap(g, 0, 255, 0, 1),
+        b: remap(b, 0, 255, 0, 1),
+        alpha,
+      } as RGB<number>,
+      getOutputOptions(stringOptions, ColorOutput.RGB),
+      stringOptions
+    );
   }
 
   const { maxDigits } = stringOptions;
@@ -134,13 +163,26 @@ export function rgbToString(
 
 export function hslToString(
   this: HSL<number> & GetColor,
-  customOptions: Partial<StringOptions> = {}
+  customOptions: RecursivePartial<StringOptions> = {}
 ) {
   const { options } = this;
-  const stringOptions = merge(options, customOptions);
+  const stringOptions = mergeDeep(options)(customOptions);
   let { h, s, l, alpha } = this;
   if (stringOptions.limitToColorSpace) {
     ({ h, s, l, alpha } = clampHslColor({ h, s, l, alpha }));
+  }
+
+  if (stringOptions.customOutputs?.hsl) {
+    return customToString(
+      {
+        h: remap(h, 0, 360, 0, 1),
+        s,
+        l,
+        alpha,
+      } as HSL<number>,
+      getOutputOptions(stringOptions, ColorOutput.HSL),
+      stringOptions
+    );
   }
 
   const { maxDigits } = stringOptions;
@@ -159,13 +201,26 @@ export function hslToString(
 
 export function hwbToString(
   this: HWB<number> & GetColor,
-  customOptions: Partial<StringOptions> = {}
+  customOptions: RecursivePartial<StringOptions> = {}
 ) {
   const { options } = this;
-  const stringOptions = merge(options, customOptions);
+  const stringOptions = mergeDeep(options)(customOptions);
   let { h, w, b, alpha } = this;
   if (stringOptions.limitToColorSpace) {
     ({ h, w, b, alpha } = clampHwbColor({ h, w, b, alpha }));
+  }
+
+  if (stringOptions.customOutputs?.hwb) {
+    return customToString(
+      {
+        h: remap(h, 0, 360, 0, 1),
+        w,
+        b,
+        alpha,
+      } as HWB<number>,
+      getOutputOptions(stringOptions, ColorOutput.HWB),
+      stringOptions
+    );
   }
 
   const { maxDigits } = stringOptions;
@@ -183,13 +238,26 @@ export function hwbToString(
 
 export function labToString(
   this: LAB<number> & GetColor,
-  customOptions: Partial<StringOptions> = {}
+  customOptions: RecursivePartial<StringOptions> = {}
 ) {
   const { options } = this;
-  const stringOptions = merge(options, customOptions);
+  const stringOptions = mergeDeep(options)(customOptions);
   let { l, a, b, alpha } = this;
   if (stringOptions.limitToColorSpace) {
     ({ l, a, b, alpha } = clampLabColor({ l, a, b, alpha }));
+  }
+
+  if (stringOptions.customOutputs?.lab) {
+    return customToString(
+      {
+        l: remap(l, 0, 100, 0, 1),
+        a: remap(a, -125, 125, 0, 1),
+        b: remap(b, -125, 125, 0, 1),
+        alpha,
+      } as LAB<number>,
+      getOutputOptions(stringOptions, ColorOutput.LAB),
+      stringOptions
+    );
   }
 
   const { maxDigits } = stringOptions;
@@ -203,13 +271,26 @@ export function labToString(
 
 export function lchToString(
   this: LCH<number> & GetColor,
-  customOptions: Partial<StringOptions> = {}
+  customOptions: RecursivePartial<StringOptions> = {}
 ) {
   const { options } = this;
-  const stringOptions = merge(options, customOptions);
+  const stringOptions = mergeDeep(options)(customOptions);
   let { l, c, h, alpha } = this;
   if (stringOptions.limitToColorSpace) {
     ({ l, c, h, alpha } = clampLchColor({ l, c, h, alpha }));
+  }
+
+  if (stringOptions.customOutputs?.lch) {
+    return customToString(
+      {
+        l: remap(l, 0, 100, 0, 1),
+        c: remap(c, 0, 150, 0, 1),
+        h: remap(h, 0, 360, 0, 1),
+        alpha,
+      } as LCH<number>,
+      getOutputOptions(stringOptions, ColorOutput.LCH),
+      stringOptions
+    );
   }
 
   const { maxDigits } = stringOptions;
@@ -223,42 +304,88 @@ export function lchToString(
 
 export function hexToString(
   this: HEX & GetColor,
-  customOptions: Partial<StringOptions> = {},
+  customOptions: RecursivePartial<StringOptions> = {},
   is0x = false
 ) {
   const { options } = this;
-  const stringOptions = merge(options, customOptions);
+  const stringOptions = mergeDeep(options)(customOptions);
   let { r, g, b, alpha } = this;
   if (stringOptions.limitToColorSpace) {
     ({ r, g, b, alpha } = clampHexColor({ r, g, b, alpha }));
   }
+
+  if (stringOptions.customOutputs?.hex) {
+    return customToString(
+      {
+        r,
+        g,
+        b,
+        alpha,
+      } as HEX,
+      getOutputOptions(stringOptions, ColorOutput.HEX),
+      stringOptions
+    );
+  }
+
+  const prefix = is0x ? "0x" : "#";
 
   const values = [r, g, b];
   if (alpha !== "FF") {
     values.push(alpha);
   }
 
-  const prefix = is0x ? "0x" : "#";
-
   return prefix + values.join("");
 }
 
 export function hex0xToString(
   this: HEX & GetColor,
-  customOptions: Partial<StringOptions> = {}
+  customOptions: RecursivePartial<StringOptions> = {}
 ) {
-  return hexToString.bind(this)(customOptions, true);
+  if (!customOptions.customOutputs?.hex) {
+    return hexToString.bind(this)(customOptions, true);
+  }
+
+  const { options } = this;
+  const stringOptions = mergeDeep(options)(customOptions);
+  let { r, g, b, alpha } = this;
+  if (stringOptions.limitToColorSpace) {
+    ({ r, g, b, alpha } = clampHexColor({ r, g, b, alpha }));
+  }
+
+  return customToString(
+    {
+      r,
+      g,
+      b,
+      alpha,
+    } as HEX,
+    getOutputOptions(stringOptions, ColorOutput.HEX),
+    stringOptions
+  );
 }
 
 export function oklabToString(
   this: OKLAB<number> & GetColor,
-  customOptions: Partial<StringOptions> = {}
+  customOptions: RecursivePartial<StringOptions> = {}
 ) {
   const { options } = this;
-  const stringOptions = merge(options, customOptions);
+  const stringOptions = mergeDeep(options)(customOptions);
   let { l, a, b, alpha } = this;
   if (stringOptions.limitToColorSpace) {
     ({ l, a, b, alpha } = clampOklabColor({ l, a, b, alpha, ok: true }));
+  }
+
+  if (stringOptions.customOutputs?.oklab) {
+    return customToString(
+      {
+        l,
+        a: remap(a, -0.4, 0.4, 0, 1),
+        b: remap(b, -0.4, 0.4, 0, 1),
+        alpha,
+      } as OKLAB<number>,
+      getOutputOptions(stringOptions, ColorOutput.OKLAB),
+      stringOptions
+    );
   }
 
   const { maxDigits } = stringOptions;
@@ -272,13 +399,26 @@ export function oklabToString(
 
 export function oklchToString(
   this: OKLCH<number> & GetColor,
-  customOptions: Partial<StringOptions> = {}
+  customOptions: RecursivePartial<StringOptions> = {}
 ) {
   const { options } = this;
-  const stringOptions = merge(options, customOptions);
+  const stringOptions = mergeDeep(options)(customOptions);
   let { l, c, h, alpha } = this;
   if (stringOptions.limitToColorSpace) {
     ({ l, c, h, alpha } = clampOklchColor({ l, c, h, alpha, ok: true }));
+  }
+
+  if (stringOptions.customOutputs?.oklch) {
+    return customToString(
+      {
+        l,
+        c: remap(c, 0, 0.4, 0, 1),
+        h: remap(h, 0, 360, 0, 1),
+        alpha,
+      } as OKLCH<number>,
+      getOutputOptions(stringOptions, ColorOutput.OKLCH),
+      stringOptions
+    );
   }
 
   const { maxDigits } = stringOptions;
@@ -292,13 +432,27 @@ export function oklchToString(
 
 export function cmykToString(
   this: CMYK<number> & GetColor,
-  customOptions: Partial<StringOptions> = {}
+  customOptions: RecursivePartial<StringOptions> = {}
 ) {
   const { options } = this;
-  const stringOptions = merge(options, customOptions);
+  const stringOptions = mergeDeep(options)(customOptions);
   let { c, m, y, k, alpha } = this;
   if (stringOptions.limitToColorSpace) {
     ({ c, m, y, k, alpha } = clampCmykColor({ c, m, y, k, alpha }));
+  }
+
+  if (stringOptions.customOutputs?.cmyk) {
+    return customToString(
+      {
+        c,
+        m,
+        y,
+        k,
+        alpha,
+      } as CMYK<number>,
+      getOutputOptions(stringOptions, ColorOutput.CMYK),
+      stringOptions
+    );
   }
 
   const { maxDigits } = stringOptions;

@@ -816,3 +816,143 @@ describe("Hwb gray to rgb", () => {
     expect(color.rgb.toString()).toEqual(grayRgbString);
   });
 });
+
+describe("Customized output string", () => {
+  it("should return normal rgb string color", () => {
+    const color = new ColorTranslator(redRgb);
+    color.updateOptions({
+      customOutputs: {
+        rgb: {},
+      },
+    });
+    expect(color.rgb.toString()).toEqual(redRgbString);
+  });
+
+  it("should return normal rgb alpha string color", () => {
+    const color = new ColorTranslator(redRgb);
+    color.updateRgb({ alpha });
+    color.updateOptions({
+      customOutputs: {
+        rgb: {},
+      },
+    });
+    expect(color.rgb.toString()).toEqual(redRgbStringAlpha);
+  });
+
+  it("should return percentage rgb alpha string color", () => {
+    const color = new ColorTranslator(redRgb);
+    color.updateRgb({ alpha });
+    color.updateOptions({
+      customOutputs: {
+        rgb: {
+          values: {
+            alpha: {
+              from: 0,
+              to: 100,
+              suffix: "%",
+            },
+          },
+        },
+      },
+    });
+    expect(color.rgb.toString()).toEqual(redRgbStringAlphaPercentage);
+  });
+
+  it("should return the same hsl string color (rad)", () => {
+    const color = new ColorTranslator(redHslStringRad);
+    color.updateOptions({ angleUnit: "rad" });
+    const prevString = color.hsl.toString();
+    color.updateOptions({
+      customOutputs: {
+        hsl: {
+          values: {
+            h: {
+              from: 0,
+              to: 2 * Math.PI,
+              suffix: "rad",
+            },
+          },
+        },
+      },
+    });
+    const newString = color.hsl.toString();
+    expect(newString).toEqual(prevString);
+    expect(newString).toEqual(redHslStringRad);
+  });
+
+  it("should respect maxDigits", () => {
+    const color = new ColorTranslator({ l: 32.123, c: 133.123, h: 306.123 });
+    color.updateOptions({ maxDigits: 3 });
+    color.updateOptions({
+      customOutputs: {
+        rgb: {
+          values: {
+            r: {
+              maxDigits: 2,
+            },
+            g: {
+              maxDigits: 3,
+            },
+            b: {
+              maxDigits: 4,
+            },
+          },
+        },
+      },
+    });
+    const newString = color.rgb.toString();
+    expect(newString).toEqual("rgb(88.94 0 254.8164)");
+  });
+
+  it("should return the same for each format", () => {
+    [
+      "rgb",
+      "a98",
+      "hsl",
+      "hwb",
+      "lab",
+      "lch",
+      "oklab",
+      "oklch",
+      "cmyk",
+      "hex",
+      "hex0x",
+    ].forEach((format) => {
+      const color = new ColorTranslator(redRgb);
+      const prevString = color[format as keyof typeof color].toString();
+      color.updateOptions({
+        customOutputs: {
+          [format]: {},
+        },
+      });
+      const newString = color[format as keyof typeof color].toString();
+      expect(newString).toEqual(prevString);
+    });
+  });
+
+  it("should return the same for each format with alpha", () => {
+    [
+      "rgb",
+      "a98",
+      "hsl",
+      "hwb",
+      "lab",
+      "lch",
+      "oklab",
+      "oklch",
+      "cmyk",
+      "hex",
+      "hex0x",
+    ].forEach((format) => {
+      const color = new ColorTranslator({ ...redRgb, alpha });
+      const prevString = color[format as keyof typeof color].toString();
+      color.updateOptions({
+        customOutputs: {
+          [format]: {},
+        },
+      });
+      const newString = color[format as keyof typeof color].toString();
+      expect(newString).toEqual(prevString);
+    });
+  });
+});
